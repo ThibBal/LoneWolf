@@ -1,8 +1,128 @@
 extends layout
 
 block content
-  h1= title
-  p.
-    Nous présentons dans cette section les principes de fonctionnement du jeu, an de vous fournir une vision globale de ce que vous devrez implémenter tout au long du trimestre.
-    Mais toute la logique et les calculs derrière ces principes ne seront pas implémentés avant le TP3.
-    Lorsqu'on débute le jeu, trois valeurs sont générées aléatoirement. La première, que nous appellerons points d'HABILETÉ, comprise entre 10 et 19, détermine l'HABILETÉ au combat. La deuxième représente les p oints d'ENDURANCE et est comprise entre 20 et 29. Lorsqu'un joueur est blessé dans un combat, il perd des points d'ENDURANCE.
+    h1= title
+    
+    h2 Règles du jeu
+    p.
+        Nous présentons dans cette section les principes de fonctionnement du jeu, afin de vous
+        fournir une vision globale de ce que vous devrez implémenter tout au long du trimestre.
+        Mais toute la logique et les calculs derrière ces principes ne seront pas implémentés avant
+        le TP3.
+    p.
+        Lorsqu'on débute le jeu, trois valeurs sont générées aléatoirement. La première, que
+        nous appellerons points d'HABILETÉ, comprise entre 10 et 19, détermine l'HABILETÉ
+        au combat. La deuxième représente les points d'ENDURANCE et est comprise entre 20
+        et 29. Lorsqu'un joueur est blessé dans un combat, il perd des points d'ENDURANCE.
+    p.
+        Lorsque la valeur sera à zéro, il sera considéré mort et son aventure sera donc terminée.
+        Dans certaines situations, il sera possible de récupérer des points d'ENDURANCE, mais
+        on ne pourra jamais dépasser la valeur initiale. La troisième valeur, comprise entre 10 et
+        19, indique le nombre de Pièces d'Or que possède le joueur au départ. À noter qu'à aucun
+        moment le joueur ne pourra posséder sur lui plus de 50 Pièces d'Or.
+
+    h2 Disciplines Kai
+    p.
+        Le joueur débute avec le rang d'Initié, ce qui signifie qu'il peut maîtriser 5 disciplines
+        parmi les 10 disponibles :
+    ul
+        li.
+            Le Camouflage : Cette technique permet au Seigneur Kaï de se fondre dans le paysage.
+            À la campagne, il peut se cacher parmi les arbres et lesrochers et se rendre de cette
+            façon invisible à l'ennemi même s'ilpasse tout près de lui. Dans une ville, cette
+            Discipline donnera àcelui qui l'utilise la faculté d'avoir l'air d'un habitant du cru,
+            tantpar l'apparence que par l'accent ou la langue employée. On peutainsi trouver
+            un abri où se cacher en toute sécurité.
+        li.
+            La Chasse : Cette Discipline donne au Seigneur Kaï l'assurance qu'il ne mourra jamais
+            de faim, même s'il se trouve dans un environnement hostile. Il aura toujours la
+            possibilité de chasser pour se procurer de la nourriture, sauf dans les déserts et
+            autres régions arides. Vous devez savoir que la Vassagonie est un empire situé au
+            coeur du désert. Dans ce pays aride, les occasions de faire bonne chasse seront peut-
+            être rares, pour ne pas dire inexistantes. Cette technique, cependant, se révélera
+            très utile, car elle permet à un Seigneur Kaï de se déplacer très vite et avec une
+            grande agilité.
+        li.
+            Sixième sens : Grâce à cette technique, le Seigneur Kaï devine les dangers imminents
+            qui le menacent. Ce Sixième Sens peut également lui révéler les intentions véritables
+            d'un inconnu ou la nature d'un objet étrange rencontré au cours d'une aventure.
+        li.
+            L'Orientation : Chaque fois qu'il se trouvera dans l'obligation de décider quelle direction
+            il doit prendre, le Seigneur Kaï fera toujours le bon choix grâce à cette
+            technique. Il saura ainsi quel chemin il convient d'emprunter dans une forêt et il
+            pourra également, dans une ville, découvrir l'endroit où est caché une personne ou
+            un objet. Par ailleurs, il saura interpréter chaque trace de pas, chaque empreinte
+            qui pourrait lui permettre de remonter une piste.
+        li.
+            La Guérison : Cette Discipline donne la faculté de récupérer des points d'ENDURANCE
+            perdus lors d'un combat. Si vous maîtrisez cette technique, vous pourrez ajouter 1
+            point d'ENDURANCE à votre total chaque fois qu'il vous sera possible d'aller d'un
+            bout à l'autre d'un paragraphe sans avoir à combattre un ennemi. (Vous n'aurez
+            le droit d'utiliser cette technique de la Guérison que lorsque vos points d'ENDURANCE
+            seront tombés en dessous de votre total initial. Rappelez-vous que vos
+            points d'ENDURANCE ne peuvent en aucun cas excéder votre total de départ.)
+        li.
+            La Maîtrise des Armes : En entrant au monastère Kaï, chaque élève a la possibilité
+            d'être initié au maniement d'une arme. Si vous choisissez d'avoir la Maîtrise d'une
+            arme, choisissez un chiffre aléatoire entre 0 et 9 pour obtenir un chiffre qui correspondra,
+            dans la liste ci-dessous, à l'arme dont on vous aura enseigné le maniement.
+            Vous aurez dès lors la parfaite Maîtrise de cette arme et, chaque fois que vous
+            combattrez avec elle, vous aurez droit à 2 points d'HABILETÉ supplémentaires.
+            Le fait que vous ayez la Maîtrise d'une arme ne signifie nullement que vous disposerez
+            de cette arme dès le début de votre aventure ; au cours de celle-ci, cependant,
+            l'occasion vous sera donnée de vous la procurer. Vous pourrez d'ailleurs acquérir
+            diverses armes au cours de votre quête mais vous n'aurez pas le droit d'en posséder
+            plus de 2 à la fois.
+        ul
+            li 0 : Le poignard
+            li 1 : La lance
+            li 2 : La masse d'armes
+            li 3 : Le sabre
+            li 4 : Le marteau de guerre
+            li 5 : L'épée
+            li 6 : La hâche
+            li 7 : L'épée
+            li 8 : Le bâton
+            li 9 : Le glaive
+        li.
+            Bouclier Psychique : Certaines créatures malfaisantes de Magnamund ont la faculté de
+            vous porter atteinte en faisant usage de leur force psychique. La technique du Bouclier
+            Psychique vous permet cependant dene pas perdre de points d'ENDURANCE
+            lorsque vous vous trouvez soumis à une telle agression.
+        li.
+            Puissance Psychique : Cette technique permet au Seigneur Kaï d'attaquer un ennemi
+            en se servant de la force de son esprit : on peut l'utiliser en même temps qu'une
+            arme de combat habituelle et l'on dispose alors de 2 points supplémentaires d'HABILETÉ. 
+            Cette Puissance Psychique, cependant, n'est pas forcément efficace avec
+            toutes les créatures : il se peut que certaines d'entre elles y soient insensibles. Si le
+            cas se présente, vous en serez averti au cours de votre mission.
+        li.
+            Communication Animale : Grâce à cette technique, un Seigneur Kaï peut communiquer
+            avec certains animaux et deviner les intentions de certains autres.
+        li.
+            Maîtrise Psychique de la Matière : C'est une technique qui donne à un Seigneur Kaï
+            la faculté de déplacer de petits objets par le simple pouvoir de sa concentration
+            mentale.
+
+    h2 Équipement
+    p.
+        Finalement, avant de commencer l'aventure, il doit monter son équipement, jusqu'à un
+        maximum de deux items. Le joueur ne peut jamais porter plus de deux armes, et son sac à
+        dos ne peut contenir plus de huit objets incluant les repas (à noter que les Pièces d'Or ne
+        sont pas dans le sac à dos, mais dans une bourse portée à la ceinture). Vous avez le droit
+        àtout moment d'échanger l'un de ces objets ou tout simplement de vous en débarrasser,
+        mais il vous est interdit de le faire lorsque vous êtes engagé dans un combat. Les objets
+        spéciaux ne sont pas rangés dans le sac à dos, donc ils ne prennent pas d'espaces. Il choisit
+        deux items parmi les items suivants 
+    ul
+        li Épée : (Arme).
+        li Sabre : (Arme).
+        li Lance : (Arme).
+        li Masse d'armes : (Arme).
+        li Marteau de guerre : (Arme).
+        li Hâche : (Arme).
+        li Bâton : (Arme).
+        li Glaive : (Arme).
+        li Gilet de cuir matelassé : (Objet spécial). Ce gilet donne deux points d'ENDURANCE supplémentaires.
+        li Potion de Lampsur : (Objet contenu dans le sac à dos). Cette potion vous rendra 4 points d'ENDURANCE lorsque vous la boirez à la fin d'un combat. Le flacon que l'on vous donnent en contient qu'une seule dose.
+        li Rations spéciales : (Objet contenu dans le sac à dos). Elles comptent pour un repas.
