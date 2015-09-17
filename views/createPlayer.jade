@@ -4,73 +4,59 @@ block content
   h1= title
   p Vous êtes à deux doigts de commencer votre aventure.
   p Mais avant, veuillez remplir le formulaire suivant :
-  form(name="create-player", method="post", action="/createPlayer")
-    h2 Disciplines Kai
-    p Choisir 5 disciplines
-    div.input
-        span.label Le Camouflage
-        input(type="checkbox", name="Camouflage")
-    div.input    
-        span.label La Chasse
-        input(type="checkbox", name="Chasse")
-    div.input    
-        span.label Sixième sens
-        input(type="checkbox", name="Sixième sens")
-    div.input    
-        span.label L'Orientation
-        input(type="checkbox", name="Orientation")
-    div.input    
-        span.label La Guérison
-        input(type="checkbox", name="Guérison")
-    div.input    
-        span.label La Maîtrise des Armes
-        input(type="checkbox", name="Maîtrise des armes")
-    div.input    
-        span.label Bouclier Psychique
-        input(type="checkbox", name="Bouclier Psychique")
-    div.input    
-        span.label Puissance Psychique
-        input(type="checkbox", name="Puissance Psychique")
-    div.input    
-        span.label Communication Animale
-        input(type="checkbox", name="Communication Animale")
-    div.input    
-        span.label Maîtrise Psychique de la Matière
-        input(type="checkbox", name="Maîtrise Psychique de la Matière")
-    h2 Equipement
-    p Choisir 2 équipements
-    div.input
-        span.label Epée
-        input(type="checkbox", name="Epée")
-    div.input    
-        span.label Sabre
-        input(type="checkbox", name="Sabre")
-    div.input    
-        span.label Lance
-        input(type="checkbox", name="Lance")
-    div.input    
-        span.label Masse d'armes
-        input(type="checkbox", name="Masse d'armes")
-    div.input    
-        span.label Marteau de guerre
-        input(type="checkbox", name="Marteau de guerre")
-    div.input    
-        span.label Hâche
-        input(type="checkbox", name="Hâche")
-    div.input    
-        span.label Bâton
-        input(type="checkbox", name="Bâton")
-    div.input    
-        span.label Glaive
-        input(type="checkbox", name="Glaive")
-    div.input    
-        span.label Gilet de cuir matelassé
-        input(type="checkbox", name="Gilet de cuir matelassé")
-    div.input    
-        span.label Potion de Lampsur
-        input(type="checkbox", name="Potion de Lampsur")
-    div.input    
-        span.label Rations spéciales
-        input(type="checkbox", name="Rations spéciales")    
-    div.actions
-        input(type="submit", value="Commencer votre aventure !")
+
+
+  form(name='new-player', method='post', action='/createPlayer')
+      h2 Disciplines Kaï
+      fieldset
+
+          input(type='checkbox', name='', value='Camouflage')
+          label Le Camouflage
+          input(type='checkbox', name='', value='Chasse')
+          label La Chasse
+          input(type='checkbox', name='', value='SixièmeSens')
+          label Sixième Sens
+          input(type='checkbox', name='', value='Orientation')
+          label L'Orientation
+          input(type='checkbox', name='', value='Chasse')
+          label La Guérison
+          input(type='checkbox', name='', value='Chasse')
+          label La Maîtrise des Armes
+          input(type='checkbox', name='', value='Chasse')
+          label Bouclier Psychique
+          input(type='checkbox', name='', value='Chasse')
+          label Puissance Psychique
+          input(type='checkbox', name='', value='Chasse')
+          label Communication Animale
+          input(type='checkbox', name='', value='Chasse')
+          label Maîtrise Psychique de la Matière
+
+
+
+      h2 Equipements
+      fieldset
+
+        input(type='checkbox', name='', value='Camouflage')
+        label Epée
+        input(type='checkbox', name='', value='Chasse')
+        label Sabre
+        input(type='checkbox', name='', value='SixièmeSens')
+        label Lance
+        input(type='checkbox', name='', value='Orientation')
+        label Masse d'Armes
+        input(type='checkbox', name='', value='Chasse')
+        label Marteau de guerre
+        input(type='checkbox', name='', value='Chasse')
+        label Hâche
+        input(type='checkbox', name='', value='Chasse')
+        label Bâton
+        input(type='checkbox', name='', value='Chasse')
+        label Glaive
+        input(type='checkbox', name='', value='Chasse')
+        label Gilet de cuir matelassé
+        input(type='checkbox', name='', value='Chasse')
+        label Potion de Lampsur
+        input(type='checkbox', name='', value='Chasse')
+        label Rations spéciales
+
+      input(type="submit", value="Commencer votre aventure !")
