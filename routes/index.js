@@ -15,10 +15,11 @@ router.get('/begin', function(req, res) {
 });
 
 router.post('/createPlayer', function(req, res) {
-	  /*var page = "./page" + 1 + ".jade"
-	  res.render(page, function(err, html) {
-	      res.render('page', { title: 1, htmlPage: html })
-	  });*/
+  var disciplines = req.body.disciplines;
+  var equipements = req.body.equipements;
+
+  // TO DO
+  console.log("Les disciplines sont : " + disciplines);
 	res.redirect('./page/1');
 });
 
