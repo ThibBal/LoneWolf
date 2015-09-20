@@ -35,8 +35,8 @@ router.get('/page/:value', function(req, res, next) {
   // We get the parameter "value" from our request
   var numberPage = req.params.value
 
-  // We create the "right" page with the value
-  var page = "./page" + numberPage + ".jade"
+  // We reach to the "right" page with the value
+  var page = "./pages/" + numberPage + ".jade"
 
   // The page is converted to HTML and then put in the page.jade
   res.render(page, function(err, html) {
