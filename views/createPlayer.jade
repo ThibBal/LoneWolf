@@ -6,7 +6,7 @@ block content
   p Mais avant, veuillez remplir le formulaire suivant :
 
 
-  form(name='new-player', method='post', action='/createPlayer')
+  form(method='post', action='/begin')
       h2 Disciplines Kaï
       fieldset
           p Choisir 5 disciplines
@@ -31,11 +31,9 @@ block content
           input(type='checkbox', name='disciplines', value='Maîtrise Psychique de la Matière')
           label Maîtrise Psychique de la Matière
 
-
-
       h2 Equipements
       fieldset
-        p Choisir deux équipements
+        p Choisir 2 équipements
         input(type='checkbox', name='equipements', value='Epée')
         label Epée
         input(type='checkbox', name='equipements', value='Sabre')
