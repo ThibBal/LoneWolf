@@ -3,17 +3,20 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Les Grottes de Kalte' });
+  var currentPage = "home";
+  res.render('index', { title: 'Les Grottes de Kalte', currentPage });
 });
 
 /* GET help page. */
 router.get('/help', function(req, res) {
-    res.render('help', { title: "Aide" });
+  var currentPage = "help";
+    res.render('help', { title: "Aide", currentPage });
 });
 
 /* GET createPlayer page. */
 router.get('/createPlayer', function(req, res) {
-    res.render('createPlayer', { title: "Création du joueur" });
+    var currentPage = "createPlayer";
+    res.render('createPlayer', { title: "Création du joueur", currentPage });
 });
 
 /* POST begin page. */

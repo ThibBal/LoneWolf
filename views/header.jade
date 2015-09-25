@@ -1,3 +1,19 @@
 //- includes/header.jade
 header
-	nav #[a(href="/", class=" buttn") Accueil] #[a(href="/createPlayer", class=" buttn") Créer un joueur] #[a(href="/help", class=" buttn") Aide]
+    nav
+      ul
+        li 
+          if(currentPage == 'home')
+            a(href="/")#current Accueil
+          else
+            a(href="/") Accueil
+        li
+          if(currentPage == 'createPlayer')
+             a(href='/createPlayer')#current Créer un joueur
+          else
+             a(href='/createPlayer') Créer un joueur
+        li
+          if(currentPage == 'help')
+             a(href='/help')#current Aide 
+          else
+             a(href='/help') Aide
