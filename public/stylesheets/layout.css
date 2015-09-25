@@ -4,7 +4,7 @@
 }
 
 body{
-    background: #c0c0c0 url("../images/wood.jpeg") no-repeat center fixed;
+    background: #c0c0c0 url("../images/background-parchemin.jpg") no-repeat center fixed;
     background-size: cover;
     font-family: "NotreFont", Helvetica, Arial, sans-serif;
 }
@@ -14,8 +14,7 @@ body{
     width: 50%;
     height: auto;
     margin-left: 25%;
-    border: solid red 1px;
-    background: url("../images/parchemin.jpg") no-repeat center fixed;
+    /*border: solid red 1px;*/
     background-size: cover;
 }
 
@@ -23,12 +22,28 @@ body{
     padding: 5%;
 }
 
-#block-lateral{
+#block-lateral-gauche{
+    position: fixed;
+    width: 20%;
+    margin-left: 2.5%;
+    /*border: solid red 1px;*/
+    background-size: cover;
+}
+
+#block-lateral-rightstat{
     position: fixed;
     width: 20%;
     margin-left: 77.5%;
-    border: solid red 1px;
-    background: url("../images/parchemin.jpg") no-repeat center fixed;
+    /*border: solid red 1px;*/
+    background-size: cover;
+}
+
+#block-lateral-rightbackpack{
+    position: fixed;
+    width: 20%;
+    margin-top: 15%;
+    margin-left: 77.5%;
+    /*border: solid red 1px;*/
     background-size: cover;
 }
 
@@ -37,5 +52,10 @@ body{
 }
 
 footer{
-
+    position: fixed;
+    width: 20%;
+    bottom: 0;
+    margin-left: 77.5%;
+    /*border: solid red 1px;*/
+    background-size: cover;
 }

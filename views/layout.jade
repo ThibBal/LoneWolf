@@ -4,14 +4,8 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/normalize.css')
     link(rel='stylesheet', href='/stylesheets/layout.css')
+    block head
   body
     include ./header.jade
-    div(id="block-central")
-      div(id="text-block-central")
-        block content
-
-    div(id="block-lateral")
-        include ./playerStats.jade
-        include ./backpack.jade
-        include ./previousFights.jade
+    block content
     include ./footer.jade
