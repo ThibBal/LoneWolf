@@ -1,22 +1,25 @@
 var express = require('express');
 var router = express.Router();
 
+/* GET help page. */
+router.get('/test', function(req, res) {
+    res.render('test', { title: "Page de test" });
+});
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  var currentPage = "home";
-  res.render('index', { title: 'Les Grottes de Kalte', currentPage: "home" });
+  res.render('index', { title: 'Les Grottes de Kalte' });
 });
 
 /* GET help page. */
 router.get('/help', function(req, res) {
-  var currentPage = "help";
-    res.render('help', { title: "Aide", currentPage: "help" });
+    res.render('help', { title: "Aide" });
 });
+
 
 /* GET createPlayer page. */
 router.get('/createPlayer', function(req, res) {
-    var currentPage = "createPlayer";
-    res.render('createPlayer', { title: "Création du joueur", currentPage: "createPlayer" });
+    res.render('createPlayer', { title: "Création du joueur" });
 });
 
 /* POST begin page. */
