@@ -32,6 +32,10 @@ body{
     background-size: cover;
 }
 
+#current {
+    color: red;
+}
+
 footer{
 
 }
