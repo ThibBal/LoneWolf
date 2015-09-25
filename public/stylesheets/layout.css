@@ -1,0 +1,37 @@
+@font-face {
+    font-family: "NotreFont";
+    src: url('../font/perry_gothic/PERRYGOT.TTF');
+}
+
+body{
+    background: #c0c0c0 url("../images/wood.jpeg") no-repeat center fixed;
+    background-size: cover;
+    font-family: "NotreFont", Helvetica, Arial, sans-serif;
+}
+
+#block-central{
+    position: absolute;
+    width: 50%;
+    height: auto;
+    margin-left: 25%;
+    border: solid red 1px;
+    background: url("../images/parchemin.jpg") no-repeat center fixed;
+    background-size: cover;
+}
+
+#text-block-central{
+    padding: 5%;
+}
+
+#block-lateral{
+    position: fixed;
+    width: 20%;
+    margin-left: 77.5%;
+    border: solid red 1px;
+    background: url("../images/parchemin.jpg") no-repeat center fixed;
+    background-size: cover;
+}
+
+footer{
+
+}

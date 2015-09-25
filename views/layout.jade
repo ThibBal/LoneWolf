@@ -2,8 +2,16 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/normalize.css')
+    link(rel='stylesheet', href='/stylesheets/layout.css')
   body
     include ./header.jade
-    block content
+    div(id="block-central")
+      div(id="text-block-central")
+        block content
+
+    div(id="block-lateral")
+        include ./playerStats.jade
+        include ./backpack.jade
+        include ./previousFights.jade
     include ./footer.jade
