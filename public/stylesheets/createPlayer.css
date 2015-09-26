@@ -25,10 +25,12 @@ label{
     padding-bottom: 10px;
 }
 
-input{
-    margin-right: 15px;
-}
-
-#validation{
-
+.checkbox{
+    width: 13px;
+    height: 13px;
+    padding: 0;
+    margin:0;
+    vertical-align: bottom;
+    position: relative;
+    *overflow: hidden;
 }

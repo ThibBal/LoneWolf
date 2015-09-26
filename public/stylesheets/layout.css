@@ -1,12 +1,13 @@
 @font-face {
     font-family: "NotreFont";
-    src: url('../font/perry_gothic/PERRYGOT.TTF');
+    src: url('../font/eagle_lake/EagleLake-Regular.ttf');
 }
 
 body{
     background: #c0c0c0 url("../images/background-parchemin.jpg") no-repeat center fixed;
     background-size: cover;
     font-family: "NotreFont", Helvetica, Arial, sans-serif;
+    font-size: 8px;
 }
 
 #block-central{
@@ -14,12 +15,9 @@ body{
     width: 50%;
     height: auto;
     margin-left: 25%;
+    padding-bottom: 5%;
     /*border: solid red 1px;*/
     background-size: cover;
-}
-
-#text-block-central{
-    padding: 5%;
 }
 
 #block-lateral-gauche{
@@ -45,10 +43,6 @@ body{
     margin-left: 77.5%;
     /*border: solid red 1px;*/
     background-size: cover;
-}
-
-#current {
-    color: red;
 }
 
 footer{
