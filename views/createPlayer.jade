@@ -2,6 +2,7 @@ extends layout
 
 block head
     link(rel='stylesheet', href='/stylesheets/createPlayer.css')
+    link(rel='stylesheet', href='/stylesheets/waitingjs/create.css')
 
 block content
 
@@ -62,7 +63,7 @@ block content
                             input(type='checkbox', name='equipements', value='Lance', class='checkbox')
                             | Lance
                           label
-                            input(type='checkbox', name='equipements', value='Masse d\'Armes', class='checkbox')
+                            input(type='checkbox', class='checkbox',name='equipements', value='Masse d\'Armes')
                             | Masse d'Armes
                           label
                             input(type='checkbox', name='equipements', value='Marteau de guerre', class='checkbox')

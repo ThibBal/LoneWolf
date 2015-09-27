@@ -7,7 +7,11 @@ body{
     background: #c0c0c0 url("../images/background-parchemin.jpg") no-repeat center fixed;
     background-size: cover;
     font-family: "NotreFont", Helvetica, Arial, sans-serif;
-    font-size: 8px;
+    font-size: 16px;
+}
+
+ul{
+    list-style: none;
 }
 
 #block-central{
@@ -22,6 +26,7 @@ body{
 
 #block-lateral-gauche{
     position: fixed;
+    top: 100px;
     width: 20%;
     margin-left: 2.5%;
     /*border: solid red 1px;*/
@@ -39,7 +44,7 @@ body{
 #block-lateral-rightbackpack{
     position: fixed;
     width: 20%;
-    margin-top: 15%;
+    margin-top: 20%;
     margin-left: 77.5%;
     /*border: solid red 1px;*/
     background-size: cover;
@@ -52,4 +57,9 @@ footer{
     margin-left: 77.5%;
     /*border: solid red 1px;*/
     background-size: cover;
+}
+
+img{
+    float: left;
+    padding-right: 20px;
 }

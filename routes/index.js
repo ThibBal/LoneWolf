@@ -13,7 +13,7 @@ router.get('/', function(req, res, next) {
 
 /* GET help page. */
 router.get('/help', function(req, res) {
-    res.render('help', { title: "Aide" });
+    res.render('help', { title: "Règles" });
 });
 
 
