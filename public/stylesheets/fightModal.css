@@ -1,0 +1,55 @@
+.modalDialog {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 99999;
+    opacity:0;
+    -webkit-transition: opacity 400ms ease-in;
+    -moz-transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;
+    pointer-events: none;
+}
+.modalDialog:target {
+    opacity:1;
+    pointer-events: auto;
+}
+.modalDialog > div {
+    background: #c0c0c0 url("../images/fightbackground.jpg") no-repeat center fixed;
+    width: 500px;
+    height: 700px;
+    position: relative;
+    margin: 5% auto;
+    padding: 5px 20px 13px 20px;
+    border-radius: 10px;
+}
+
+.close {
+    content: "";
+    top: 0;
+    left: 0;
+    background: #c0c0c0 ;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: .3;
+}
+
+#textcombat
+{
+    height: 80%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#boutonscombat{
+    margin-top: 10px;
+    text-align: center;
+}
+
+.butoncombat{
+    margin: 5px;
+}

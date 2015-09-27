@@ -1,25 +1,30 @@
+block head
+    link(rel='stylesheet', href='/stylesheets/fightModal.css')
+
 aside
-    p #[strong -- DEBUT DU COMBAT --]
-    // explication du combat
-
-    div
-        p #[strong -- HISTOIRE --]
-        p #[strong Round 1]
-        p Vous affrontez un Bakanal: 30 Endurance, 19 Habileté
-        p.
-            Son premier assault, que vous n'avez pu éviter vous inflige 7 points de dégats.
-            Il va falloir penser à se bouger les fesses, vous n'allez jamais arrivé au bout sinon.
-        p Votre endurance se réduit à 22.
-        p #[strong Round 2]
-        p Que voulez-vous faire ?
-        p Vous attaquez avec [arme] et infligez 8 points de dégats.
-        p ETC
-
-
-    div
-        p #[strong -- ACTION --]
-        button Attaquer
-        button Fuir
-        button Utliser un objet
-    // fin
-    p #[strong -- FIN DU COMBAT --]
+    a(href="#fightModal") Combat
+    div#fightModal.modalDialog
+        div
+            a(href="#close", title="Close", class="close")
+            h2 Fight for your life
+            div#textcombat
+                p #[strong Round 1]
+                p Vous affrontez un Bakanal: 30 Endurance, 19 Habileté
+                p.
+                    Son premier assault, que vous n'avez pu éviter vous inflige 7 points de dégats.
+                    Il va falloir penser à se bouger les fesses, vous n'allez jamais arrivé au bout sinon.
+                p Votre endurance se réduit à 22.
+                p #[strong Round 2]
+                p Que voulez-vous faire ?
+                p Votre Ratio de combat est 3.
+                p Votre Nombre Aléatoire est 6.
+                p Vous attaquez avec [arme] et infligez 8 points de dégats.
+                p L'endurance du Bakanal est 22.
+                p Le Bakanal vous inflige un coup de Griffe, infligeant 3 points de dégats.
+                p Votre endurance chute à 19.
+                p #[strong Round 3]
+                p ETC
+            div#boutonscombat
+                button.butoncombat Attaquer
+                button.butoncombat Fuir
+                button.butoncombat Utiliser un objet
