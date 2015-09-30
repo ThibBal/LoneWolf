@@ -1,0 +1,37 @@
+extends layout
+
+block content
+    div#title
+        img(src="/images/pageTitre.png")
+        p= numeroPage
+
+    section#histoire
+        !{htmlPage}
+
+    section#stats
+        p Feuille d'Aventure
+        div
+            p Endurance
+            p 18 / 20
+        div 
+            p Habileté
+            p 30 
+        div
+            p Pièces d'OR
+            p 10 / 50
+        div
+            p Disciplines Kai
+            ul
+                li Communication Animale
+                li Écran Psychique
+        div
+            p Sac à dos
+            ul
+                li Marteau de guerre
+                li Rations spéciales
+        div 
+            p Objets Spéciaux
+            ul
+                li Huile de Baknar
+
+    a(href="/jeu/1") Recommencer l'Histoire

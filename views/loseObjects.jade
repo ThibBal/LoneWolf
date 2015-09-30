@@ -1,0 +1,12 @@
+block head
+    link(rel='stylesheet', href='/stylesheets/backpack.css')
+
+aside
+    a(href="#backpackModal") -- Perte d'objets --
+    div#backpackModal.modalDialog
+        div
+            a(href="#close", title="Close", class="close")
+            h2 Perte d'objets
+            h1 Vous avez perdu : 1 défense de mammouth
+            div#buttonsBackpack
+                button.buttonBackpack Ok
