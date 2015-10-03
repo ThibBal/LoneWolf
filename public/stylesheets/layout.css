@@ -60,7 +60,7 @@ footer{
     background-size: cover;
 }
 
-img{
+.img_text{
     float: left;
     padding-right: 20px;
 }
@@ -74,10 +74,14 @@ img{
 }
 
 #decision{
-    border-top: solid 2px #000;
+    /*border-top: solid 2px #000;*/
 }
 
 #decision>p>a {
     text-decoration: none;
     color: red;
+}
+
+.icon_voyage{
+    float: left;
 }
