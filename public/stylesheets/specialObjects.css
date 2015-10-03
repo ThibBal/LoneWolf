@@ -1,4 +1,4 @@
-.modalDialogFight {
+.modalDialogSpecialObjects {
     position: fixed;
     top: 0;
     right: 0;
@@ -12,14 +12,14 @@
     transition: opacity 400ms ease-in;
     pointer-events: none;
 }
-.modalDialogFight:target {
+.modalDialogSpecialObjects:target {
     opacity:1;
     pointer-events: auto;
 }
-.modalDialogFight > div {
+.modalDialogSpecialObjects > div {
     background: #c0c0c0 url("../images/fightbackground.jpg") no-repeat center fixed;
     width: 500px;
-    height: 80%;
+    height: 30%;
     position: relative;
     margin: 5% auto;
     padding: 5px 20px 13px 20px;
@@ -38,18 +38,11 @@
     opacity: .3;
 }
 
-#textcombat
-{
-    height: 80%;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-#boutonscombat{
+#boutonsSpecialObjects{
     margin-top: 10px;
     text-align: center;
 }
 
-.buttoncombat{
+.buttonSpecialObjects{
     margin: 5px;
 }

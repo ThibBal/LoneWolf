@@ -1,35 +1,9 @@
 li>a#v2{
-    color: #fff;
-    border-top: 2px solid #fff
+    color: #000;
+    border-top: 2px solid transparent;
 }
 
 li>a:hover{
     color: #000;
     border-top: 1px solid transparent;
-}
-
-li>a#v2 {
-    background: rgb(208, 72, 0);
-}
-
-li>a#v2:before,
-li>a#v2:after {
-    display: block;
-    content: "";
-    width: 0;
-    height: 0;
-    position: absolute;
-    background: none;
-    bottom: -30px;
-    border-top: 30px solid rgb(208, 72, 0);
-}
-
-li>a#v2:before {
-    border-right: 31px solid transparent;
-    left: 0;
-}
-
-li>a#v2:after {
-    border-left: 31px solid transparent;
-    right: 0;
 }
