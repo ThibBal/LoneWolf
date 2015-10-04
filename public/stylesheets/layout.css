@@ -44,7 +44,7 @@ ul{
 #block-lateral-rightbackpack{
     position: fixed;
     width: 20%;
-    margin-top: 20%;
+    top: 50%;
     margin-left: 77.5%;
     /*border: solid red 1px;*/
     background-size: cover;
@@ -84,4 +84,15 @@ footer{
 
 .icon_voyage{
     float: left;
+}
+
+#decision>p::after{
+    background: url(../icons/livre.png) no-repeat;
+    content: "";
+    position: absolute;
+    margin-left: 5px;
+    margin-top: -5px;
+    display: inline-block;
+    height: 40px;
+    width: 40px;
 }

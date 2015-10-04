@@ -31,34 +31,9 @@ nav {
     transition: all 400ms linear;
 }
 
-/*li>a#v1,*/
-/*li>a:hover {*/
-    /*color: #fff;*/
-    /*border-top: 2px solid #ccc;*/
-/*}*/
 
-/*li>a#v1 {*/
-    /*background: rgb(208, 72, 0);*/
-/*}*/
-
-/*li>a#v1:before,*/
-/*li>a#v1:after {*/
-    /*display: block;*/
-    /*content: "";*/
-    /*width: 0;*/
-    /*height: 0;*/
-    /*position: absolute;*/
-    /*background: none;*/
-    /*bottom: -20px;*/
-    /*border-top: 20px solid rgb(208, 72, 0);*/
-/*}*/
-
-/*li>a#v1:before {*/
-    /*border-right: 40px solid transparent;*/
-    /*left: 0;*/
-/*}*/
-
-/*li>a#v1:after {*/
-    /*border-left: 40px solid transparent;*/
-    /*right: 0;*/
-/*}*/
+@media screen and (max-width: 1020px) {
+    nav{
+        font-size: 12px;
+    }
+}
