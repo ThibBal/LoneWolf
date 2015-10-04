@@ -1,11 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET help page. */
-router.get('/test', function(req, res) {
-    res.render('test', { title: "Page de test" });
-});
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Les Grottes de Kalte' });

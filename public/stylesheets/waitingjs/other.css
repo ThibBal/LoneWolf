@@ -2,3 +2,18 @@ li>a:hover{
     color: #000;
     border-top: 1px solid transparent;
 }
+
+/* #decision>p>a:after {
+    background-image: url('../../icons/story.png');
+background-size: 10px 20px;
+width: 10px; 
+height: 20px;
+content:"";
+} */
+
+/* #decision>p>a{
+	background-image: url('../../icons/story.png');
+	background-repeat: no-repeat;
+	padding-left: 30px;  width of the image plus a little extra padding
+	display: block;  may not need this, but I've found I do
+} */
