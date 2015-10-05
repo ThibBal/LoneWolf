@@ -19,7 +19,8 @@
 .modalDialogBackpack > div {
     background: #c0c0c0 url("../images/fightbackground.jpg") no-repeat center fixed;
     width: 500px;
-    height: 80%;
+    height: auto;
+    max-height: 50%;
     position: relative;
     margin: 5% auto;
     padding: 5px 20px 13px 20px;
