@@ -14,7 +14,8 @@ router.post('/commencer', function(req, res) {
   var disciplines = req.body.disciplines;
   var equipements = req.body.equipements;
 
-  if (disciplines.length=5 || equipements.length=2){
+  // A FAIRE : Ajouter la mise en forme du message d'erreur
+  if (disciplines.length != 5 || equipements.length != 2){
     erreur = "Vous devez choisir 5 disciplines et 2 équipements. Pas plus. Pas moins."
     res.render("creationJoueur", {title: "Création du joueur", wrong : erreur});
   }
