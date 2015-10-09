@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var session = require('express-session');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -21,7 +21,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true
+}));
 app.use('/', routes);
 app.use('/users', users);
 
@@ -31,6 +35,21 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
+
+/*app.use(function (req, res, next) {
+  var player = req.session.player
+ 
+  if (!player) {
+    player = req.session.player = {}
+  }
+ 
+  // get the url pathname 
+  var name = "Thibault"
+ 
+  // count the player 
+  player["name"] = name; 
+  next()
+});*/
 
 // error handlers
 

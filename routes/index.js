@@ -23,8 +23,18 @@ router.post('/begin', function(req, res) {
   var equipements = req.body.equipements;
 
   // TO DO : create a session with the values "disciplines" and "equipements"
-  console.log("Les disciplines sont : " + disciplines);
+/*  console.log("Les disciplines sont : " + disciplines);
   console.log("Les équipements sont : " + equipements);
+*/
+   var player = req.session.player;
+  if (!player) {
+    player = req.session.player = {}
+  }
+  player["name"] = "Thibault";
+  player["equipements"] = equipements;
+  player["disciplines"] = disciplines;
+  player["statistiques"] = Math.random();
+  //res.send(req.session.player)
 
   // Redirect the player to the first page of the book
 	res.redirect('./page/1');
