@@ -42,10 +42,11 @@ router.post('/commencer', function(req, res) {
 // see @exempleExpress on Moodle
 router.get('/page/:numero', function(req, res, next) {
   // We get the parameter "numero" from our request
-  var numeroPage = req.params.numero
+  var numeroPage = req.params.numero;
+  //var sousnumeroPage = req.params.numero2;
 
   // We reach to the "right" page with the value
-  var page = "./pages/" + numeroPage + ".jade"
+  var page = "./pages/" + numeroPage + ".jade";
 
   // The page is converted to HTML and then put in the page.jade
   res.render(page, function(err, html) {
