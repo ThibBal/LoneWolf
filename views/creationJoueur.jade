@@ -12,10 +12,12 @@ block content
               p Mais avant, veuillez remplir le formulaire suivant :
 
 
-              form(method='post', action='/commencer')
-                  fieldset
+              form(method='post', action='./commencer')
+                  p= wrong
+                  fieldset    
                       legend Disciplines Kaï
                       p Choisir 5 disciplines
+
                       div#formleft
                           label
                             input(type="checkbox", name='disciplines', value='Camouflage', class='checkbox')
