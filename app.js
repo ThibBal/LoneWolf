@@ -36,21 +36,6 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-/*app.use(function (req, res, next) {
-  var player = req.session.player
- 
-  if (!player) {
-    player = req.session.player = {}
-  }
- 
-  // get the url pathname 
-  var name = "Thibault"
- 
-  // count the player 
-  player["name"] = name; 
-  next()
-});*/
-
 // error handlers
 
 // development error handler
