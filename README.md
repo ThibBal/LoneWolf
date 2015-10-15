@@ -10,4 +10,5 @@ Puis `localhost`
 
 ## Informations supplémentaires
 ### Routes intéressantes
-/jeu/joueur : affiche les informations du joueur (stockée dans une session)
+`/jeu/joueur` : affiche les informations du joueur (stockée dans une session)
+`/choixAleatoire/123` : retourne un nombre aléatoire choisi entre 0 et 123

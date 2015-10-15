@@ -112,6 +112,13 @@ router.get('/joueur', function(req, res, next) {
 });
 
 
+/* GET choixAleatoire */
+router.get('/choixAleatoire/:max', function(req, res, next) {
+    var nombreMax = req.params.max;
+    var valeur = randomIntFromInterval(0,nombreMax);
+    res.send(valeur.toString());
+});
+
 // FONCTIONS //
 
 // Source : http://stackoverflow.com/questions/4959975/generate-random-value-between-two-numbers-in-javascript
