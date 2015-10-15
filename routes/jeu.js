@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-/* Pages du jeu */
+/* Pages du jeu, la route est précédée de /jeu/ */
 
 /* GET Création du joueur. */
 router.get('/creer', function(req, res) {
@@ -26,7 +26,11 @@ router.post('/commencer', function(req, res) {
   }
   joueur["equipements"] = equipements;
   joueur["disciplines"] = disciplines;
-  joueur["statistiques"] = Math.random();
+  joueur["habilete"] = randomIntFromInterval(0,9);
+  joueur["endurance"] = randomIntFromInterval(0,9);
+  joueur["bourse"] = randomIntFromInterval(10,19);
+  joueur["habileteAvecBonus"] = joueur["habilete"] + 2;
+  joueur["enduranceAvecBonus"] = joueur["endurance"] + 2;
   //res.send(req.session.joueur)
 
   // Redirect the joueur to the first page of the book
@@ -36,17 +40,28 @@ router.post('/commencer', function(req, res) {
 
 /* GET page (with the right number) page. */
 // see @exempleExpress on Moodle
-router.get('/page/:numero', function(req, res, next) {
+router.get('/page/:numeroPage/:numero?', function(req, res, next) {
   // We get the parameter "numero" from our request
-  var numeroPage = req.params.numero
+  var page = req.params.numeroPage;
 
-  // We reach to the "right" page with the value
-  var page = "./pages/" + numeroPage + ".jade"
+  if(req.params.numero){
+    var partiePage = req.params.numero;
+     // We reach to the "right" page with the value
+    var pageLivre = "./pages/" + page + "/" + partiePage + ".jade";
+  } else {
+    var pageLivre = "./pages/" + page + ".jade";
+  }
 
   // The page is converted to HTML and then put in the page.jade
-  res.render(page, function(err, html) {
-      res.render('page', { title: numeroPage, htmlPage: html })
+  res.render(pageLivre, function(err, html) {
+      res.render('page', { title: page, htmlPage: html })
   });
 });
+
+// Source : http://stackoverflow.com/questions/4959975/generate-random-value-between-two-numbers-in-javascript
+function randomIntFromInterval(min,max)
+{
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
 
 module.exports = router;
