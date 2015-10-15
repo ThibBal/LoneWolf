@@ -5,6 +5,12 @@ var router = express.Router();
 
 // ROUTES //
 
+/* GET creer page. */
+router.get('/', function(req, res, next) {
+  res.redirect('/jeu/creer');
+});
+
+
 /* GET Création du joueur. */
 router.get('/creer', function(req, res) {
     res.render('creationJoueur', { title: "Création du joueur", wrong : ""});
@@ -75,8 +81,8 @@ router.post('/commencer', function(req, res) {
     joueur["habilete"] = randomIntFromInterval(10,19);
     joueur["endurance"] = randomIntFromInterval(20,29);
     joueur["bourse"] = randomIntFromInterval(10,19);
-    joueur["habileteAvecBonus"] = joueur["habilete"] + 2;
-    joueur["enduranceAvecBonus"] = joueur["endurance"] + 2;
+    joueur["bonusHabilete"] = 2;
+    joueur["bonusEndurance"] = 2;
     //res.send(req.session.joueur);
 
     // Redirect the joueur to the first page of the book
@@ -118,6 +124,21 @@ router.get('/choixAleatoire/:max', function(req, res, next) {
     var valeur = randomIntFromInterval(0,nombreMax);
     res.send(valeur.toString());
 });
+
+/* GET combat  */
+router.get('/combat/:habilete1/:habilete2', function(req, res, next) {
+    var habileteJoueur = parseInt(req.params.habilete1);
+    var habileteEnnemi = parseInt(req.params.habilete2);
+    var bonus = parseInt(req.session.joueur["bonusHabilete"]);
+    var infoCombat = {};
+    infoCombat["bonusHabilete"] = bonus
+    infoCombat["quotient d'attaque"] = habileteJoueur+bonus-habileteEnnemi;
+    infoCombat["chiffreAleatoire"] = randomIntFromInterval(0,9);
+    infoCombat["points perdus par le joueur"] = randomIntFromInterval(0,9);
+    infoCombat["points perdus par l'ennemi"] = randomIntFromInterval(0,9);
+    res.send(infoCombat);
+});
+
 
 // FONCTIONS //
 
