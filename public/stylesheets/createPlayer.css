@@ -36,3 +36,9 @@ label{
     top: 2px;
     *overflow: hidden;
 }
+
+#erreur{
+    font-size: 20px;
+    text-align: center;
+    color: darkred;
+}

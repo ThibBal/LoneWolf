@@ -1,8 +1,12 @@
 aside
     p #[strong -- Statistiques --]
-    p HABILETE : XX
-    p ENDURANCE : XX
+    p HABILETE : #{session.joueur.habilete}
+    p ENDURANCE : #{session.joueur.endurance}
     p Disciplines Kai Maïtrisées:
         ul
-            li Camouflage
-            li Chasse
+            each val in session.joueur.disciplines
+                li= val
+    p Vos armes équipées
+        ul
+            each val in session.joueur.equipements
+                li= val
