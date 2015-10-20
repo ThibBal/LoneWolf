@@ -22,32 +22,9 @@ router.post('/commencer', function(req, res) {
     var disciplines = req.body.disciplines;
     var equipements = req.body.equipements;
 
-    var constantes_disciplines = [
-        CAMOUFLAGE = "camouflage",
-        CHASSE = "chasse",
-        SIXIEME_SENS = "sixième sens",
-        ORIENTATION = "orientation",
-        GUERISON = "guérison",
-        MAITRISE_DES_ARMES = "maîtrise des armes",
-        BOUCLIER_PSYCHIQUE = "bouclier psychique",
-        PUISSANCE_PSYCHIQUE = "puissance psychique",
-        COMMUNICATION_ANIMALE = "communication animale",
-        MAITRISE_PSYCHIQUE_DE_LA_MATIERE = "maîtrise psychique de la matière"
-    ];
+    var constantes_disciplines = req.app.locals.disciplines;
 
-    var constantes_equipements = [
-        EPEE = 'épée',
-        SABRE = 'sabre',
-        LANCE = "lance",
-        MASSE_D_ARMES = "masse d'armes",
-        MARTEAU_DE_GUERRE = "marteau de guerre",
-        HACHE = "hâche",
-        BATON = "bâton",
-        GLAIVE = "glaive",
-        GILET_DE_CUIR_MATELASSE = "gilet de cuir matelassé",
-        POTION_DE_LAMPSUR = "potion de lampsur",
-        RATIONS_SPECIALES = "rations spéciales"
-    ];
+    var constantes_equipements = req.app.locals.equipements;
 
     if (disciplines == null || equipements == null){
         erreur =  "Vous devez choisir 5 disciplines et 2 équipements. Pas plus. Pas moins.";
@@ -133,7 +110,8 @@ router.get('/combat/:habilete1/:habilete2', function(req, res, next) {
     var quotientAttaque = habileteJoueur+bonus-habileteEnnemi;
     var nbAleatoire = randomIntFromInterval(0,9);
     var infoCombat = {};
-    var resultats = pointsPerdusCombat(nbAleatoire, quotientAttaque)
+    var tableauCombat = req.app.locals.tableauCombat;
+    var resultats = tableauCombat[nbAleatoire][quotientAttaque];
     infoCombat["bonusHabilete"] = bonus
     infoCombat["quotient d'attaque"] = quotientAttaque;
     infoCombat["chiffreAleatoire"] = nbAleatoire;
@@ -159,27 +137,6 @@ function inArray(needle, haystack) {
         if(haystack[i] == needle) return true;
     }
     return false;
-}
-
-function pointsPerdusCombat(nbAleatoire, quotientAttaque) {
-    var ptsPerdusJoueur;
-    var ptsPerdusEnnemi;
-    var combat_valeurs = [
-    [[6,0],[7,0],[8,0],[9,0],[10,0],[11,0],[12,0],[14,0],[16,0],[18,0],["K",0],["K",0],["K",0]],
-    [[0,"K"],[0,"K"],[0,8],[0,6],[1,6],[2,5],[3,5],[4,5],[5,4],[6,4],[7,4],[8,3],[9,3]],
-    [[0,"K"],[0,8],[0,7],[1,6],[2,5],[3,5],[4,4],[5,4],[6,3],[7,3],[8,3],[9,3],[10,2]],
-    [[0,8],[0,7],[1,6],[2,5],[3,5],[4,4],[5,4],[6,3],[7,3],[8,3],[9,2],[10,2],[11,2]],
-    [[0,8],[1,7],[2,6],[3,5],[4,4],[5,4],[6,3],[7,3],[8,2],[9,2],[10,2],[11,2],[12,2]],
-    [[1,7],[2,6],[3,5],[4,4],[5,4],[6,3],[7,2],[8,2],[9,2],[10,2],[11,2],[12,2],[14,1]],  
-    [[2,6],[3,6],[4,5],[5,4],[6,3],[7,2],[8,2],[9,2],[10,2],[11,1],[12,1],[14,1],[16,1]],
-    [[3,5],[4,5],[5,4],[6,3],[7,2],[8,2],[9,1],[10,1],[11,1],[12,0],[14,0],[16,0],[18,0]],
-    [[4,4],[5,4],[6,3],[7,2],[8,1],[9,1],[10,0],[11,0],[12,0],[14,0],[16,0],[18,0],["K",0]],
-    [[5,3],[6,3],[7,2],[8,0],[9,0],[10,0],[11,0],[12,0],[14,0],[16,0],[18,0],["K",0],["K",0]] 
-    ];
-    var results = combat_valeurs[nbAleatoire][quotientAttaque];
-
-
-    return results;
 }
 
 module.exports = router;
