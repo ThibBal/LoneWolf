@@ -130,12 +130,16 @@ router.get('/combat/:habilete1/:habilete2', function(req, res, next) {
     var habileteJoueur = parseInt(req.params.habilete1);
     var habileteEnnemi = parseInt(req.params.habilete2);
     var bonus = parseInt(req.session.joueur["bonusHabilete"]);
+    var quotientAttaque = habileteJoueur+bonus-habileteEnnemi;
+    var nbAleatoire = randomIntFromInterval(0,9);
     var infoCombat = {};
+    var resultats = pointsPerdusCombat(nbAleatoire, quotientAttaque)
     infoCombat["bonusHabilete"] = bonus
-    infoCombat["quotient d'attaque"] = habileteJoueur+bonus-habileteEnnemi;
-    infoCombat["chiffreAleatoire"] = randomIntFromInterval(0,9);
-    infoCombat["points perdus par le joueur"] = randomIntFromInterval(0,9);
-    infoCombat["points perdus par l'ennemi"] = randomIntFromInterval(0,9);
+    infoCombat["quotient d'attaque"] = quotientAttaque;
+    infoCombat["chiffreAleatoire"] = nbAleatoire;
+    infoCombat["points perdus par l'ennemi"] = resultats[0];
+    infoCombat["points perdus par le joueur"] = resultats[1];
+    
     res.send(infoCombat);
 });
 
@@ -155,6 +159,27 @@ function inArray(needle, haystack) {
         if(haystack[i] == needle) return true;
     }
     return false;
+}
+
+function pointsPerdusCombat(nbAleatoire, quotientAttaque) {
+    var ptsPerdusJoueur;
+    var ptsPerdusEnnemi;
+    var combat_valeurs = [
+    [[6,0],[7,0],[8,0],[9,0],[10,0],[11,0],[12,0],[14,0],[16,0],[18,0],["K",0],["K",0],["K",0]],
+    [[0,"K"],[0,"K"],[0,8],[0,6],[1,6],[2,5],[3,5],[4,5],[5,4],[6,4],[7,4],[8,3],[9,3]],
+    [[0,"K"],[0,8],[0,7],[1,6],[2,5],[3,5],[4,4],[5,4],[6,3],[7,3],[8,3],[9,3],[10,2]],
+    [[0,8],[0,7],[1,6],[2,5],[3,5],[4,4],[5,4],[6,3],[7,3],[8,3],[9,2],[10,2],[11,2]],
+    [[0,8],[1,7],[2,6],[3,5],[4,4],[5,4],[6,3],[7,3],[8,2],[9,2],[10,2],[11,2],[12,2]],
+    [[1,7],[2,6],[3,5],[4,4],[5,4],[6,3],[7,2],[8,2],[9,2],[10,2],[11,2],[12,2],[14,1]],  
+    [[2,6],[3,6],[4,5],[5,4],[6,3],[7,2],[8,2],[9,2],[10,2],[11,1],[12,1],[14,1],[16,1]],
+    [[3,5],[4,5],[5,4],[6,3],[7,2],[8,2],[9,1],[10,1],[11,1],[12,0],[14,0],[16,0],[18,0]],
+    [[4,4],[5,4],[6,3],[7,2],[8,1],[9,1],[10,0],[11,0],[12,0],[14,0],[16,0],[18,0],["K",0]],
+    [[5,3],[6,3],[7,2],[8,0],[9,0],[10,0],[11,0],[12,0],[14,0],[16,0],[18,0],["K",0],["K",0]] 
+    ];
+    var results = combat_valeurs[nbAleatoire][quotientAttaque];
+
+
+    return results;
 }
 
 module.exports = router;
