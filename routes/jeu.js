@@ -20,47 +20,57 @@ router.get('/creer', function(req, res) {
 /* POST Commencer une partie. */
 router.post('/commencer', function(req, res) {
     var disciplines = req.body.disciplines;
-    var equipements = req.body.equipements;
+    var équipements = req.body.équipements;
+    var bonusHabilete = 0;
+    var bonusEndurance = 0;
+    var cste_disciplines = req.app.locals.disciplines;
+    var cste_équipements = req.app.locals.équipements;
+    var joueur = req.session.joueur;
+    if (!joueur) {
+        joueur = req.session.joueur = {}
+        joueur["disciplines"] = [];
+        joueur["équipements"] = []; 
+    }
+        
 
-    var constantes_disciplines = req.app.locals.disciplines;
-
-    var constantes_equipements = req.app.locals.equipements;
-
-    if (disciplines == null || equipements == null){
+    if (disciplines == null || équipements == null){
         erreur =  "Vous devez choisir 5 disciplines et 2 équipements. Pas plus. Pas moins.";
         res.render("creationJoueur", {title: "Création du joueur", wrong : erreur});
     }
-    else if (disciplines.length != 5  || equipements.length != 2){
+    else if (disciplines.length != 5  || équipements.length != 2){
         erreur =  "Vous devez choisir 5 disciplines et 2 équipements. Pas plus. Pas moins.";
         res.render("creationJoueur", {title: "Création du joueur", wrong : erreur});
     }
     else{
-        for (i = 0; i < disciplines.length; i++){
-            if (!inArray(disciplines[i], constantes_disciplines)){
-                erreur =  "Vous avez essayer de faire planter le formulaire, c'est pas cool!";
+        for (i in disciplines){
+            console.log(i);
+            if (cste_disciplines.hasOwnProperty(disciplines[i])) {
+                    joueur["disciplines"].push(cste_disciplines[disciplines[i]]);
+                    if(cste_disciplines[disciplines[i]] == cste_disciplines.MAITRISE_DES_ARMES){
+                        bonusHabilete = 2;
+                    }
+            } else {
+                erreur =  "Vous avez essayé de faire planter le formulaire, ce n'est pas cool !";
                 res.render("creationJoueur", {title: "Création du joueur", wrong : erreur});
             }
         }
-        for (i=0; i < equipements.length; i++){
-            if (!inArray(equipements[i], constantes_equipements)){
-                erreur =  "Vous avez essayer de faire planter le formulaire, c'est pas cool!";
+        for (i in équipements){
+            if (cste_équipements.hasOwnProperty(équipements[i])) {
+                    joueur["équipements"].push(cste_équipements[équipements[i]]);
+                    if(cste_équipements[équipements[i]] == cste_équipements.GILET_DE_CUIR_MATELASSE){
+                        bonusEndurance = 2;
+                    }
+            } else {
+                erreur =  "Vous avez essayé de faire planter le formulaire, ce n'est pas cool !";
                 res.render("creationJoueur", {title: "Création du joueur", wrong : erreur});
             }
         }
     }
-
-    var joueur = req.session.joueur;
-    if (!joueur) {
-        joueur = req.session.joueur = {}
-    }
-    joueur["equipements"] = equipements;
-    joueur["disciplines"] = disciplines;
-    joueur["habilete"] = randomIntFromInterval(10,19);
+    joueur["habileté"] = randomIntFromInterval(10,19);
     joueur["endurance"] = randomIntFromInterval(20,29);
     joueur["bourse"] = randomIntFromInterval(10,19);
-    joueur["bonusHabilete"] = 2;
-    joueur["bonusEndurance"] = 2;
-    //res.send(req.session.joueur);
+    joueur["habiletéBonus"] = joueur["habileté"] + bonusHabilete;
+    joueur["enduranceBonus"] = joueur["endurance"] + bonusEndurance;
 
     // Redirect the joueur to the first page of the book
     res.redirect('./page/1');
@@ -91,7 +101,7 @@ router.get('/page/:numeroPage/:numero?', function(req, res, next) {
 
 /* GET joueur */
 router.get('/joueur', function(req, res, next) {
-    res.send(req.session.joueur)
+    res.json(req.session.joueur);
 });
 
 
@@ -106,19 +116,22 @@ router.get('/choixAleatoire/:max', function(req, res, next) {
 router.get('/combat/:habilete1/:habilete2', function(req, res, next) {
     var habileteJoueur = parseInt(req.params.habilete1);
     var habileteEnnemi = parseInt(req.params.habilete2);
-    var bonus = parseInt(req.session.joueur["bonusHabilete"]);
-    var quotientAttaque = habileteJoueur+bonus-habileteEnnemi;
+    var habiletéBonus = parseInt(req.session.joueur["habiletéBonus"]);
+    var quotientAttaque = habiletéBonus-habileteEnnemi;
     var nbAleatoire = randomIntFromInterval(0,9);
     var infoCombat = {};
     var tableauCombat = req.app.locals.tableauCombat;
-    var resultats = tableauCombat[nbAleatoire][quotientAttaque];
-    infoCombat["bonusHabilete"] = bonus
+    // Nous retravaillons le quotient d'attaque pour avoir
+    // une position dans le tableau des résultats
+    var position = quotientAttaque;
+    var resultats = tableauCombat[nbAleatoire][position];
+    infoCombat["habiletéBonus"] = habiletéBonus;
     infoCombat["quotient d'attaque"] = quotientAttaque;
-    infoCombat["chiffreAleatoire"] = nbAleatoire;
+    infoCombat["chiffre aléatoire"] = nbAleatoire;
     infoCombat["points perdus par l'ennemi"] = resultats[0];
     infoCombat["points perdus par le joueur"] = resultats[1];
     
-    res.send(infoCombat);
+    res.json(infoCombat);
 });
 
 
