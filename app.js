@@ -68,5 +68,6 @@ app.use(function(err, req, res, next) {
 
 app.locals.disciplines = constantes.disciplines;
 app.locals.équipements = constantes.équipements;
-app.locals.tableauCombat = constantes.tableauCombat;
+app.locals.tableauCombatPos = constantes.tableauCombatPositif;
+app.locals.tableauCombatNeg = constantes.tableauCombatNegatif;
 module.exports = app;

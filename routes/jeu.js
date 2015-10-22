@@ -116,14 +116,35 @@ router.get('/choixAleatoire/:max', function(req, res, next) {
 router.get('/combat/:habilete1/:habilete2', function(req, res, next) {
     var habileteJoueur = parseInt(req.params.habilete1);
     var habileteEnnemi = parseInt(req.params.habilete2);
-    var habiletéBonus = parseInt(req.session.joueur["habiletéBonus"]);
+    //var habiletéBonus = parseInt(req.session.joueur["habiletéBonus"]);
+    var habiletéBonus = habileteJoueur;
     var quotientAttaque = habiletéBonus-habileteEnnemi;
     var nbAleatoire = randomIntFromInterval(0,9);
     var infoCombat = {};
-    var tableauCombat = req.app.locals.tableauCombat;
-    // Nous retravaillons le quotient d'attaque pour avoir
+    var tableauCombat = req.app.locals.tableauCombatPos;
+    var position = Math.abs(quotientAttaque);
+    
+    // Nous travaillons le quotient d'attaque pour avoir
     // une position dans le tableau des résultats
-    var position = quotientAttaque;
+    if (isOdd(position) == 1){
+        console.log(position+" est impair")
+        position++; 
+    } 
+    position = position/2;
+    
+    if (quotientAttaque < 0){
+        tableauCombat = req.app.locals.tableauCombatNeg;
+        position = position - 1;
+        if (quotientAttaque < -10){
+            position = 5;   
+        } 
+    }else{
+        tableauCombat = req.app.locals.tableauCombatPos;
+        if (quotientAttaque > 10){
+            position = 6; 
+        }
+    }
+
     var resultats = tableauCombat[nbAleatoire][position];
     infoCombat["habiletéBonus"] = habiletéBonus;
     infoCombat["quotient d'attaque"] = quotientAttaque;
@@ -150,6 +171,11 @@ function inArray(needle, haystack) {
         if(haystack[i] == needle) return true;
     }
     return false;
+}
+
+// Source : http://stackoverflow.com/questions/5016313/how-to-determine-if-a-number-is-odd-in-javascript
+function isOdd(num) { 
+    return num % 2;
 }
 
 module.exports = router;
