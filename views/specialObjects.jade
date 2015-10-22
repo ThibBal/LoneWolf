@@ -6,11 +6,8 @@ aside
             a(href="#close", title="Close", class="close")
             h2 Objets spéciaux
             ul
-                li Gourde d'eau à moitié pleine
-                li Gourde d'eau à moitié pleine
-                li Gourde d'eau à moitié pleine
-                li Gourde d'eau à moitié pleine
-                li Gourde d'eau à moitié pleine
+                each val in session.joueur.objetsspéciaux
+                    li= val
             div#boutonsSpecialObjects
                 button.buttonSpecialObjects Utiliser un objet
                 button.buttonSpecialObjects Se séparer d'un objet

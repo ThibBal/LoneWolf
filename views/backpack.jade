@@ -6,9 +6,8 @@ aside
             a(href="#close", title="Close", class="close")
             h2 Contenu de votre sac à dos
             ul
-                li Gourde d'eau à moitié pleine
-                li Une part de gâteau
-                li Une corde
+                each val in session.joueur.sacàdos
+                    li= val
             div#boutonsBackpack
                 button.buttonBackpack Utiliser un objet
                 button.buttonBackpack Se séparer d'un objet

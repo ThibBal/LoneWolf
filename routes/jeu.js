@@ -25,12 +25,12 @@ router.post('/commencer', function(req, res) {
     var bonusEndurance = 0;
     var cste_disciplines = req.app.locals.disciplines;
     var cste_équipements = req.app.locals.équipements;
-    var joueur = req.session.joueur;
-    if (!joueur) {
-        joueur = req.session.joueur = {}
+    var joueur = req.session.joueur = {};
         joueur["disciplines"] = [];
-        joueur["équipements"] = []; 
-    }
+        joueur["armes"] = [];
+        joueur["sacàdos"] = [];
+        joueur["objetsspéciaux"] = [];
+
         
 
     if (disciplines == null || équipements == null){
@@ -56,10 +56,14 @@ router.post('/commencer', function(req, res) {
         }
         for (i in équipements){
             if (cste_équipements.hasOwnProperty(équipements[i])) {
-                    joueur["équipements"].push(cste_équipements[équipements[i]]);
-                    if(cste_équipements[équipements[i]] == cste_équipements.GILET_DE_CUIR_MATELASSE){
-                        bonusEndurance = 2;
-                    }
+                if(cste_équipements[équipements[i]] == cste_équipements.GILET_DE_CUIR_MATELASSE){
+                    bonusEndurance = 2;
+                    joueur["objetsspéciaux"].push(cste_équipements[équipements[i]]);
+                } else if(cste_équipements[équipements[i]] == cste_équipements.POTION_DE_LAMPSUR || cste_équipements[équipements[i]] ==  cste_équipements.RATIONS_SPECIALES) {
+                    joueur["sacàdos"].push(cste_équipements[équipements[i]]);
+                } else {
+                    joueur["armes"].push(cste_équipements[équipements[i]]);
+                }
             } else {
                 erreur =  "Vous avez essayé de faire planter le formulaire, ce n'est pas cool !";
                 res.render("creationJoueur", {title: "Création du joueur", wrong : erreur});
