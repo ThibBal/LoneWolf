@@ -8,6 +8,7 @@ var session = require('express-session');
 var index = require('./routes/index');
 var jeu = require('./routes/jeu');
 var constantes = require('./constantes.js');
+var pages = require('./pages.js');
 
 var app = express();
 
@@ -70,4 +71,5 @@ app.locals.disciplines = constantes.disciplines;
 app.locals.équipements = constantes.équipements;
 app.locals.tableauCombatPos = constantes.tableauCombatPositif;
 app.locals.tableauCombatNeg = constantes.tableauCombatNegatif;
+app.locals.pages = pages.pages;
 module.exports = app;

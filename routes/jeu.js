@@ -43,7 +43,6 @@ router.post('/commencer', function(req, res) {
     }
     else{
         for (i in disciplines){
-            console.log(i);
             if (cste_disciplines.hasOwnProperty(disciplines[i])) {
                     joueur["disciplines"].push(cste_disciplines[disciplines[i]]);
                     if(cste_disciplines[disciplines[i]] == cste_disciplines.MAITRISE_DES_ARMES){
@@ -103,6 +102,18 @@ router.get('/page/:numeroPage/:numero?', function(req, res, next) {
     });
 });
 
+// Récupérer le JSON d'une page du livre
+router.get('/:numeroPage', function(req, res, next) {
+    var numero = req.params.numeroPage;
+    var pageLivre = "./pages/" + numero + ".jade";
+    var pageJSON = req.app.locals.pages[numero];
+    res.render(pageLivre, function(err, html) {
+        pageJSON["pageLivre"] = html;
+        res.json(pageJSON)
+    });
+});
+
+
 /* GET joueur */
 router.get('/joueur', function(req, res, next) {
     res.json(req.session.joueur);
@@ -131,7 +142,6 @@ router.get('/combat/:habilete1/:habilete2', function(req, res, next) {
     // Nous travaillons le quotient d'attaque pour avoir
     // une position dans le tableau des résultats
     if (isOdd(position) == 1){
-        console.log(position+" est impair")
         position++; 
     } 
     position = position/2;
