@@ -20,7 +20,7 @@ L'application Web utilise : NodeJS, Express et MongoDB.
 
   <tr>
     <th>Exemple de routes</th>
-    <th>Fonctonalité</th>
+    <th>Fonctionnalité</th>
   </tr>
 
   <tr>
