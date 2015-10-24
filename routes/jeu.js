@@ -5,7 +5,7 @@ var router = express.Router();
 
 // ROUTES //
 
-/* GET creer page. */
+// Redirection vers la page de création d'un joueur
 router.get('/', function(req, res, next) {
   res.redirect('/jeu/creer');
 });
@@ -26,13 +26,12 @@ router.post('/commencer', function(req, res) {
     var cste_disciplines = req.app.locals.disciplines;
     var cste_équipements = req.app.locals.équipements;
     var joueur = req.session.joueur = {};
-        joueur["disciplines"] = [];
-        joueur["armes"] = [];
-        joueur["sacàdos"] = [];
-        joueur["objetsspéciaux"] = [];
-
-        
-
+    joueur["disciplines"] = [];
+    joueur["armes"] = [];
+    joueur["sacàdos"] = [];
+    joueur["objetsspéciaux"] = [];  
+    // Nous créons la session et les paramètres du joueur 
+    //en fonction de la validation du formulaire
     if (disciplines == null || équipements == null){
         erreur =  "Vous devez choisir 5 disciplines et 2 équipements. Pas plus. Pas moins.";
         res.render("creationJoueur", {title: "Création du joueur", wrong : erreur});
@@ -80,23 +79,20 @@ router.post('/commencer', function(req, res) {
 });
 
 
-
-
-/* GET page (with the right number) page. */
-// see @exempleExpress on Moodle
-router.get('/page/:numeroPage/:numero?', function(req, res, next) {
+// Construit la page et sa section
+// Si :section n'est pas précisé, retourne toute la page 
+router.get('/page/:numeroPage/:section?', function(req, res, next) {
     // We get the parameter "numero" from our request
     var page = req.params.numeroPage;
 
-    if(req.params.numero){
-        var partiePage = req.params.numero;
-        // We reach to the "right" page with the value
+    if(req.params.section){
+        var partiePage = req.params.section;e
         var pageLivre = "./pages/" + page + "/" + partiePage + ".jade";
     } else {
         var pageLivre = "./pages/" + page + ".jade";
     }
 
-    // The page is converted to HTML and then put in the page.jade
+    // La page  est convertie en HTML
     res.render(pageLivre, function(err, html) {
         res.render('page', { title: page, htmlPage: html })
     });
@@ -107,32 +103,49 @@ router.get('/:numeroPage', function(req, res, next) {
     var numero = req.params.numeroPage;
     var pageLivre = "./pages/" + numero + ".jade";
     var pageJSON = req.app.locals.pages[numero];
-    res.render(pageLivre, function(err, html) {
-        pageJSON["pageLivre"] = html;
-        res.json(pageJSON)
-    });
+    if(typeof pageJSON === 'undefined'){
+        res.json("Cette page n'existe pas (pour le moment)");
+    } else {
+        res.render(pageLivre, function(err, html) {
+            pageJSON["pageLivre"] = html;
+            res.json(pageJSON)
+        });
+    }
 });
 
 
-/* GET joueur */
+// Retourne le JSON du joueur stockée en session
 router.get('/joueur', function(req, res, next) {
     res.json(req.session.joueur);
 });
 
 
-/* GET choixAleatoire */
-router.get('/choixAleatoire/:max', function(req, res, next) {
-    var nombreMax = req.params.max;
-    var valeur = randomIntFromInterval(0,nombreMax);
-    res.send(valeur.toString());
+// Retourne la page accessible à partir d'un numéro aléatoire
+// et de l'invertvalle défini dans une page
+router.get('/choixAleatoire/:page', function(req, res, next) {
+    var page = req.app.locals.pages[req.params.page];
+    if(typeof page === 'undefined' || typeof page.choixAleatoire === 'undefined'){
+        res.json("Cette page n'existe pas ou ne possède pas de choix aléatoire");
+    } else {
+        var nombres = page.choixAleatoire.intervalle;
+        var valeur = randomIntFromInterval(nombres[0],nombres[1]);
+        var choix = page.choixAleatoire.choix;
+        var resultatJSON = {};
+        resultatJSON["chiffre"] = valeur;
+        for (p in choix){
+            if (valeur >= choix[p].intervalle[0] && valeur <= choix[p].intervalle[1]){
+                    resultatJSON["page"] = choix[p].page;
+            }
+        }
+        res.json(resultatJSON);
+    }  
 });
 
-/* GET combat  */
+// Retourne les informations sur un round d'un combat
 router.get('/combat/:habilete1/:habilete2', function(req, res, next) {
-    var habileteJoueur = parseInt(req.params.habilete1);
+    //var habileteJoueur = parseInt(req.params.habilete1);
     var habileteEnnemi = parseInt(req.params.habilete2);
-    //var habiletéBonus = parseInt(req.session.joueur["habiletéBonus"]);
-    var habiletéBonus = habileteJoueur;
+    var habiletéBonus = parseInt(req.session.joueur["habiletéBonus"]);
     var quotientAttaque = habiletéBonus-habileteEnnemi;
     var nbAleatoire = randomIntFromInterval(0,9);
     var infoCombat = {};
@@ -170,14 +183,16 @@ router.get('/combat/:habilete1/:habilete2', function(req, res, next) {
 });
 
 
-// FONCTIONS //
+// FONCTIONS ANNEXES //
 
+// Retourne un entier aléatoire compris entre deux valeurs
 // Source : http://stackoverflow.com/questions/4959975/generate-random-value-between-two-numbers-in-javascript
 function randomIntFromInterval(min,max)
 {
     return Math.floor(Math.random()*(max-min+1)+min);
 }
 
+// Permet de savoir si une valeur est contenue dans un tableau
 // Source : http://stackoverflow.com/questions/784012/javascript-equivalent-of-phps-in-array
 function inArray(needle, haystack) {
     var length = haystack.length;
@@ -187,6 +202,7 @@ function inArray(needle, haystack) {
     return false;
 }
 
+// Permet de savoir si un nombre est pair ou non
 // Source : http://stackoverflow.com/questions/5016313/how-to-determine-if-a-number-is-odd-in-javascript
 function isOdd(num) { 
     return num % 2;

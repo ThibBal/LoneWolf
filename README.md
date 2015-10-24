@@ -19,7 +19,7 @@ L'application Web utilise : NodeJS, Express et MongoDB.
 <table>
 
   <tr>
-    <th>Route</th>
+    <th>Exemple de routes</th>
     <th>Fonctonalité</th>
   </tr>
 
@@ -45,7 +45,7 @@ L'application Web utilise : NodeJS, Express et MongoDB.
 
    <tr>
     <td><code>/choixAleatoire/123</code></td>
-    <td>Retourne un nombre aléatoire conrrespondant à la page 123.</td>
+    <td>Retourne la page accessible selon le nombre aléatoire obtenu pour la page 123.</td>
   </tr>
 
 </table>

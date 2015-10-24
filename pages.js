@@ -47,15 +47,25 @@ exports.pages = {
     },
     134  : {numero : 134, 
         info : {evenement : "table de hasard"},
-        pagesSuivantes : [{page : 180, requis : "aucun"},
-                        {page : 259, requis : "aucun"}
-                        ]
+        choixAleatoire : {
+            intervalle : [0,9],
+            choix : [
+                {page : 57, intervalle : [0,3]},
+                {page : 188, intervalle : [4,6]},
+                {page : 331, intervalle : [7,9]}   
+            ]
+             
+        }
     },
     155  : {numero : 155, 
         info : {evenement : "table de hasard"},
-        pagesSuivantes : [{page : 180, requis : "aucun"},
-                        {page : 259, requis : "aucun"}
-                        ]
+        choixAleatoire : {
+            intervalle : [-2,10],
+            choix : [
+                {page : 248, intervalle : [-2,2]},
+                {page : 191, intervalle : [3,10]}    
+            ]
+        }
     },
     160  : {numero : 160, 
         pagesSuivantes : [{page : 78, requis : "aucun"},
@@ -65,9 +75,13 @@ exports.pages = {
     },
     167  : {numero : 167, 
         info : {evenement : "table de hasard"},
-        pagesSuivantes : [{page : 180, requis : "aucun"},
-                        {page : 259, requis : "aucun"}
-                        ]
+        choixAleatoire : {
+            intervalle : [0,9],
+            choix : [
+                {page : 85, intervalle : [0,6]},
+                {page : 300, intervalle : [7,9]}
+            ]
+        }
     },
     172  : {numero : 172, 
         pagesSuivantes : [{page : 134, requis : "aucun"}
@@ -118,6 +132,13 @@ exports.pages = {
     331  : {numero : 331, 
         info : {evenement : "Perte de points d'endurance", condition : "Pas de GUERISON", pointsPerdus : 4},
         info2 : {evenement : "table de hasard"},
+        choixAleatoire : {
+            intervalle : [0,9],
+            choix : [
+                {page : 62, intervalle : [0,4]},
+                {page : 288, intervalle : [5,9]}    
+            ]
+        }
     },
     339  : {numero : 339, 
         info : {evenement : "Mort"}
