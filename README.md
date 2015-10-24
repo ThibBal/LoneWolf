@@ -29,17 +29,17 @@ L'application Web utilise : NodeJS, Express et MongoDB.
   </tr>
 
   <tr>
-    <td><code>/jeux/123</code></td>
+    <td><code>/jeu/123</code></td>
     <td>Retourne un JSON contenant les informations de la page 123.</td>
   </tr>
 
   <tr>
-    <td><code>/jeux/page/123</code></td>
+    <td><code>/jeu/page/123</code></td>
     <td>Retourne le HTML de la page 123.</td>
   </tr>
 
   <tr>
-    <td><code>/jeux/page/123/1</code></td>
+    <td><code>/jeu/page/123/1</code></td>
     <td>Retourne le HTML de la section 1 de la page 123.</td>
   </tr>
 
