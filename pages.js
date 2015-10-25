@@ -32,7 +32,7 @@ exports.pages = {
                         ]
     },
     78  : {numero : 78, 
-        combat : {nom : "BAKANAL", habilite : 12, endurance : 23, others : false}, 
+        combat : {nom : "BAKANAL", habileté : 19, endurance : 30, others : false}, 
         pagesSuivantes : [{page : 245, requis : "victoire"}
                         ]
     },
@@ -88,7 +88,7 @@ exports.pages = {
                         ]
     },
     180  : {numero : 180, 
-        combat : {nom : "LANGUABARB", habilite : 12, endurance : 23, others : "Le monstre perd 3 points d'endurance par tour"},
+        combat : {nom : "LANGUABARB", habileté : 11, endurance : 35, others : "Le monstre perd 3 points d'endurance par tour"},
         pagesSuivantes : [{page : 70, requis : "victoire parfaite"},
                         {page : 129, requis : "victoire"}
                         ]

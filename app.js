@@ -71,5 +71,6 @@ app.locals.disciplines = constantes.disciplines;
 app.locals.équipements = constantes.équipements;
 app.locals.tableauCombatPos = constantes.tableauCombatPositif;
 app.locals.tableauCombatNeg = constantes.tableauCombatNegatif;
+app.locals.armes_maîtrise = constantes.armes_maîtrise;
 app.locals.pages = pages.pages;
 module.exports = app;

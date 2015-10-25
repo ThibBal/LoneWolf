@@ -46,6 +46,8 @@ router.post('/commencer', function(req, res) {
                     joueur["disciplines"].push(cste_disciplines[disciplines[i]]);
                     if(cste_disciplines[disciplines[i]] == cste_disciplines.MAITRISE_DES_ARMES){
                         bonusHabilete = 2;
+                        var nbr = randomIntFromInterval(0,9);
+                        joueur["maîtrise de l'arme"] = req.app.locals.armes_maîtrise[nbr];
                     }
             } else {
                 erreur =  "Vous avez essayé de faire planter le formulaire, ce n'est pas cool !";
@@ -74,8 +76,13 @@ router.post('/commencer', function(req, res) {
     joueur["habiletéBonus"] = joueur["habileté"] + bonusHabilete;
     joueur["enduranceBonus"] = joueur["endurance"] + bonusEndurance;
 
-    // Redirect the joueur to the first page of the book
+    // Redirige le joueur à la première page du jeu
     res.redirect('./page/1');
+});
+
+// Retourne le JSON du joueur stockée en session
+router.get('/joueur', function(req, res, next) {
+    res.json(req.session.joueur);
 });
 
 
@@ -86,7 +93,7 @@ router.get('/page/:numeroPage/:section?', function(req, res, next) {
     var page = req.params.numeroPage;
 
     if(req.params.section){
-        var partiePage = req.params.section;e
+        var partiePage = req.params.section;
         var pageLivre = "./pages/" + page + "/" + partiePage + ".jade";
     } else {
         var pageLivre = "./pages/" + page + ".jade";
@@ -111,12 +118,6 @@ router.get('/:numeroPage', function(req, res, next) {
             res.json(pageJSON)
         });
     }
-});
-
-
-// Retourne le JSON du joueur stockée en session
-router.get('/joueur', function(req, res, next) {
-    res.json(req.session.joueur);
 });
 
 

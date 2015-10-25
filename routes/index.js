@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
+/* GET page d'accueil de l'application */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Les Grottes de Kalte' });
 });
 
-/* GET aide page. */
+/* GET page d'aide. */
 router.get('/aide', function(req, res) {
     res.render('aide', { title: "Règles" });
 });

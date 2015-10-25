@@ -26,6 +26,8 @@ exports.équipements =
     RATIONS_SPECIALES : "rations spéciales"
 };
 
+exports.armes_maîtrise = ["poignard", "lance", "masse d'armes", "sabre", "marteau de guerre", "épée", "hâche", "épée", "bâton", "glaive"];
+
 exports.tableauCombatPositif = [
     [[12,0],[14,0],[16,0],[18,0],["K",0],["K",0],["K",0]],
     [[3,5],[4,5],[5,4],[6,4],[7,4],[8,3],[9,3]],
