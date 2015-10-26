@@ -5,12 +5,12 @@ exports.pages = {
                         ]
     },
     4  : {numero : 4, 
-        info : {evenement : "Choix d'un objet"},
+        info : [{evenement : "Choix d'un objet"}],
         pagesSuivantes : [{page : 332, requis : "aucun"}
                         ]
     },
     12  : {numero : 12, 
-        info : {evenement : "Perd d'un objet", objetPerdu : "Chiens Kanu"},
+        info : [{evenement : "Perd d'un objet", objetPerdu : "Chiens Kanu"}],
         pagesSuivantes : [{page : 180, requis : "aucun"},
                         {page : 259, requis : "aucun"}
                         ]
@@ -21,12 +21,12 @@ exports.pages = {
                         ]
     },
     62  : {numero : 62, 
-        info : {evenement : "Perte de points d'endurance", pointsPerdus : 3},
+        info : [{evenement : "Perte de points d'endurance", pointsPerdus : 3}],
         pagesSuivantes : [{page : 167, requis : "aucun"}
                        ]
     },
     70  : {numero : 70, 
-        info : {evenement : "Perd d'un objet", objetPerdu : "Chiens Kanu"},
+        info : [{evenement : "Perd d'un objet", objetPerdu : "Chiens Kanu"}],
         pagesSuivantes : [{page : 209, requis : "HUILE DE BAKANAL"},
                         {page : 339, requis : "aucun"}
                         ]
@@ -41,12 +41,12 @@ exports.pages = {
                         ]
     },
     129  : {numero : 129, 
-        info : {evenement : "Perte de points d'endurance", pointsPerdus : 3},
+        info : [{evenement : "Perte de points d'endurance", pointsPerdus : 3}],
         pagesSuivantes : [{page : 155, requis : "aucun"}
                         ]
     },
     134  : {numero : 134, 
-        info : {evenement : "table de hasard"},
+        info : [{evenement : "table de hasard"}],
         choixAleatoire : {
             intervalle : [0,9],
             choix : [
@@ -58,7 +58,7 @@ exports.pages = {
         }
     },
     155  : {numero : 155, 
-        info : {evenement : "table de hasard"},
+        info : [{evenement : "table de hasard"}],
         choixAleatoire : {
             intervalle : [-2,10],
             choix : [
@@ -74,7 +74,7 @@ exports.pages = {
                         ]
     },
     167  : {numero : 167, 
-        info : {evenement : "table de hasard"},
+        info : [{evenement : "table de hasard"}],
         choixAleatoire : {
             intervalle : [0,9],
             choix : [
@@ -103,18 +103,18 @@ exports.pages = {
                         ]
     },
     209  : {numero : 209, 
-        info : {evenement : "Perte de points d'endurance", pointsPerdus : 2},
+        info : [{evenement : "Perte de points d'endurance", pointsPerdus : 2}],
         pagesSuivantes : [{page : 155, requis : "aucun"}
                         ]
     },
     245  : {numero : 245, 
-        info : {evenement : "Perte de points d'endurance", pointsPerdus : 2},
+        info : [{evenement : "Perte de points d'endurance", pointsPerdus : 2}],
         pagesSuivantes : [{page : 91, requis : "aucun"},
                         {page : 172, requis : "aucun"}
                         ]
     },
     248  : {numero : 248, 
-        info : {evenement : "Mort"}
+        info : [{evenement : "Mort"}]
     },
     288  : {numero : 288, 
         pagesSuivantes : [{page : 167, requis : "aucun"}
@@ -130,8 +130,8 @@ exports.pages = {
                         ]
     },
     331  : {numero : 331, 
-        info : {evenement : "Perte de points d'endurance", condition : "Pas de GUERISON", pointsPerdus : 4},
-        info2 : {evenement : "table de hasard"},
+        info : [{evenement : "Perte de points d'endurance", condition : "Pas de GUERISON", pointsPerdus : 4},
+        {evenement : "table de hasard"}],
         choixAleatoire : {
             intervalle : [0,9],
             choix : [
@@ -141,6 +141,6 @@ exports.pages = {
         }
     },
     339  : {numero : 339, 
-        info : {evenement : "Mort"}
+        info : [{evenement : "Mort"}]
     }
 };

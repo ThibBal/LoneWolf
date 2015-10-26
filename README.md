@@ -44,7 +44,7 @@ L'application Web utilise : NodeJS, Express et MongoDB.
   </tr>
 
    <tr>
-    <td><code>/choixAleatoire/123</code></td>
+    <td><code>jeu/choixAleatoire/123</code></td>
     <td>Retourne la page accessible selon le nombre aléatoire obtenu pour la page 123.</td>
   </tr>
 

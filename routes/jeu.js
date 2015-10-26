@@ -114,7 +114,7 @@ router.get('/:numeroPage', function(req, res, next) {
         res.json("Cette page n'existe pas (pour le moment)");
     } else {
         res.render(pageLivre, function(err, html) {
-            pageJSON["pageLivre"] = html;
+            pageJSON["html"] = html;
             res.json(pageJSON)
         });
     }

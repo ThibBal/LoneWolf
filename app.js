@@ -67,6 +67,13 @@ app.use(function(err, req, res, next) {
   });
 });
 
+
+app.listen(app.get('port'), function(){
+  console.log('Application lancée sur  http://localhost:' +
+    app.get('port') + '; entrer Ctrl-C pour terminer.\n' );
+  console.log('Nous vous invitons à consulter le fichier README pour découvrir le fonctionnement de notre application.\n' );
+})
+
 app.locals.disciplines = constantes.disciplines;
 app.locals.équipements = constantes.équipements;
 app.locals.tableauCombatPos = constantes.tableauCombatPositif;
