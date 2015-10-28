@@ -74,6 +74,7 @@ app.listen(app.get('port'), function(){
   console.log('Nous vous invitons à consulter le fichier README pour découvrir le fonctionnement de notre application.\n' );
 })
 
+// Constantes de l'application
 app.locals.disciplines = constantes.disciplines;
 app.locals.équipements = constantes.équipements;
 app.locals.tableauCombatPos = constantes.tableauCombatPositif;

@@ -1,3 +1,6 @@
+// Chaque élement contient le JSON d'une page : son id, les informations,
+// les évènements qui s'y produisent (combats, choix aléatoire etc.)
+// Si un choix aléatoire doit avoir lieu, nous spécifions l'intervalle et les pages accessibles
 exports.pages = {
     1  : {numero : 1, 
         pagesSuivantes : [{page : 160, requis : "aucun"},

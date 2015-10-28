@@ -26,8 +26,13 @@ exports.équipements =
     RATIONS_SPECIALES : "rations spéciales"
 };
 
+// Armes qui peuvent être maîtrisées
 exports.armes_maîtrise = ["poignard", "lance", "masse d'armes", "sabre", "marteau de guerre", "épée", "hâche", "épée", "bâton", "glaive"];
 
+// Chaque ligne du tableau représente un chiffre aléatoire (0 à 9)
+// Chaque tableau de la ligne correspond à une valeur du quotient d'attaque (positif)
+// Le premier élément du dernier tableau correspond aux points d'endurance perdus par l'ennemi
+// Le second élément correspond aux points perdus par le joueur
 exports.tableauCombatPositif = [
     [[12,0],[14,0],[16,0],[18,0],["K",0],["K",0],["K",0]],
     [[3,5],[4,5],[5,4],[6,4],[7,4],[8,3],[9,3]],
@@ -41,6 +46,7 @@ exports.tableauCombatPositif = [
     [[11,0],[12,0],[14,0],[16,0],[18,0],["K",0],["K",0]] 
 ];
 
+// Tableau pour le quotient d'attaque négatif
 exports.tableauCombatNegatif = [
     [[11,0],[10,0],[9,0],[8,0],[7,0],[6,0]],
     [[2,5],[1,6],[0,6],[0,8],[0,"K"],[0,"K"]],
