@@ -5,19 +5,19 @@ var router = express.Router();
 
 // ROUTES //
 
-// Redirection vers la page de création d'un joueur
+// GET /jeu/ Redirection vers la page de création d'un joueur
 router.get('/', function(req, res, next) {
   res.redirect('/jeu/creer');
 });
 
 
-/* GET Création du joueur. */
+/* GET /jeu/creer Création du joueur. */
 router.get('/creer', function(req, res) {
     res.render('creationJoueur', { title: "Création du joueur", wrong : ""});
 });
 
 
-/* POST Commencer une partie. */
+/* POST /jeu/commencer Commencer une partie. */
 router.post('/commencer', function(req, res) {
     var disciplines = req.body.disciplines;
     var équipements = req.body.équipements;
@@ -41,6 +41,8 @@ router.post('/commencer', function(req, res) {
         res.render("creationJoueur", {title: "Création du joueur", wrong : erreur});
     }
     else{
+        // Pour chaque discipline, nous vérifions à l'aide des constantes 
+        // si elle existe bien et agissons en conséquence.
         for (i in disciplines){
             if (cste_disciplines.hasOwnProperty(disciplines[i])) {
                     joueur["disciplines"].push(cste_disciplines[disciplines[i]]);
@@ -54,6 +56,7 @@ router.post('/commencer', function(req, res) {
                 res.render("creationJoueur", {title: "Création du joueur", wrong : erreur});
             }
         }
+        // Même chose pour les équipements
         for (i in équipements){
             if (cste_équipements.hasOwnProperty(équipements[i])) {
                 if(cste_équipements[équipements[i]] == cste_équipements.GILET_DE_CUIR_MATELASSE){
@@ -70,6 +73,7 @@ router.post('/commencer', function(req, res) {
             }
         }
     }
+    // Nous remplissons les autres informations du joueur
     joueur["habileté"] = randomIntFromInterval(10,19);
     joueur["endurance"] = randomIntFromInterval(20,29);
     joueur["bourse"] = randomIntFromInterval(10,19);
@@ -80,18 +84,20 @@ router.post('/commencer', function(req, res) {
     res.redirect('./page/1');
 });
 
+// GET /jeu/joueur
 // Retourne le JSON du joueur stockée en session
 router.get('/joueur', function(req, res, next) {
     res.json(req.session.joueur);
 });
 
 
+// GET /jeu/page/:numeroPage/:section
 // Construit la page et sa section
-// Si :section n'est pas précisé, retourne toute la page 
+ 
 router.get('/page/:numeroPage/:section?', function(req, res, next) {
     // We get the parameter "numero" from our request
     var page = req.params.numeroPage;
-
+    // Si :section n'est pas précisé, retourne toute la page
     if(req.params.section){
         var partiePage = req.params.section;
         var pageLivre = "./pages/" + page + "/" + partiePage + ".jade";
@@ -105,11 +111,13 @@ router.get('/page/:numeroPage/:section?', function(req, res, next) {
     });
 });
 
+// GET /jeu/:numeroPage
 // Récupérer le JSON d'une page du livre
 router.get('/:numeroPage', function(req, res, next) {
     var numero = req.params.numeroPage;
     var pageLivre = "./pages/" + numero + ".jade";
     var pageJSON = req.app.locals.pages[numero];
+    // Nous vérifions que la page existe bien avant de la retourner
     if(typeof pageJSON === 'undefined'){
         res.json("Cette page n'existe pas (pour le moment)");
     } else {
@@ -121,13 +129,17 @@ router.get('/:numeroPage', function(req, res, next) {
 });
 
 
+// GET /jeu/choixAleatoire/:page
 // Retourne la page accessible à partir d'un numéro aléatoire
 // et de l'invertvalle défini dans une page
 router.get('/choixAleatoire/:page', function(req, res, next) {
+    // Nous récupérons l'ensemble des pages de pages.js
     var page = req.app.locals.pages[req.params.page];
     if(typeof page === 'undefined' || typeof page.choixAleatoire === 'undefined'){
         res.json("Cette page n'existe pas ou ne possède pas de choix aléatoire");
     } else {
+        // Si le critère "choixAleatoire" est défini dans la page
+        // Nous récupérérons l'intervalle et allons chercher le choix associé
         var nombres = page.choixAleatoire.intervalle;
         var valeur = randomIntFromInterval(nombres[0],nombres[1]);
         var choix = page.choixAleatoire.choix;
@@ -138,16 +150,19 @@ router.get('/choixAleatoire/:page', function(req, res, next) {
                     resultatJSON["page"] = choix[p].page;
             }
         }
+        // Nous retournons la page ainsi que le numéro aléatoire
         res.json(resultatJSON);
     }  
 });
 
+// GET /jeu/combat/:habilet1/:habileté2
 // Retourne les informations sur un round d'un combat
 router.get('/combat/:habilete1/:habilete2', function(req, res, next) {
-    //var habileteJoueur = parseInt(req.params.habilete1);
+    var habileteJoueur = parseInt(req.params.habilete1);
     var habileteEnnemi = parseInt(req.params.habilete2);
-    var habiletéBonus = parseInt(req.session.joueur["habiletéBonus"]);
-    var quotientAttaque = habiletéBonus-habileteEnnemi;
+    // L'habileté bonus n'est, selon la correction de l'énoncée, par encore utilisée
+    //var habiletéBonus = parseInt(req.session.joueur["habiletéBonus"]);
+    var quotientAttaque = habileteJoueur-habileteEnnemi;
     var nbAleatoire = randomIntFromInterval(0,9);
     var infoCombat = {};
     var tableauCombat = req.app.locals.tableauCombatPos;
@@ -174,7 +189,6 @@ router.get('/combat/:habilete1/:habilete2', function(req, res, next) {
     }
 
     var resultats = tableauCombat[nbAleatoire][position];
-    infoCombat["habiletéBonus"] = habiletéBonus;
     infoCombat["quotient d'attaque"] = quotientAttaque;
     infoCombat["chiffre aléatoire"] = nbAleatoire;
     infoCombat["points perdus par l'ennemi"] = resultats[0];
@@ -191,16 +205,6 @@ router.get('/combat/:habilete1/:habilete2', function(req, res, next) {
 function randomIntFromInterval(min,max)
 {
     return Math.floor(Math.random()*(max-min+1)+min);
-}
-
-// Permet de savoir si une valeur est contenue dans un tableau
-// Source : http://stackoverflow.com/questions/784012/javascript-equivalent-of-phps-in-array
-function inArray(needle, haystack) {
-    var length = haystack.length;
-    for(var i = 0; i < length; i++) {
-        if(haystack[i] == needle) return true;
-    }
-    return false;
 }
 
 // Permet de savoir si un nombre est pair ou non
