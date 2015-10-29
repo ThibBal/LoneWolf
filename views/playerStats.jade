@@ -6,6 +6,9 @@ aside
         ul
             each val in session.joueur.disciplines
                 li= val
+                if val == "La maîtrise des armes"
+                    ul
+                        h6.armeM=session.joueur.maîtrise_des_armes
     p Vos armes équipées
         ul
             each val in session.joueur.armes

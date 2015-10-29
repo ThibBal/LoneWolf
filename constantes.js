@@ -1,33 +1,33 @@
 exports.disciplines = {
-        CAMOUFLAGE : "camouflage",
-        CHASSE : "chasse",
-        SIXIEME_SENS : "sixième sens",
-        ORIENTATION : "orientation",
-        GUERISON : "guérison",
-        MAITRISE_DES_ARMES : "maîtrise des armes",
-        BOUCLIER_PSYCHIQUE : "bouclier psychique",
-        PUISSANCE_PSYCHIQUE : "puissance psychique",
-        COMMUNICATION_ANIMALE : "communication animale",
-        MAITRISE_PSYCHIQUE_DE_LA_MATIERE : "maîtrise psychique de la matière"
+        CAMOUFLAGE : "Le camouflage",
+        CHASSE : "La chasse",
+        SIXIEME_SENS : "Sixième sens",
+        ORIENTATION : "L'orientation",
+        GUERISON : "La guérison",
+        MAITRISE_DES_ARMES : "La maîtrise des armes",
+        BOUCLIER_PSYCHIQUE : "Bouclier psychique",
+        PUISSANCE_PSYCHIQUE : "Puissance psychique",
+        COMMUNICATION_ANIMALE : "Communication animale",
+        MAITRISE_PSYCHIQUE_DE_LA_MATIERE : "Maîtrise psychique de la matière"
 };
 
 exports.équipements =
 {   
-    EPEE : 'épée',
-    SABRE : 'sabre',
-    LANCE : "lance",
-    MASSE_D_ARMES : "masse d'armes",
-    MARTEAU_DE_GUERRE : "marteau de guerre",
-    HACHE : "hâche",
-    BATON : "bâton",
-    GLAIVE : "glaive",
-    GILET_DE_CUIR_MATELASSE : "gilet de cuir matelassé",
-    POTION_DE_LAMPSUR : "potion de lampsur",
-    RATIONS_SPECIALES : "rations spéciales"
+    EPEE : 'Epée',
+    SABRE : 'Sabre',
+    LANCE : "Lance",
+    MASSE_D_ARMES : "Masse d'armes",
+    MARTEAU_DE_GUERRE : "Marteau de guerre",
+    HACHE : "Hâche",
+    BATON : "Bâton",
+    GLAIVE : "Glaive",
+    GILET_DE_CUIR_MATELASSE : "Gilet de cuir matelassé",
+    POTION_DE_LAMPSUR : "Potion de Lampsur",
+    RATIONS_SPECIALES : "Rations spéciales"
 };
 
 // Armes qui peuvent être maîtrisées
-exports.armes_maîtrise = ["poignard", "lance", "masse d'armes", "sabre", "marteau de guerre", "épée", "hâche", "épée", "bâton", "glaive"];
+exports.armes_maîtrise = ["Poignard", "Lance", "Masse d'armes", "Sabre", "Marteau de guerre", "Epée", "Hâche", "Epée", "Bâton", "Glaive"];
 
 // Chaque ligne du tableau représente un chiffre aléatoire (0 à 9)
 // Chaque tableau de la ligne correspond à une valeur du quotient d'attaque (positif)

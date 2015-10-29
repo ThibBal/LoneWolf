@@ -21,36 +21,36 @@ block content
                       div#formleft
                           label
                             input(type="checkbox", name='disciplines', value='CAMOUFLAGE', class='checkbox')
-                            | Le Camouflage
+                            | #{disciplines.CAMOUFLAGE}
                           label
-                            input(type='checkbox', name='disciplines', value='CHASSE', class='checkbox')
-                            | La Chasse
+                            input(type="checkbox", name='disciplines', value='CHASSE', class='checkbox')
+                            | #{disciplines.CHASSE}
                           label
-                            input(type='checkbox', name='disciplines', value='SIXIEME_SENS', class='checkbox')
-                            | Sixième Sens
+                            input(type="checkbox", name='disciplines', value='SIXIEME_SENS', class='checkbox')
+                            | #{disciplines.SIXIEME_SENS}
                           label
-                            input(type='checkbox', name='disciplines', value='ORIENTATION', class='checkbox')
-                            | L'Orientation
+                            input(type="checkbox", name='disciplines', value='ORIENTATION', class='checkbox')
+                            | #{disciplines.ORIENTATION}
                           label
-                            input(type='checkbox', name='disciplines', value='GUERISON', class='checkbox')
-                            | La Guérison
+                            input(type="checkbox", name='disciplines', value='GUERISON', class='checkbox')
+                            | #{disciplines.GUERISON}
+                          
                       div#formright
                           label
-                            input(type='checkbox', name='disciplines', value='MAITRISE_DES_ARMES', class='checkbox')
-                            | La Maîtrise des Armes
+                            input(type="checkbox", name='disciplines', value='MAITRISE_DES_ARMES', class='checkbox')
+                            | #{disciplines.MAITRISE_DES_ARMES}
                           label
-                            input(type='checkbox', name='disciplines', value='BOUCLIER_PSYCHIQUE', class='checkbox')
-                            | Bouclier Psychique
+                            input(type="checkbox", name='disciplines', value='BOUCLIER_PSYCHIQUE', class='checkbox')
+                            | #{disciplines.BOUCLIER_PSYCHIQUE}
                           label
-                            input(type='checkbox', name='disciplines', value='PUISSANCE_PSYCHIQUE', class='checkbox')
-                            | Puissance Psychique
+                            input(type="checkbox", name='disciplines', value='PUISSANCE_PSYCHIQUE', class='checkbox')
+                            | #{disciplines.PUISSANCE_PSYCHIQUE}
                           label
-                            input(type='checkbox', name='disciplines', value='COMMUNICATION_ANIMALE', class='checkbox')
-                            | Communication Animale
+                            input(type="checkbox", name='disciplines', value='COMMUNICATION_ANIMALE', class='checkbox')
+                            | #{disciplines.COMMUNICATION_ANIMALE}
                           label
-                            input(type='checkbox', name='disciplines', value='MAITRISE_PSYCHIQUE_DE_LA_MATIERE', class='checkbox')
-                            |Maîtrise Psychique de la Matière
-
+                            input(type="checkbox", name='disciplines', value='MAITRISE_PSYCHIQUE_DE_LA_MATIERE', class='checkbox')
+                            | #{disciplines.MAITRISE_PSYCHIQUE_DE_LA_MATIERE}
                   fieldset
                       legend Equipements
                       p Choisir 2 équipements
@@ -58,46 +58,46 @@ block content
                           label
                             input(type='checkbox', name='équipements', value='EPEE', class='checkbox')
                             img(src='../icons/epee.png')
-                            | Epée
+                            | #{équipements.EPEE}
                           label
                             input(type='checkbox', name='équipements', value='SABRE', class='checkbox')
                             img(src='../icons/sabre.png')
-                            | Sabre
+                            | #{équipements.SABRE}
                           label
                             input(type='checkbox', name='équipements', value='LANCE', class='checkbox')
                             img(src='../icons/lance.png')
-                            | Lance
+                            | #{équipements.LANCE}
                           label
-                            input(type='checkbox', class='checkbox',name='équipements', value='MASSE_D_ARMES')
+                            input(type='checkbox', name='équipements', value='MASSE_D_ARMES', class='checkbox')
                             img(src='../icons/masse.png')
-                            | Masse d'Armes
+                            | #{équipements.MASSE_D_ARMES}
                           label
                             input(type='checkbox', name='équipements', value='MARTEAU_DE_GUERRE', class='checkbox')
                             img(src='../icons/marteau.png')
-                            | Marteau de guerre
+                            | #{équipements.MARTEAU_DE_GUERRE}
                           label
                             input(type='checkbox', name='équipements', value='HACHE', class='checkbox')
                             img(src='../icons/axe.png')
-                            | Hâche
+                            | #{équipements.HACHE}
                       div#formright
                           label
                             input(type='checkbox', name='équipements', value='BATON', class='checkbox')
                             img(src='../icons/bâton.png')
-                            | Bâton
+                            | #{équipements.BATON}
                           label
                             input(type='checkbox', name='équipements', value='GLAIVE', class='checkbox')
                             img(src='../icons/glaive.png')
-                            | Glaive
+                            | #{équipements.GLAIVE}
                           label
                             input(type='checkbox', name='équipements', value='GILET_DE_CUIR_MATELASSE', class='checkbox')
                             img(src='../icons/gilet.png')
-                            | Gilet de cuir matelassé
+                            | #{équipements.GILET_DE_CUIR_MATELASSE}
                           label
                             input(type='checkbox', name='équipements', value='POTION_DE_LAMPSUR', class='checkbox')
                             img(src='../icons/potion.png')
-                            | Potion de Lampsur
+                            | #{équipements.POTION_DE_LAMPSUR}
                           label
                             input(type='checkbox', name='équipements', value='RATIONS_SPECIALES', class='checkbox')
                             img(src='../icons/rations.png')
-                            | Rations spéciales
+                            | #{équipements.RATIONS_SPECIALES}
                   input(type='submit', value='Commencer votre aventure !', id='validation', class='button')

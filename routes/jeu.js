@@ -13,7 +13,9 @@ router.get('/', function(req, res, next) {
 
 /* GET /jeu/creer Création du joueur. */
 router.get('/creer', function(req, res) {
-    res.render('creationJoueur', { title: "Création du joueur", wrong : ""});
+    var cste_disciplines = req.app.locals.disciplines;
+    var cste_équipements = req.app.locals.équipements;
+    res.render('creationJoueur', { title: "Création du joueur", wrong : "", disciplines: cste_disciplines, équipements: cste_équipements});
 });
 
 
@@ -28,17 +30,17 @@ router.post('/commencer', function(req, res) {
     var joueur = req.session.joueur = {};
     joueur["disciplines"] = [];
     joueur["armes"] = [];
-    joueur["sacàdos"] = [];
-    joueur["objetsspéciaux"] = [];  
+    joueur["sac_à_dos"] = [];
+    joueur["objets_spéciaux"] = [];  
     // Nous créons la session et les paramètres du joueur 
     //en fonction de la validation du formulaire
     if (disciplines == null || équipements == null){
         erreur =  "Vous devez choisir 5 disciplines et 2 équipements. Pas plus. Pas moins.";
-        res.render("creationJoueur", {title: "Création du joueur", wrong : erreur});
+        res.render("creationJoueur", {title: "Création du joueur", wrong : erreur,  disciplines: cste_disciplines, équipements: cste_équipements});
     }
     else if (disciplines.length != 5  || équipements.length != 2){
         erreur =  "Vous devez choisir 5 disciplines et 2 équipements. Pas plus. Pas moins.";
-        res.render("creationJoueur", {title: "Création du joueur", wrong : erreur});
+        res.render("creationJoueur", {title: "Création du joueur", wrong : erreur,  disciplines: cste_disciplines, équipements: cste_équipements});
     }
     else{
         // Pour chaque discipline, nous vérifions à l'aide des constantes 
@@ -47,13 +49,16 @@ router.post('/commencer', function(req, res) {
             if (cste_disciplines.hasOwnProperty(disciplines[i])) {
                     joueur["disciplines"].push(cste_disciplines[disciplines[i]]);
                     if(cste_disciplines[disciplines[i]] == cste_disciplines.MAITRISE_DES_ARMES){
+                        // Si le joueur dispose de la maîtrise d'arme, il gagne deux points d'habilité
+                        // qui seront ensuite uniquement valables si il utilise cette arme.
+                        // Cela sera implémenté plus tard
                         bonusHabilete = 2;
                         var nbr = randomIntFromInterval(0,9);
-                        joueur["maîtrise de l'arme"] = req.app.locals.armes_maîtrise[nbr];
+                        joueur["maîtrise_des_armes"] = req.app.locals.armes_maîtrise[nbr];
                     }
             } else {
                 erreur =  "Vous avez essayé de faire planter le formulaire, ce n'est pas cool !";
-                res.render("creationJoueur", {title: "Création du joueur", wrong : erreur});
+                res.render("creationJoueur", {title: "Création du joueur", wrong : erreur,  disciplines: cste_disciplines, équipements: cste_équipements});
             }
         }
         // Même chose pour les équipements
@@ -61,15 +66,15 @@ router.post('/commencer', function(req, res) {
             if (cste_équipements.hasOwnProperty(équipements[i])) {
                 if(cste_équipements[équipements[i]] == cste_équipements.GILET_DE_CUIR_MATELASSE){
                     bonusEndurance = 2;
-                    joueur["objetsspéciaux"].push(cste_équipements[équipements[i]]);
+                    joueur["objets_spéciaux"].push(cste_équipements[équipements[i]]);
                 } else if(cste_équipements[équipements[i]] == cste_équipements.POTION_DE_LAMPSUR || cste_équipements[équipements[i]] ==  cste_équipements.RATIONS_SPECIALES) {
-                    joueur["sacàdos"].push(cste_équipements[équipements[i]]);
+                    joueur["sac_à_dos"].push(cste_équipements[équipements[i]]);
                 } else {
                     joueur["armes"].push(cste_équipements[équipements[i]]);
                 }
             } else {
                 erreur =  "Vous avez essayé de faire planter le formulaire, ce n'est pas cool !";
-                res.render("creationJoueur", {title: "Création du joueur", wrong : erreur});
+                res.render("creationJoueur", {title: "Création du joueur", wrong : erreur,  disciplines: cste_disciplines, équipements: cste_équipements});
             }
         }
     }
