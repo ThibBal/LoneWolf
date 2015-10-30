@@ -9,6 +9,7 @@ var index = require('./routes/index');
 var jeu = require('./routes/jeu');
 var constantes = require('./constantes.js');
 var pages = require('./pages.js');
+var employes = require('./models/employes');
 
 var app = express();
 
@@ -35,6 +36,12 @@ app.use(function(req,res,next){
 });
 app.use('/', index);
 app.use('/jeu', jeu);
+
+app.get('/mongodb', function(req, res){
+    employes.getAll(req,res,function(docs){
+        res.send(docs);
+    });
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
