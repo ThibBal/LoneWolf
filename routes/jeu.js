@@ -13,6 +13,7 @@ router.get('/', function(req, res, next) {
 
 /* GET /jeu/creer Création du joueur. */
 router.get('/creer', function(req, res) {
+    // Nous envoyons les disciplines et les équipements au formulaire
     var cste_disciplines = req.app.locals.disciplines;
     var cste_équipements = req.app.locals.équipements;
     res.render('creationJoueur', { title: "Création du joueur", wrong : "", disciplines: cste_disciplines, équipements: cste_équipements});
@@ -165,7 +166,7 @@ router.get('/choixAleatoire/:page', function(req, res, next) {
 router.get('/combat/:habilete1/:habilete2', function(req, res, next) {
     var habileteJoueur = parseInt(req.params.habilete1);
     var habileteEnnemi = parseInt(req.params.habilete2);
-    // L'habileté bonus n'est, selon la correction de l'énoncée, par encore utilisée
+    // L'habileté bonus n'est, selon la correction de l'énoncé, par encore utilisée
     //var habiletéBonus = parseInt(req.session.joueur["habiletéBonus"]);
     var quotientAttaque = habileteJoueur-habileteEnnemi;
     var nbAleatoire = randomIntFromInterval(0,9);

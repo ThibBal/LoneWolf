@@ -47,6 +47,7 @@ exports.tableauCombatPositif = [
 ];
 
 // Tableau pour le quotient d'attaque négatif
+// Commence par -1, -2 etc.
 exports.tableauCombatNegatif = [
     [[11,0],[10,0],[9,0],[8,0],[7,0],[6,0]],
     [[2,5],[1,6],[0,6],[0,8],[0,"K"],[0,"K"]],
