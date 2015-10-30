@@ -1,5 +1,8 @@
 var express = require('express');
 var router = express.Router();
+var mongo = require('mongodb');
+var joueurs = require('../models/joueurs');
+var avancements = require('../models/avancements');
 
 /* Pages du jeu, la route est précédée de /jeu/ */
 
@@ -9,7 +12,6 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   res.redirect('/jeu/creer');
 });
-
 
 /* GET /jeu/creer Création du joueur. */
 router.get('/creer', function(req, res) {
@@ -85,10 +87,76 @@ router.post('/commencer', function(req, res) {
     joueur["bourse"] = randomIntFromInterval(10,19);
     joueur["habiletéBonus"] = joueur["habileté"] + bonusHabilete;
     joueur["enduranceBonus"] = joueur["endurance"] + bonusEndurance;
+    
+    //insertion du joueur dans la base de données
+    joueurs.insert(joueur,res,function(foo){
+        var o_id = new mongo.ObjectID(foo);
 
-    // Redirige le joueur à la première page du jeu
-    res.redirect('./page/1');
+        var avancement = {
+            "_id" : o_id,
+            "page": "1",
+            "section": "1",
+            "historique_combats": [],
+            "combat_en_cours" : []
+        }
+        //insertion de l'avancement du joueur dans la base de données
+        avancements.insert(avancement,res,function(){
+            // Redirige le joueur à la première page du jeu
+            res.redirect('./page/1');
+        });
+    });    
 });
+
+// GET /jeu/joueurs/:id?
+// Retourne le JSON du joueur avec l'ID "id" stocké dans la base de données
+// Si :id est absent, retourne la liste de tous les joueurs
+router.get('/joueurs/:id?', function(req, res, next) {
+    
+    if (req.params.id) {
+        joueurs.getOne(req.params.id,res,function(docs){
+            res.json(docs);
+        });
+    } else {
+        joueurs.getAll(req,res,function(docs){
+            res.json(docs);
+        });
+    }
+});
+
+router.put('/mettreAJour/', function(req, res, next) {
+    joueurs.update(req,res,function(docs){
+            res.json(docs);
+        });
+});
+
+router.delete('/supprimer/', function(req, res, next) {
+    joueurs.remove(req,res,function(docs){
+            res.json(docs);
+        });
+});
+
+// GET /jeu/joueurs/:id?
+// Retourne le JSON du joueur avec l'ID "id" stocké dans la base de données
+// Si :id est absent, retourne la liste de tous les joueurs
+router.get('/avancement/:id', function(req, res, next) {
+    avancements.getOne(req.params.id,res,function(docs){
+        res.json(docs);
+    });
+});
+
+router.put('/avancement/update/', function(req, res, next) {
+    avancements.update(req,res,function(docs){
+            res.json(docs);
+        });
+});
+
+router.delete('/avancement/delete/', function(req, res, next) {
+    avancements.remove(req,res,function(docs){
+            res.json(docs);
+        });
+});
+
+
 
 // GET /jeu/joueur
 // Retourne le JSON du joueur stockée en session
