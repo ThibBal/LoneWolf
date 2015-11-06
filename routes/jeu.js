@@ -107,59 +107,9 @@ router.post('/commencer', function(req, res) {
     });    
 });
 
-// GET /jeu/joueurs/:id?
-// Retourne le JSON du joueur avec l'ID "id" stocké dans la base de données
-// Si :id est absent, retourne la liste de tous les joueurs
-router.get('/joueurs/:id?', function(req, res, next) {
-    
-    if (req.params.id) {
-        joueurs.getOne(req.params.id,res,function(docs){
-            res.json(docs);
-        });
-    } else {
-        joueurs.getAll(req,res,function(docs){
-            res.json(docs);
-        });
-    }
-});
-
-router.put('/mettreAJour/', function(req, res, next) {
-    joueurs.update(req,res,function(docs){
-            res.json(docs);
-        });
-});
-
-router.delete('/supprimer/', function(req, res, next) {
-    joueurs.remove(req,res,function(docs){
-            res.json(docs);
-        });
-});
-
-// GET /jeu/joueurs/:id?
-// Retourne le JSON du joueur avec l'ID "id" stocké dans la base de données
-// Si :id est absent, retourne la liste de tous les joueurs
-router.get('/avancement/:id', function(req, res, next) {
-    avancements.getOne(req.params.id,res,function(docs){
-        res.json(docs);
-    });
-});
-
-router.put('/avancement/update/', function(req, res, next) {
-    avancements.update(req,res,function(docs){
-            res.json(docs);
-        });
-});
-
-router.delete('/avancement/delete/', function(req, res, next) {
-    avancements.remove(req,res,function(docs){
-            res.json(docs);
-        });
-});
-
-
 
 // GET /jeu/joueur
-// Retourne le JSON du joueur stockée en session
+// Retourne le JSON du joueur stocké en session
 router.get('/joueur', function(req, res, next) {
     res.json(req.session.joueur);
 });
@@ -167,7 +117,6 @@ router.get('/joueur', function(req, res, next) {
 
 // GET /jeu/page/:numeroPage/:section
 // Construit la page et sa section
- 
 router.get('/page/:numeroPage/:section?', function(req, res, next) {
     // We get the parameter "numero" from our request
     var page = req.params.numeroPage;
@@ -201,7 +150,6 @@ router.get('/:numeroPage', function(req, res, next) {
         });
     }
 });
-
 
 // GET /jeu/choixAleatoire/:page
 // Retourne la page accessible à partir d'un numéro aléatoire

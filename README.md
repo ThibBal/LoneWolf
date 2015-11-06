@@ -12,6 +12,56 @@ L'application Web utilise : NodeJS, Express et MongoDB.
 * Rendez-vous `localhost:3000`.
 
 ## Informations supplémentaires
+### API
+
+<html>
+
+<table>
+
+  <tr>
+    <th>Methode</th>
+    <th>Route</th>
+    <th>Fonctionnalité</th>
+  </tr>
+
+  <tr>
+    <td><code>GET</code></td>
+    <td><code>/api/joueurs/:id?</code></td>
+    <td>Affiche les informations du joueur avec l'id :id. Si le paramètre :id n'est pas spécifié, retourne tous les joueurs.</td>
+  </tr>
+
+  <tr>
+    <td><code>PUT</code></td>
+    <td><code>/api/joueurs/:id</code></td>
+    <td>Met à jour les informations du joueur :id avec les informations données en JSON dans le corps de la requête.</td>
+  </tr>
+
+  <tr>
+    <td><code>DELETE</code></td>
+    <td><code>/api/joueurs/:id</code></td>
+    <td>Supprime le joueur :id.</td>
+  </tr>
+
+  <tr>
+    <td><code>GET</code></td>
+    <td><code>/api/avancements/:id?</code></td>
+    <td>Affiche les informations de l'avancement avec l'id :id. Si le paramètre :id n'est pas spécifié, retourne tous les avancements.</td>
+  </tr>
+
+  <tr>
+    <td><code>PUT</code></td>
+    <td><code>/api/avancements/:id</code></td>
+    <td>Met à jour les informations de l'avancement :id avec les informations données en JSON dans le corps de la requête.</td>
+  </tr>
+
+  <tr>
+    <td><code>DELETE</code></td>
+    <td><code>/api/avancements/:id</code></td>
+    <td>Supprime l'avancement :id.</td>
+  </tr>
+
+</table>
+
 ### Routes intéressantes
 
 <html>
@@ -25,7 +75,7 @@ L'application Web utilise : NodeJS, Express et MongoDB.
 
   <tr>
     <td><code>/jeu/joueur</code></td>
-    <td>Affiche les informations du joueur (stockée dans une session).</td>
+    <td>Affiche les informations du joueur (stocké dans une session).</td>
   </tr>
 
   <tr>
