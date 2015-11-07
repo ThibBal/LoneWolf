@@ -92,6 +92,7 @@ router.post('/commencer', function(req, res) {
     joueurs.insert(joueur,res,function(foo){
         var o_id = new mongo.ObjectID(foo);
 
+        // Initialisation de l'avancement du joueur
         var avancement = {
             "_id" : o_id,
             "page": "1",

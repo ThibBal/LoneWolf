@@ -4,12 +4,9 @@ var mongo = require('mongodb');
 var joueurs = require('../models/joueurs');
 var avancements = require('../models/avancements');
 
-// Web Services REST "joueurs" et "avancements"
+// Web Services REST "joueurs" et "avancements", la route est précédée de /api/
 
 // API joueurs
-
-// POST /api/joueurs
-// PAS IMPLEMENTE POUR LE MOMENT
 
 
 // GET /api/joueurs/:id?
@@ -30,28 +27,27 @@ router.get('/joueurs/:id?', function(req, res, next) {
 // PUT /api/joueurs/:id
 // Met à jour le joueur avec l'id "id" passé en paramètre 
 //avec les informations du body.
+// Retourne le document modifié
 router.put('/joueurs/:id', function(req, res, next) {
     var id = req.params.id;
     var data = req.body;
     joueurs.update(id,data,function(docs){
-        res.json(docs);
+        res.json({"Joueur modifié" : docs});
     });
 });
 
 // DELETE /api/joueurs/:id 
 // Supprime le joueur avec l'id passé en paramètre.
+// Retourne le document supprimé
 router.delete('/joueurs/:id', function(req, res, next) {
     var id = req.params.id;
     joueurs.remove(id,function(docs){
-        res.json(docs);
+        res.json({"Joueur supprimé" : docs});
     });
 });
 
 // API avancements
 
-// POST /api/avancements 
-// PAS IMPLEMENTE POUR LE MOMENT
- 
 // GET /api/avancements/:id?
 // Retourne le JSON de l'avancement  avec l'ID "id" stocké dans la base de données
 // Si :id est absent, retourne la liste de tous les avancements
@@ -73,7 +69,7 @@ router.put('/avancements/:id', function(req, res, next) {
     var id = req.params.id;
     var data = req.body;
     avancements.update(id,data,function(docs){
-        res.json(docs);
+        res.json({"Avancement modifié" : docs});
     });
 });
 
@@ -82,7 +78,7 @@ router.put('/avancements/:id', function(req, res, next) {
 router.delete('/avancements/:id', function(req, res, next) {
     var id = req.params.id;
     avancements.remove(id,function(docs){
-        res.json(docs);
+        res.json({"Avancement supprimé" : docs});
     });
 });
 

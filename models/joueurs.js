@@ -2,7 +2,7 @@ var mongo = require('mongodb');
 var client = mongo.MongoClient;
 var url = 'mongodb://lonewolf:poly25@ds045644.mongolab.com:45644/lonewolf';
 
-
+// Retourne tous les joueurs.
 exports.getAll = function(req,res,callback) {
     client.connect(url, function (err, db){
         if (err) return;
@@ -13,6 +13,7 @@ exports.getAll = function(req,res,callback) {
     });
 };
 
+// Retourne un joueur en particulier.
 exports.getOne = function(req,res,callback) {
     client.connect(url, function (err, db){
         if (err) return;
@@ -24,6 +25,7 @@ exports.getOne = function(req,res,callback) {
     });
 };
 
+// Ajoute un joueur.
 exports.insert = function(data,res,callback) {
     client.connect(url, function (err, db){
         if (err) return;
@@ -35,11 +37,12 @@ exports.insert = function(data,res,callback) {
     });
 };;
 
+// Met à jour un joueur.
 exports.update = function(id,data,callback) {
     client.connect(url, function (err, db){
         if (err) return;
         var o_id = new mongo.ObjectID(id);
-        db.collection('joueurs').findOneAndUpdate({"_id": o_id}, data, {"returnOriginal": false}, function(err, result) {
+        db.collection('joueurs').findOneAndUpdate({"_id": o_id}, {$set : data}, {"returnOriginal": false}, function(err, result) {
             db.close();
             //Retourne le document mis à jour
             callback(result.value);            
@@ -47,6 +50,7 @@ exports.update = function(id,data,callback) {
     });
 };;
 
+// Supprime un joueur.
 exports.remove = function(id,callback){
     client.connect(url, function (err, db){
         var o_id = new mongo.ObjectID(id);
@@ -57,4 +61,3 @@ exports.remove = function(id,callback){
         });
     });
 };
-
