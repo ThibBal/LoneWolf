@@ -57,8 +57,7 @@ exports.remove = function(id,callback){
         var o_id = new mongo.ObjectID(id);
         db.collection('avancements').findAndRemove({"_id": o_id}, function(err, result) {
             db.close();
-            // Retourne le document supprimé
-            callback(result.value);
+            callback();
         });
     });
 };

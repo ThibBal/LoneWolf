@@ -34,15 +34,19 @@ router.post('/commencer', function(req, res) {
     joueur["disciplines"] = [];
     joueur["armes"] = [];
     joueur["sac_à_dos"] = [];
-    joueur["objets_spéciaux"] = [];  
+    joueur["objets_spéciaux"] = [];
+    // Initialise une vérification pour contrôler la validité du formulaire
+    var verification = true;  
     // Nous créons la session et les paramètres du joueur 
     //en fonction de la validation du formulaire
     if (disciplines == null || équipements == null){
         erreur =  "Vous devez choisir 5 disciplines et 2 équipements. Pas plus. Pas moins.";
+        verification = false;
         res.render("creationJoueur", {title: "Création du joueur", wrong : erreur,  disciplines: cste_disciplines, équipements: cste_équipements});
     }
     else if (disciplines.length != 5  || équipements.length != 2){
         erreur =  "Vous devez choisir 5 disciplines et 2 équipements. Pas plus. Pas moins.";
+        verification = false;
         res.render("creationJoueur", {title: "Création du joueur", wrong : erreur,  disciplines: cste_disciplines, équipements: cste_équipements});
     }
     else{
@@ -61,6 +65,7 @@ router.post('/commencer', function(req, res) {
                     }
             } else {
                 erreur =  "Vous avez essayé de faire planter le formulaire, ce n'est pas cool !";
+                verification = false;
                 res.render("creationJoueur", {title: "Création du joueur", wrong : erreur,  disciplines: cste_disciplines, équipements: cste_équipements});
             }
         }
@@ -77,35 +82,39 @@ router.post('/commencer', function(req, res) {
                 }
             } else {
                 erreur =  "Vous avez essayé de faire planter le formulaire, ce n'est pas cool !";
+                verification = false;
                 res.render("creationJoueur", {title: "Création du joueur", wrong : erreur,  disciplines: cste_disciplines, équipements: cste_équipements});
             }
         }
     }
-    // Nous remplissons les autres informations du joueur
-    joueur["habileté"] = randomIntFromInterval(10,19);
-    joueur["endurance"] = randomIntFromInterval(20,29);
-    joueur["bourse"] = randomIntFromInterval(10,19);
-    joueur["habiletéBonus"] = joueur["habileté"] + bonusHabilete;
-    joueur["enduranceBonus"] = joueur["endurance"] + bonusEndurance;
-    
-    //insertion du joueur dans la base de données
-    joueurs.insert(joueur,res,function(foo){
-        var o_id = new mongo.ObjectID(foo);
 
-        // Initialisation de l'avancement du joueur
-        var avancement = {
-            "_id" : o_id,
-            "page": "1",
-            "section": "1",
-            "historique_combats": [],
-            "combat_en_cours" : []
-        }
-        //insertion de l'avancement du joueur dans la base de données
-        avancements.insert(avancement,res,function(){
-            // Redirige le joueur à la première page du jeu
-            res.redirect('./page/1');
-        });
-    });    
+    if (verification){
+        // Nous remplissons les autres informations du joueur
+        joueur["habileté"] = randomIntFromInterval(10,19);
+        joueur["endurance"] = randomIntFromInterval(20,29);
+        joueur["bourse"] = randomIntFromInterval(10,19);
+        joueur["habiletéBonus"] = joueur["habileté"] + bonusHabilete;
+        joueur["enduranceBonus"] = joueur["endurance"] + bonusEndurance;
+        
+        //insertion du joueur dans la base de données
+        joueurs.insert(joueur,res,function(foo){
+            var o_id = new mongo.ObjectID(foo);
+
+            // Initialisation de l'avancement du joueur
+            var avancement = {
+                "_id" : o_id,
+                "page": "1",
+                "section": "1",
+                "historique_combats": [],
+                "combat_en_cours" : []
+            }
+            //insertion de l'avancement du joueur dans la base de données
+            avancements.insert(avancement,res,function(){
+                // Redirige le joueur à la première page du jeu
+                res.redirect('./page/1');
+            });
+        });     
+    }
 });
 
 

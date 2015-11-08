@@ -41,8 +41,10 @@ router.put('/joueurs/:id', function(req, res, next) {
 // Retourne le document supprimé
 router.delete('/joueurs/:id', function(req, res, next) {
     var id = req.params.id;
-    joueurs.remove(id,function(docs){
-        res.json({"Joueur supprimé" : docs});
+     joueurs.remove(id, function(docs){
+        avancements.remove(id,function(docs){
+            res.json({"Avancement et joeurs supprimés" : id});
+       });
     });
 });
 
@@ -78,7 +80,9 @@ router.put('/avancements/:id', function(req, res, next) {
 router.delete('/avancements/:id', function(req, res, next) {
     var id = req.params.id;
     avancements.remove(id,function(docs){
-        res.json({"Avancement supprimé" : docs});
+        joueurs.remove(id, function(docs){
+             res.json({"Avancement et joeurs supprimés" : id});
+       });
     });
 });
 
