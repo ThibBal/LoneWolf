@@ -39,7 +39,7 @@ L'application Web utilise : NodeJS, Express et MongoDB.
   <tr>
     <td><code>DELETE</code></td>
     <td><code>/api/joueurs/:id</code></td>
-    <td>Supprime le joueur :id.</td>
+    <td>Supprime le joueur et l'avancement :id.</td>
   </tr>
 
   <tr>
@@ -57,7 +57,7 @@ L'application Web utilise : NodeJS, Express et MongoDB.
   <tr>
     <td><code>DELETE</code></td>
     <td><code>/api/avancements/:id</code></td>
-    <td>Supprime l'avancement :id.</td>
+    <td>Supprime l'avancement et le joueur :id.</td>
   </tr>
 
 </table>
