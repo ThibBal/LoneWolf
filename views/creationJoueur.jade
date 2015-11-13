@@ -5,19 +5,18 @@ block head
     link(rel='stylesheet', href='/stylesheets/waitingjs/create.css')
 
 block content
-
-        div#block-central
-              h1= title
+        div(id="block-central", ng-controller="validationFormulaire")
+              {{title}}
               p Vous êtes à deux doigts de commencer votre aventure.
               p Mais avant, veuillez remplir le formulaire suivant :
-
-
               form(method='post', action='./commencer')
                   p#erreur= wrong
+                  label
+                    | Nom du joueur : 
+                    input(type="text", name='nomDuJoueur')
                   fieldset    
                       legend Disciplines Kaï
                       p Choisir 5 disciplines
-
                       div#formleft
                           label
                             input(type="checkbox", name='disciplines', value='CAMOUFLAGE', class='checkbox')
