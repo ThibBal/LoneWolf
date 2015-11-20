@@ -3,100 +3,103 @@ extends layout
 block head
     link(rel='stylesheet', href='/stylesheets/createPlayer.css')
     link(rel='stylesheet', href='/stylesheets/waitingjs/create.css')
+    script(src="/scripts/controller.js")
 
 block content
-        div(id="block-central", ng-controller="validationFormulaire")
-              {{title}}
+        div(id="block-central", ng-controller="validationFormulaire as ctrl")
+              h1 {{title}}
               p Vous êtes à deux doigts de commencer votre aventure.
               p Mais avant, veuillez remplir le formulaire suivant :
-              form(method='post', action='./commencer')
+              form(method='post', name="creationJoueur" action='./commencer')
                   p#erreur= wrong
                   label
                     | Nom du joueur : 
-                    input(type="text", name='nomDuJoueur')
+                    input(type="text", name='nomDuJoueur' ng-model="joueur.nom" required, ng-minlength="4", ng-change="checkForm()")
                   fieldset    
                       legend Disciplines Kaï
                       p Choisir 5 disciplines
                       div#formleft
                           label
-                            input(type="checkbox", name='disciplines', value='CAMOUFLAGE', class='checkbox')
+                            input(type="checkbox", name='disciplines', value='CAMOUFLAGE', class='checkbox', ng-change="checkForm()" ng-model="joueur.disciplines.CAMOUFLAGE")
                             | #{disciplines.CAMOUFLAGE}
                           label
-                            input(type="checkbox", name='disciplines', value='CHASSE', class='checkbox')
+                            input(type="checkbox", name='disciplines', value='CHASSE', class='checkbox', ng-change="checkForm()" ng-model="joueur.disciplines.CHASSE")
                             | #{disciplines.CHASSE}
                           label
-                            input(type="checkbox", name='disciplines', value='SIXIEME_SENS', class='checkbox')
+                            input(type="checkbox", name='disciplines', value='SIXIEME_SENS', class='checkbox', ng-change="checkForm()" ng-model="joueur.disciplines.SIXIEME_SENS")
                             | #{disciplines.SIXIEME_SENS}
                           label
-                            input(type="checkbox", name='disciplines', value='ORIENTATION', class='checkbox')
+                            input(type="checkbox", name='disciplines', value='ORIENTATION', class='checkbox', ng-change="checkForm()" ng-model="joueur.disciplines.ORIENTATION")
                             | #{disciplines.ORIENTATION}
                           label
-                            input(type="checkbox", name='disciplines', value='GUERISON', class='checkbox')
+                            input(type="checkbox", name='disciplines', value='GUERISON', class='checkbox', ng-change="checkForm()" ng-model="joueur.disciplines.GUERISON")
                             | #{disciplines.GUERISON}
                           
                       div#formright
                           label
-                            input(type="checkbox", name='disciplines', value='MAITRISE_DES_ARMES', class='checkbox')
+                            input(type="checkbox", name='disciplines', value='MAITRISE_DES_ARMES', class='checkbox', ng-change="checkForm()" ng-model="joueur.disciplines.MAITRISE_DES_ARMES")
                             | #{disciplines.MAITRISE_DES_ARMES}
                           label
-                            input(type="checkbox", name='disciplines', value='BOUCLIER_PSYCHIQUE', class='checkbox')
+                            input(type="checkbox", name='disciplines', value='BOUCLIER_PSYCHIQUE', class='checkbox', ng-change="checkForm()" ng-model="joueur.disciplines.BOUCLIER_PSYCHIQUE")
                             | #{disciplines.BOUCLIER_PSYCHIQUE}
                           label
-                            input(type="checkbox", name='disciplines', value='PUISSANCE_PSYCHIQUE', class='checkbox')
+                            input(type="checkbox", name='disciplines', value='PUISSANCE_PSYCHIQUE', class='checkbox', ng-change="checkForm()" ng-model="joueur.disciplines.PUISSANCE_PSYCHIQUE")
                             | #{disciplines.PUISSANCE_PSYCHIQUE}
                           label
-                            input(type="checkbox", name='disciplines', value='COMMUNICATION_ANIMALE', class='checkbox')
+                            input(type="checkbox", name='disciplines', value='COMMUNICATION_ANIMALE', class='checkbox', ng-change="checkForm()" ng-model="joueur.disciplines.COMMUNICATION_ANIMALE")
                             | #{disciplines.COMMUNICATION_ANIMALE}
                           label
-                            input(type="checkbox", name='disciplines', value='MAITRISE_PSYCHIQUE_DE_LA_MATIERE', class='checkbox')
+                            input(type="checkbox", name='disciplines', value='MAITRISE_PSYCHIQUE_DE_LA_MATIERE', class='checkbox', ng-change="checkForm()" ng-model="joueur.disciplines.MAITRISE_PSYCHIQUE_DE_LA_MATIERE")
                             | #{disciplines.MAITRISE_PSYCHIQUE_DE_LA_MATIERE}
                   fieldset
                       legend Equipements
                       p Choisir 2 équipements
                       div#formleft
                           label
-                            input(type='checkbox', name='équipements', value='EPEE', class='checkbox')
+                            input(type='checkbox', name='équipements', value='EPEE', class='checkbox', ng-change="checkForm()", ng-model="joueur.equipements.EPEE")
                             img(src='../icons/epee.png')
                             | #{équipements.EPEE}
                           label
-                            input(type='checkbox', name='équipements', value='SABRE', class='checkbox')
+                            input(type='checkbox', name='équipements', value='SABRE', class='checkbox', ng-change="checkForm()", ng-model="joueur.equipements.SABRE")
                             img(src='../icons/sabre.png')
                             | #{équipements.SABRE}
                           label
-                            input(type='checkbox', name='équipements', value='LANCE', class='checkbox')
+                            input(type='checkbox', name='équipements', value='LANCE', class='checkbox', ng-change="checkForm()", ng-model="joueur.equipements.LANCE")
                             img(src='../icons/lance.png')
                             | #{équipements.LANCE}
                           label
-                            input(type='checkbox', name='équipements', value='MASSE_D_ARMES', class='checkbox')
+                            input(type='checkbox', name='équipements', value='MASSE_D_ARMES', class='checkbox', ng-change="checkForm()", ng-model="joueur.equipements.MASSE_D_ARMES")
                             img(src='../icons/masse.png')
                             | #{équipements.MASSE_D_ARMES}
                           label
-                            input(type='checkbox', name='équipements', value='MARTEAU_DE_GUERRE', class='checkbox')
+                            input(type='checkbox', name='équipements', value='MARTEAU_DE_GUERRE', class='checkbox', ng-change="checkForm()", ng-model="joueur.equipements.MARTEAU_DE_GUERRE")
                             img(src='../icons/marteau.png')
                             | #{équipements.MARTEAU_DE_GUERRE}
                           label
-                            input(type='checkbox', name='équipements', value='HACHE', class='checkbox')
+                            input(type='checkbox', name='équipements', value='HACHE', class='checkbox', ng-change="checkForm()", ng-model="joueur.equipements.HACHE")
                             img(src='../icons/axe.png')
                             | #{équipements.HACHE}
                       div#formright
                           label
-                            input(type='checkbox', name='équipements', value='BATON', class='checkbox')
+                            input(type='checkbox', name='équipements', value='BATON', class='checkbox', ng-change="checkForm()", ng-model="joueur.equipements.BATON")
                             img(src='../icons/bâton.png')
                             | #{équipements.BATON}
                           label
-                            input(type='checkbox', name='équipements', value='GLAIVE', class='checkbox')
+                            input(type='checkbox', name='équipements', value='GLAIVE', class='checkbox', ng-change="checkForm()", ng-model="joueur.equipements.GLAIVE")
                             img(src='../icons/glaive.png')
                             | #{équipements.GLAIVE}
                           label
-                            input(type='checkbox', name='équipements', value='GILET_DE_CUIR_MATELASSE', class='checkbox')
+                            input(type='checkbox', name='équipements', value='GILET_DE_CUIR_MATELASSE', class='checkbox', ng-change="checkForm()", ng-model="joueur.equipements.GILET_DE_CUIR_MATELASSE")
                             img(src='../icons/gilet.png')
                             | #{équipements.GILET_DE_CUIR_MATELASSE}
                           label
-                            input(type='checkbox', name='équipements', value='POTION_DE_LAMPSUR', class='checkbox')
+                            input(type='checkbox', name='équipements', value='POTION_DE_LAMPSUR', class='checkbox', ng-change="checkForm()", ng-model="joueur.equipements.POTION_DE_LAMPSUR")
                             img(src='../icons/potion.png')
                             | #{équipements.POTION_DE_LAMPSUR}
                           label
-                            input(type='checkbox', name='équipements', value='RATIONS_SPECIALES', class='checkbox')
+                            input(type='checkbox', name='équipements', value='RATIONS_SPECIALES', class='checkbox', ng-change="checkForm()", ng-model="joueur.equipements.RATIONS_SPECIALES")
                             img(src='../icons/rations.png')
                             | #{équipements.RATIONS_SPECIALES}
-                  input(type='submit', value='Commencer votre aventure !', id='validation', class='button')
+                  input(type='submit', value='Commencer votre aventure !', id='validation', ng-disabled="invalid" class='button')
+
+
