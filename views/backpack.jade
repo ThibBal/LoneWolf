@@ -6,8 +6,7 @@ aside
             a(href="#close", title="Close", class="close")
             h2 Contenu de votre sac à dos
             ul
-                each val in session.joueur.sac_à_dos
-                    li= val
+                li(ng-repeat="item in joueur['sac_à_dos']") {{item}}
             div#boutonsBackpack
                 button.buttonBackpack Utiliser un objet
                 button.buttonBackpack Se séparer d'un objet

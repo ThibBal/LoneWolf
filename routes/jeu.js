@@ -3,6 +3,8 @@ var router = express.Router();
 var mongo = require('mongodb');
 var joueurs = require('../models/joueurs');
 var avancements = require('../models/avancements');
+var api = require('./api');
+
 
 /* Pages du jeu, la route est précédée de /jeu/ */
 
@@ -35,6 +37,7 @@ router.post('/commencer', function(req, res) {
     joueur["armes"] = [];
     joueur["sac_à_dos"] = [];
     joueur["objets_spéciaux"] = [];
+    joueur["nom"] = req.body.nomDuJoueur;
     // Initialise une vérification pour contrôler la validité du formulaire
     var verification = true;  
     // Nous créons la session et les paramètres du joueur 
@@ -111,7 +114,7 @@ router.post('/commencer', function(req, res) {
             //insertion de l'avancement du joueur dans la base de données
             avancements.insert(avancement,res,function(){
                 // Redirige le joueur à la première page du jeu
-                res.redirect('./page/1');
+                res.redirect('./page/');
             });
         });     
     }
@@ -122,6 +125,28 @@ router.post('/commencer', function(req, res) {
 // Retourne le JSON du joueur stocké en session
 router.get('/joueur', function(req, res, next) {
     res.json(req.session.joueur);
+});
+
+// GET /jeu/page/:numeroPage/:section
+// Page
+router.get('/page/', function(req, res, next) {
+    if(typeof req.session.joueur === 'undefined'){
+        res.redirect('./creer');
+    } else {
+        res.render('page', { title: "LoneWolf"})
+    }
+});
+
+// GET /jeu/continuer/:id
+router.get('/continuer/:id', function(req, res, next) {
+    var joueur = req.session.joueur = {};
+    joueurs.getOne(req.params.id,res,function(docs){
+        req.session.joueur = docs;  
+        res.redirect('../page'); 
+        //res.json(req.session.joueur);
+
+    });
+   // res.json(req.session.joueur);
 });
 
 
@@ -146,7 +171,7 @@ router.get('/page/:numeroPage/:section?', function(req, res, next) {
 
 // GET /jeu/:numeroPage
 // Récupérer le JSON d'une page du livre
-router.get('/:numeroPage', function(req, res, next) {
+/*router.get('/:numeroPage', function(req, res, next) {
     var numero = req.params.numeroPage;
     var pageLivre = "./pages/" + numero + ".jade";
     var pageJSON = req.app.locals.pages[numero];
@@ -159,7 +184,26 @@ router.get('/:numeroPage', function(req, res, next) {
             res.json(pageJSON)
         });
     }
+});*/
+
+// GET /jeu/:numeroPage/:section
+// Récupérer le JSON d'une section d'une page du livre
+router.get('/:numeroPage/:section', function(req, res, next) {
+    var numero = req.params.numeroPage;
+    var section = req.params.section;
+    var pageLivre = "./pages/" + numero + "/" + section + ".jade";
+    var pageJSON = req.app.locals.pages[numero];
+    // Nous vérifions que la page existe bien avant de la retourner
+    if(typeof pageJSON === 'undefined'){
+        res.json("Cette page n'existe pas (pour le moment)");
+    } else {
+        res.render(pageLivre, function(err, html) {
+            pageJSON["html"] = html;
+            res.json(pageJSON)
+        });
+    }
 });
+
 
 // GET /jeu/choixAleatoire/:page
 // Retourne la page accessible à partir d'un numéro aléatoire

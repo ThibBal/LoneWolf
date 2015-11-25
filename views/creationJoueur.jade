@@ -3,11 +3,19 @@ extends layout
 block head
     link(rel='stylesheet', href='/stylesheets/createPlayer.css')
     link(rel='stylesheet', href='/stylesheets/waitingjs/create.css')
-    script(src="/scripts/controller.js")
-
+      
 block content
         div(id="block-central", ng-controller="validationFormulaire as ctrl")
-              h1 {{title}}
+              div(ng-controller="recuperationJoueur")
+                h1 Récupération d'un joueur
+                p Sélectionner votre joueur
+                select(ng-model="joueurPrecedent", ng-options='option.id as option.nom for option in joueursPrecedents')
+                input(type='submit', value='Poursuivre votre aventure !', id='validation', class='button', ng-click='continuer()')
+                input(type='submit', value='Supprimer ce joueur', id='validation', class='button', ng-click="supprimer()")
+                {{avancement}}
+                {{joueurDonnees}}
+                {{htmlPage}}
+              h1 Création d'un joueur
               p Vous êtes à deux doigts de commencer votre aventure.
               p Mais avant, veuillez remplir le formulaire suivant :
               form(method='post', name="creationJoueur" action='./commencer')

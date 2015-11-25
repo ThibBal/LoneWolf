@@ -1,15 +1,12 @@
 aside
     p #[strong -- Statistiques --]
-    p HABILETE : #{session.joueur.habileté}
-    p ENDURANCE : #{session.joueur.endurance}
+    p HABILETE : {{joueur['habileté']}}
+    p ENDURANCE : {{joueur['endurance']}}
     p Disciplines Kai Maïtrisées:
         ul
-            each val in session.joueur.disciplines
-                li= val
-                if val == "La maîtrise des armes"
-                    ul
-                        h6.armeM=session.joueur.maîtrise_des_armes
+            li(ng-repeat="item in joueur.disciplines") {{item}}
+                ul(ng-if="item == 'La maîtrise des armes'")
+                    h6 {{joueur['maîtrise_des_armes']}}
     p Vos armes équipées
         ul
-            each val in session.joueur.armes
-                li= val
+            li(ng-repeat="item in joueur.armes") {{item}}

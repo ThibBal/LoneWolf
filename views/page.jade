@@ -6,14 +6,16 @@ block head
     link(rel='stylesheet', href='/stylesheets/backpack.css')
 
 block content
-    div#block-central
-        h1 Page #{title}
-        section !{htmlPage}
-    div#block-lateral-rightstat
-        include ./playerStats.jade
-        include ./bourse.jade
-    div#block-lateral-rightbackpack
-        include ./backpack.jade
-        include ./specialObjects.jade
-    div#block-lateral-gauche
-        include ./previousFights.jade
+    div(ng-controller="jeuManager")
+        div(id="block-central")
+            h3 Aventure de {{joueur['nom']}}
+            h1 {{title}}
+            section(dynamic="html")
+        div#block-lateral-rightstat
+            include ./playerStats.jade
+            include ./bourse.jade
+        div#block-lateral-rightbackpack
+            include ./backpack.jade
+            include ./specialObjects.jade
+        div#block-lateral-gauche
+            include ./previousFights.jade

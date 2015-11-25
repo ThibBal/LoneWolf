@@ -6,8 +6,7 @@ aside
             a(href="#close", title="Close", class="close")
             h2 Objets spéciaux
             ul
-                each val in session.joueur.objets_spéciaux
-                    li= val
+                li(ng-repeat="item in joueur['objets_spéciaux']") {{item}}
             div#boutonsSpecialObjects
                 button.buttonSpecialObjects Utiliser un objet
                 button.buttonSpecialObjects Se séparer d'un objet

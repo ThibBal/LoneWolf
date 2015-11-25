@@ -87,6 +87,11 @@ footer{
     color: red;
 }
 
+.disabled {
+    cursor: no-drop;
+}
+
+
 .icon_voyage{
     float: left;
 }
