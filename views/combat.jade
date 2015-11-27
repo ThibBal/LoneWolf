@@ -1,0 +1,11 @@
+div(class="fight", ng-controller="combatManager")
+	h2 {{combat.nom}}
+	h3 Habileté : {{combat['habileté']}}
+	h3 Endurance : {{combat['endurance']}}
+	h3 {{points}}
+	input(type='submit', value='Combattre !', id='validation', ng-click="roundCombat()", class='button')
+	input(type='submit', value='Fuir !', id='validation', ng-click="fuirCombat()", class='button')
+	div(class="messagesCombat")
+		ul
+			li Un duel avec {{combat.nom}} va commencer !
+			li(ng-repeat="line in combatLog track by $index", ng-bind-html="line")

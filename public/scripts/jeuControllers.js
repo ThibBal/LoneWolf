@@ -86,7 +86,6 @@ app.controller('recuperationJoueur', ['$scope', '$http', '$sce', '$window', "Jou
 
 app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location', '$anchorScroll', 'JoueurService', 'AvancementService', 
         function($scope, $http, $sce, $window, $location, $anchorScroll, JoueurService, AvancementService) {
-        
         // Récupérer le joueur courant
         $http.get('http://localhost:3000/jeu/joueur/')
             .then(function(response) {
@@ -109,8 +108,8 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
                                 // Récupérer les informations de la section de la page courante
                                 $http.get('http://localhost:3000/jeu/' + numeroPage +'/' + sectionPage)
                                     .success(function(response) {
-                                        $scope.title = "Page " +numeroPage;
-                                        $scope.html = response.html;
+                                        $scope.page = response;
+                                       //$scope.html = response.html;
                                         //$scope.pageHTML = $sce.trustAsHtml(response.html);
                                     });                       
                             });
@@ -121,16 +120,51 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
         var avancement = AvancementService.get();
         $http.get('http://localhost:3000/jeu/' + pageSuivante + "/" + sectionSuivante)
             .success(function(response) {
-            $scope.title = "Page "+pageSuivante
-            $scope.html = response.html;
+            $scope.page = response;
+            avancement["page"] = pageSuivante;
+            avancement["section"] = sectionSuivante;
+            AvancementService.set(avancement);
             AvancementService.save(avancement._id, {"page" : pageSuivante, "section" : sectionSuivante});
             //Reach the top of the page
             $anchorScroll();
             
         });
-        //AvancementService.set(avancement);
     };
 
+}]);
+
+
+app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$location', '$anchorScroll', 'JoueurService', 'AvancementService', 'CombatService', 
+        function($scope, $http, $sce, $window, $location, $anchorScroll, JoueurService, AvancementService, CombatService) {
+    avancement = AvancementService.get();
+    $http.get('http://localhost:3000/jeu/' + avancement.page +'/' + avancement.section)
+                                    .success(function(response) {
+                                        var combat = response.combat;
+                                        CombatService.set(combat);
+                                        $scope.combat = combat;
+
+                                    });
+    $scope.combatLog = [];
+    $scope.commencerCombat = function() {
+    };
+
+    $scope.fuirCombat = function() {
+        $http.get('http://localhost:3000/jeu/combat/123/123')
+            .success(function(response) {
+                $scope.points = response["points perdus par l'ennemi"];
+        });
+    };
+
+    $scope.roundCombat = function() {
+        joueur = JoueurService.get();
+        combat = CombatService.get();
+                                    
+        $http.get('http://localhost:3000/jeu/combat/' + joueur['habileté'] + "/" + combat['habileté'])
+            .success(function(response) {
+                $scope.resultat = response;       
+        });
+        $scope.combatLog.push("<span class='round'>Round :"+$scope.resultat['points_ennemi']+"</span>");
+    };
 }]);
 
 // DIRECTIVE
@@ -190,6 +224,21 @@ app.factory('AvancementService', ['$window', '$http', function($window, $http) {
         get: get,
         set: set,
         save: save
+    }
+}]);
+
+app.factory('CombatService', ['$window', '$http', function($window, $http) {
+    function get() {
+        return JSON.parse($window.sessionStorage.getItem('combat'));
+    }
+
+    function set(object) {
+        $window.sessionStorage.setItem('combat', JSON.stringify(object));
+    }
+
+    return {
+        get: get,
+        set: set
     }
 }]);
 

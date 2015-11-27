@@ -4,7 +4,7 @@ block head
 aside
     a(href="#fightModal")
         img(src='/icons/combat1.png')
-    div#fightModal.modalDialogFight
+    div(id='fightModal', class="modalDialogFight", ng-controller="combatManager")
         div
             a(href="#close", title="Close", class="close")
             h2 Fight for your life
@@ -25,7 +25,7 @@ aside
                 p Votre endurance chute à 19.
                 p #[strong Round 3]
                 p ETC
-            div#boutonscombat
+            di(id='boutonscombat')
                 button.buttoncombat.button Attaquer
                 button.buttoncombat.button Fuir
                 button.buttoncombat.button Utiliser un objet

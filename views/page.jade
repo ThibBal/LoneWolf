@@ -9,8 +9,8 @@ block content
     div(ng-controller="jeuManager")
         div(id="block-central")
             h3 Aventure de {{joueur['nom']}}
-            h1 {{title}}
-            section(dynamic="html")
+            h1 Page {{page.numero}}
+            section(dynamic="page.html")
         div#block-lateral-rightstat
             include ./playerStats.jade
             include ./bourse.jade

@@ -131,7 +131,7 @@ router.get('/joueur', function(req, res, next) {
 // Page
 router.get('/page/', function(req, res, next) {
     if(typeof req.session.joueur === 'undefined'){
-        res.redirect('./creer');
+        res.redirect('/jeu/creer');
     } else {
         res.render('page', { title: "LoneWolf"})
     }
@@ -265,10 +265,10 @@ router.get('/combat/:habilete1/:habilete2', function(req, res, next) {
     }
 
     var resultats = tableauCombat[nbAleatoire][position];
-    infoCombat["quotient d'attaque"] = quotientAttaque;
-    infoCombat["chiffre aléatoire"] = nbAleatoire;
-    infoCombat["points perdus par l'ennemi"] = resultats[0];
-    infoCombat["points perdus par le joueur"] = resultats[1];
+    infoCombat["quotient"] = quotientAttaque;
+    infoCombat["chiffre"] = nbAleatoire;
+    infoCombat["points_ennemi"] = resultats[0];
+    infoCombat["points_joueur"] = resultats[1];
     
     res.json(infoCombat);
 });

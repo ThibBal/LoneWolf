@@ -12,9 +12,6 @@ block content
                 select(ng-model="joueurPrecedent", ng-options='option.id as option.nom for option in joueursPrecedents')
                 input(type='submit', value='Poursuivre votre aventure !', id='validation', class='button', ng-click='continuer()')
                 input(type='submit', value='Supprimer ce joueur', id='validation', class='button', ng-click="supprimer()")
-                {{avancement}}
-                {{joueurDonnees}}
-                {{htmlPage}}
               h1 Création d'un joueur
               p Vous êtes à deux doigts de commencer votre aventure.
               p Mais avant, veuillez remplir le formulaire suivant :
