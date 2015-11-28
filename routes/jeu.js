@@ -93,9 +93,13 @@ router.post('/commencer', function(req, res) {
 
     if (verification){
         // Nous remplissons les autres informations du joueur
-        joueur["habileté"] = randomIntFromInterval(10,19);
-        joueur["endurance"] = randomIntFromInterval(20,29);
+        joueur["habiletéInitiale"] = randomIntFromInterval(10,19);
+        joueur["enduranceInitiale"] = randomIntFromInterval(20,29);
+        joueur["habileté"] = joueur["habiletéInitiale"];
+        joueur["endurance"] = joueur["enduranceInitiale"];
         joueur["bourse"] = randomIntFromInterval(10,19);
+        joueur["bonusHabilete"] = bonusHabilete;
+        joueur["bonusEndurance"] = bonusEndurance;
         joueur["habiletéBonus"] = joueur["habileté"] + bonusHabilete;
         joueur["enduranceBonus"] = joueur["endurance"] + bonusEndurance;
         
@@ -108,8 +112,9 @@ router.post('/commencer', function(req, res) {
                 "_id" : o_id,
                 "page": "1",
                 "section": "1",
-                "historique_combats": [],
-                "combat_en_cours" : []
+                "historique": {},
+                "combat" : {},
+                "combat_en_cours" : false
             }
             //insertion de l'avancement du joueur dans la base de données
             avancements.insert(avancement,res,function(){
@@ -199,6 +204,7 @@ router.get('/:numeroPage/:section', function(req, res, next) {
     } else {
         res.render(pageLivre, function(err, html) {
             pageJSON["html"] = html;
+            pageJSON["section"] = parseInt(section);
             res.json(pageJSON)
         });
     }

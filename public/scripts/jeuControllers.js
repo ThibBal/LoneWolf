@@ -44,7 +44,6 @@ app.controller('validationFormulaire', function($scope) {
 app.controller('recuperationJoueur', ['$scope', '$http', '$sce', '$window', "JoueurService", "AvancementService",
     function($scope, $http, $sce, $window, JoueurService, AvancementService) {
     $scope.joueursPrecedents = [];
-
     $http.get('http://localhost:3000/api/joueurs')
         .then(function(response) {
             response.data.map(function(joueur) {
@@ -77,9 +76,9 @@ app.controller('recuperationJoueur', ['$scope', '$http', '$sce', '$window', "Jou
             })*/
     };
 
-    $scope.supprimer = function() {
-        var id = $scope.joueurPrecedent;
+    $scope.supprimer = function(id) {
         $http.delete('http://localhost:3000/api/joueurs/' + id);
+        $scope.message = "Joueur supprimé";
     };
 
 }]);
@@ -126,25 +125,88 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
             AvancementService.set(avancement);
             AvancementService.save(avancement._id, {"page" : pageSuivante, "section" : sectionSuivante});
             //Reach the top of the page
-            $anchorScroll();
-            
+            $anchorScroll();// Guérison
+            if(pageSuivante != 1){
+                guerisonCheck();
+            }
+        });
+
+        
+    };
+
+    $scope.changerSection = function(pageSuivante, sectionSuivante) {
+        var avancement = AvancementService.get();
+        $http.get('http://localhost:3000/jeu/' + pageSuivante + "/" + sectionSuivante)
+            .success(function(response) {
+            $scope.section = response;
+            avancement["page"] = pageSuivante;
+            avancement["section"] = sectionSuivante;
+            AvancementService.set(avancement);
+            AvancementService.save(avancement._id, {"page" : pageSuivante, "section" : sectionSuivante});            
         });
     };
+
+    $scope.checkDiscipline = function(discipline){
+        var disciplines = $scope.joueur.disciplines;
+        for(var k=0; k<disciplines.length;k++){
+            if(disciplines[k] === discipline){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    $scope.checkEquipement = function(equipement){
+        
+    }
+
+    $scope.checkObjet = function(objet){
+        
+    }
+
+    function guerisonCheck(){
+        if($scope.checkDiscipline("La guérison") && $scope.joueur.endurance < $scope.joueur.enduranceInitiale){
+            $scope.joueur.endurance = $scope.joueur.endurance + 1;
+            JoueurService.save($scope.joueur._id, {"endurance" : $scope.joueur.endurance});
+            $window.alert("Guérison : vous avez gagné 1 point d'endurance.");
+        }
+    }
 
 }]);
 
 
 app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$location', '$anchorScroll', 'JoueurService', 'AvancementService', 'CombatService', 
         function($scope, $http, $sce, $window, $location, $anchorScroll, JoueurService, AvancementService, CombatService) {
-    avancement = AvancementService.get();
-    $http.get('http://localhost:3000/jeu/' + avancement.page +'/' + avancement.section)
-                                    .success(function(response) {
-                                        var combat = response.combat;
-                                        CombatService.set(combat);
-                                        $scope.combat = combat;
+    $scope.avancement = AvancementService.get();
 
-                                    });
-    $scope.combatLog = [];
+
+    // Verifie si le joueur possède ou non la Puissance psychique
+    $scope.pp = $scope.checkDiscipline("Puissance psychique");
+
+
+    if ($scope.avancement['combat_en_cours'] === true) {
+        $scope.combatLog =  $scope.avancement.combat.combatLog;
+        $scope.numeroRound =  $scope.avancement.combat.numeroRound;
+        $scope.combat = $scope.avancement.combat.ennemi;
+        $scope.continuerCombat = true;
+        $scope.fin = $scope.avancement.combat.fin;
+    } else {
+        $scope.combatLog = [];
+        $scope.numeroRound =  1;
+        $scope.victoire = false;
+        $scope.defaite = false;
+        $scope.fin = false;
+        $http.get('http://localhost:3000/jeu/' + $scope.avancement.page +'/' + $scope.avancement.section)
+                                        .success(function(response) {
+                                            var combat = response.combat;
+                                            CombatService.set(combat);
+                                            $scope.combat = combat;
+                                        });
+    }
+
+    $scope.nombreAleatoire = 0;
+    $scope.quotient = 0;
+    
     $scope.commencerCombat = function() {
     };
 
@@ -155,16 +217,93 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
         });
     };
 
-    $scope.roundCombat = function() {
-        joueur = JoueurService.get();
-        combat = CombatService.get();
-                                    
-        $http.get('http://localhost:3000/jeu/combat/' + joueur['habileté'] + "/" + combat['habileté'])
+    $scope.roundCombat = function(utiliser_pp) {
+
+        // Récupération des informations du joueur
+        //joueur = JoueurService.get();
+        //combat = CombatService.get();
+
+        // Gestion des objets spéciaux
+        if(utiliser_pp == true){
+            $scope.pp = 2;
+        } else {
+            $scope.pp = 0;
+        }
+        $scope.habileteFinale = $scope.joueur['habileté'] + $scope.joueur['bonusHabilete'] + $scope.pp;
+
+        //Calcul du round                                    
+        $http.get('http://localhost:3000/jeu/combat/' + $scope.habileteFinale + "/" + $scope.combat['habileté'])
             .success(function(response) {
-                $scope.resultat = response;       
-        });
-        $scope.combatLog.push("<span class='round'>Round :"+$scope.resultat['points_ennemi']+"</span>");
+                //Données du combat 
+                var res = response;
+                $scope.nombreAleatoire = res["chiffre"];
+                $scope.quotient = res["quotient"];
+
+                //Modifications du joueur
+                $scope.EndurancePerdueJ = res['points_joueur'];
+                $scope.NouvelleEnduranceJ = $scope.joueur['endurance'] - $scope.EndurancePerdueJ;
+                //$scope.NouvelleEnduranceJB = $scope.NouvelleEnduranceJB + $scope.joueur["bonusEndurance"];
+                //Modifications de l'ennemi
+                $scope.EndurancePerdueE = res['points_ennemi'];
+                $scope.NouvelleEnduranceE = $scope.combat['endurance'] - $scope.EndurancePerdueE;
+
+                //Message d'informations
+                $scope.combatLog.push("<span class='round'>Round #"+$scope.numeroRound+"</span>");
+                $scope.combatLog.push("<span class='round'>quotient d'attaque :"+$scope.quotient+"</span>");
+                $scope.combatLog.push("<span class='round'>Chiffre aléatoire : "+$scope.nombreAleatoire+"</span>");
+                $scope.combatLog.push("<span class='round'>Points perdus par le joueur : "+res['points_joueur']+"</span>");
+                $scope.combatLog.push("<span class='round'>Points perdus par l'ennemi : "+res['points_ennemi']+"</span>");
+
+
+                //Mise à jour des informations
+                $scope.joueur['endurance'] = $scope.NouvelleEnduranceJ,
+                //$scope.joueur['enduranceBonus'] = $scope.NouvelleEnduranceJB,
+                $scope.combat['endurance'] = $scope.NouvelleEnduranceE;
+                $scope.numeroRound ++;
+                
+                //Joueur mort
+                if($scope.joueur['endurance'] + $scope.joueur['bonusEndurance'] <= 0){
+                    gameOver(); 
+                } 
+                // Ennemi mort
+                else if($scope.combat['endurance'] <= 0){
+                    ennemiBattu();                
+                } 
+                //Mise à jour de l'avancement
+                else {
+                    AvancementService.save($scope.avancement._id, {"combat_en_cours" : true, "combat": {"ennemi" : $scope.combat, "combatLog" : $scope.combatLog, "numeroRound" : $scope.numeroRound, "fin" : false}});
+                    JoueurService.save($scope.joueur._id, {"endurance" : $scope.joueur['endurance']});
+                }
+
+                //AvancementService.set($scope.avancement);
+                //JoueurService.set($scope.joueur);
+/*                if($scope.fin == true && $scope.victoire == true){
+                    
+                }*/
+            });    
     };
+
+    function gameOver(){
+        $scope.joueur['endurance'] = 0;
+        $scope.combatLog.push("<span class='round'>Oh non ! "+$scope.joueur.nom+" est mort ! RIP</span>");
+        $scope.defaite = true;
+        $scope.fin = true;
+        $window.alert('Vous êtes mort. Game Over');
+        $http.delete('http://localhost:3000/api/joueurs/' + $scope.joueur._id);
+        $window.location.href= '/jeu/creer';
+    };
+
+    function ennemiBattu(){
+        $scope.combat['endurance'] = 0;
+        $scope.combatLog.push("<span class='round'>"+$scope.combat.nom+" est mort !</span>");
+        $scope.victoire = true;
+        $scope.fin = true;
+        AvancementService.save($scope.avancement._id, {"combat_en_cours" : false, "combat": {}});
+        JoueurService.save($scope.joueur._id, {"endurance" : $scope.joueur['endurance']});
+        $window.alert("Vous avez gagné ! Vous pouvez poursuivre votre aventure.");
+        $scope.changerSection($scope.page.numero, $scope.page.section+1);
+    }
+
 }]);
 
 // DIRECTIVE

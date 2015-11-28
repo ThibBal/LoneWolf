@@ -3,8 +3,11 @@ div(class="fight", ng-controller="combatManager")
 	h3 Habileté : {{combat['habileté']}}
 	h3 Endurance : {{combat['endurance']}}
 	h3 {{points}}
-	input(type='submit', value='Combattre !', id='validation', ng-click="roundCombat()", class='button')
-	input(type='submit', value='Fuir !', id='validation', ng-click="fuirCombat()", class='button')
+	div(ng-if="fin == false")
+		input(type='submit', value='Combattre !', ng-click="roundCombat(false)", class='button')
+		input(type='submit', value='Fuir !', ng-click="fuirCombat()", class='button')
+		div(ng-if="pp == true")
+			input(type='submit', value='Attaquer avec la Puissance Psychique !', ng-click="roundCombat(true)", class='button')
 	div(class="messagesCombat")
 		ul
 			li Un duel avec {{combat.nom}} va commencer !

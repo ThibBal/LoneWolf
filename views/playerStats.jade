@@ -1,12 +1,12 @@
 aside
     p #[strong -- Statistiques --]
-    p HABILETE : {{joueur['habileté']}}
-    p ENDURANCE : {{joueur['endurance']}}
+    p HABILETE : {{joueur['habileté'] + joueur['bonusHabilete']}} ({{joueur['habileté']}} + {{joueur['bonusHabilete']}})
+    p ENDURANCE : {{joueur['endurance'] + joueur['bonusEndurance']}} ({{joueur['endurance']}} + {{joueur['bonusEndurance']}})
     p Disciplines Kai Maïtrisées:
         ul
             li(ng-repeat="item in joueur.disciplines") {{item}}
-                ul(ng-if="item == 'La maîtrise des armes'")
-                    h6 {{joueur['maîtrise_des_armes']}}
+                ul
+                    span(ng-if="item == 'La maîtrise des armes'") ({{joueur['maîtrise_des_armes']}})
     p Vos armes équipées
         ul
             li(ng-repeat="item in joueur.armes") {{item}}
