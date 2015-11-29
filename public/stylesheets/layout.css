@@ -87,6 +87,10 @@ footer{
     color: red;
 }
 
+/*a[ng-click]{
+    cursor: pointer;
+}
+*/
 .disabled {
     cursor: no-drop;
 }

@@ -39,6 +39,10 @@ exports.pages = {
         pagesSuivantes : [{page : 245, requis : "victoire"}
                         ]
     },
+    85  : {numero : 85, 
+        pagesSuivantes : [{page : 300, requis : "aucun"}
+                        ]
+    },
     91  : {numero : 91, 
         pagesSuivantes : [{page : 234, requis : "aucun"}
                         ]
@@ -116,8 +120,7 @@ exports.pages = {
                         {page : 172, requis : "aucun"}
                         ]
     },
-    248  : {numero : 248, 
-        info : [{evenement : "Mort"}]
+    248  : {numero : 248, gameOver : true
     },
     288  : {numero : 288, 
         pagesSuivantes : [{page : 167, requis : "aucun"}
@@ -144,6 +147,6 @@ exports.pages = {
         }
     },
     339  : {numero : 339, 
-        info : [{evenement : "Mort"}]
+        gameOver : true,
     }
 };

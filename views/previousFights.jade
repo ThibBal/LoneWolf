@@ -1,11 +1,14 @@
-p #[strong -- Historique des combats --]
-table
-    tr
-        td #[strong Heure:]
-        td #[strong Evènement]
-    tr
-        td 19h48
-        td Combat contre BAKANAL
-    tr
-        td 19h52
-        td Combat contre AUTRECHOSE
+p #[strong -- Historique --]
+//- table
+//-     tr
+//-         td #[strong Heure:]
+//-         td #[strong Evènement]
+//-     tr
+//-         td 19h48
+//-         td Combat contre BAKANAL
+//-     tr
+//-         td 19h52
+//-         td Combat contre AUTRECHOSE
+div(class="messagesHistorique")
+    ul
+        li(ng-repeat="line in history track by $index", ng-bind-html="line")

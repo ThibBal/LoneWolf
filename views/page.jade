@@ -11,7 +11,7 @@ block content
             h3 Aventure de {{joueur['nom']}}
             h1 Page {{page.numero}}
             section(dynamic="page.html")
-            section(dynamic="section.html")
+            section(ng-if="afficherSectionSuivante == true", dynamic="section.html")
         div#block-lateral-rightstat
             include ./playerStats.jade
             include ./bourse.jade

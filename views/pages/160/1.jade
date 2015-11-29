@@ -6,5 +6,6 @@ p Les Bakanals sont de grandes créatures carnivores qui vivent à proximité de
 
 div#decision
    p Si vous souhaitez sortir de la tente pour vous lancer à l'attaque du Bakanal, rendez-vous à #[a(href='', ng-click='changerPage("78", "1")') la page 78].
-   p Si vous maîtrisez la Discipline Kaï de la Chasse, rendez-vous à #[a(href='', ng-click='changerPage("204", "1")') la page 204].
-   p Si vous maîtrisez la Discipline Kaï de la Communication Animale, rendez-vous à  #[a(href='', ng-click='changerPage("318", "1")') la page 318].
+   p Si vous maîtrisez la Discipline Kaï de la Chasse, rendez-vous à #[a(href='',  a-disabled="checkDiscipline('La chasse') == false", ng-click='changerPage("204", "1")') la page 204].
+   p Si vous maîtrisez la Discipline Kaï de la Communication Animale, rendez-vous à  #[a(href='', a-disabled="checkDiscipline('Communication animale') == false", ng-click='changerPage("318", "1")') la page 318].
+

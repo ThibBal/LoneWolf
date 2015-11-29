@@ -1,3 +1,4 @@
 div#decision
-   p Si vous tirez un chiffre de 0 à 6, rendez-vous à #[a(href='', ng-click='changerPage("85", "1")') la page 85].
-   p De 7 à 9, rendez-vous à #[a(href='', ng-click='changerPage("300", "1")') la page 300].
+   h3 Le chiffre est {{chiffreAleatoire}}
+   p Si vous avez tiré un chiffre de 0 à 6, rendez-vous à #[a(href='',  a-disabled="pagePossible != 85", ng-click='changerPage("85", "1")') la page 85].
+   p De 7 à 9, rendez-vous à #[a(href='',  a-disabled="pagePossible != 300", ng-click='changerPage("300", "1")') la page 300].

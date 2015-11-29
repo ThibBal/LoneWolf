@@ -114,7 +114,8 @@ router.post('/commencer', function(req, res) {
                 "section": "1",
                 "historique": {},
                 "combat" : {},
-                "combat_en_cours" : false
+                "combat_en_cours" : false,
+                "tableDeHasard" : {}
             }
             //insertion de l'avancement du joueur dans la base de données
             avancements.insert(avancement,res,function(){
@@ -191,26 +192,6 @@ router.get('/page/:numeroPage/:section?', function(req, res, next) {
     }
 });*/
 
-// GET /jeu/:numeroPage/:section
-// Récupérer le JSON d'une section d'une page du livre
-router.get('/:numeroPage/:section', function(req, res, next) {
-    var numero = req.params.numeroPage;
-    var section = req.params.section;
-    var pageLivre = "./pages/" + numero + "/" + section + ".jade";
-    var pageJSON = req.app.locals.pages[numero];
-    // Nous vérifions que la page existe bien avant de la retourner
-    if(typeof pageJSON === 'undefined'){
-        res.json("Cette page n'existe pas (pour le moment)");
-    } else {
-        res.render(pageLivre, function(err, html) {
-            pageJSON["html"] = html;
-            pageJSON["section"] = parseInt(section);
-            res.json(pageJSON)
-        });
-    }
-});
-
-
 // GET /jeu/choixAleatoire/:page
 // Retourne la page accessible à partir d'un numéro aléatoire
 // et de l'invertvalle défini dans une page
@@ -236,6 +217,26 @@ router.get('/choixAleatoire/:page', function(req, res, next) {
         res.json(resultatJSON);
     }  
 });
+
+// GET /jeu/:numeroPage/:section
+// Récupérer le JSON d'une section d'une page du livre
+router.get('/:numeroPage/:section', function(req, res, next) {
+    var numero = req.params.numeroPage;
+    var section = req.params.section;
+    var pageLivre = "./pages/" + numero + "/" + section + ".jade";
+    var pageJSON = req.app.locals.pages[numero];
+    // Nous vérifions que la page existe bien avant de la retourner
+    if(typeof pageJSON === 'undefined'){
+        res.json("Cette page n'existe pas (pour le moment)");
+    } else {
+        res.render(pageLivre, function(err, html) {
+            pageJSON["html"] = html;
+            pageJSON["section"] = parseInt(section);
+            res.json(pageJSON)
+        });
+    }
+});
+
 
 // GET /jeu/combat/:habilet1/:habileté2
 // Retourne les informations sur un round d'un combat

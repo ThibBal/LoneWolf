@@ -6,7 +6,7 @@ div(class="fight", ng-controller="combatManager")
 	div(ng-if="fin == false")
 		input(type='submit', value='Combattre !', ng-click="roundCombat(false)", class='button')
 		input(type='submit', value='Fuir !', ng-click="fuirCombat()", class='button')
-		div(ng-if="pp == true")
+		div(ng-if="checkDiscipline('Puissance psychique') == true")
 			input(type='submit', value='Attaquer avec la Puissance Psychique !', ng-click="roundCombat(true)", class='button')
 	div(class="messagesCombat")
 		ul

@@ -1,4 +1,5 @@
 p Utilisez la Table de Hasard pour obtenir un chiffre.
 div#decision
-    p Si vous tirez un chiffre entre 0 et 4, rendez-vous à #[a(href='', ng-click='changerPage("62", "1")') la page 62].
-    p Entre 5 et 9, rendez-vous à #[a(href='', ng-click='changerPage("288", "1")') la page 288].
+   h3 Le chiffre est {{chiffreAleatoire}}
+   p Si vous avez tiré un chiffre entre 0 et 4, rendez-vous à #[a(href='', a-disabled="pagePossible != 62", ng-click='changerPage("62", "1")') la page 62].
+   p Entre 5 et 9, rendez-vous à #[a(href='', a-disabled="pagePossible != 288", ng-click='changerPage("288", "1")') la page 288].

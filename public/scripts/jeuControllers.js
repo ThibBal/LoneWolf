@@ -110,39 +110,57 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
                                         $scope.page = response;
                                        //$scope.html = response.html;
                                         //$scope.pageHTML = $sce.trustAsHtml(response.html);
+                                    if(avancement['tableDeHasard'] != false){
+                                        $scope.choixFait = true;
+                                        $scope.pagePossible = avancement.tableDeHasard.pagePossible;
+                                        $scope.chiffreAleatoire = avancement.tableDeHasard.chiffreAleatoire;
+                                    } else {
+                                        initialiserVariables();
+                                    }
                                     });                       
                             });
                     })
             });
 
+
+    // Charger les paramètres (combat, page possible, chiffre etc.)
+
     $scope.changerPage = function(pageSuivante, sectionSuivante) {
         var avancement = AvancementService.get();
+        avancement.history = [];
+        $scope.afficherSectionSuivante = false;
         $http.get('http://localhost:3000/jeu/' + pageSuivante + "/" + sectionSuivante)
             .success(function(response) {
             $scope.page = response;
+            //$scope.section = null;
+            // Mise à jour de l'historique
+            avancement.history.push($scope.getDatetime()+" : Page "+pageSuivante);
+            $scope.history = avancement.history;
             avancement["page"] = pageSuivante;
             avancement["section"] = sectionSuivante;
             AvancementService.set(avancement);
             AvancementService.save(avancement._id, {"page" : pageSuivante, "section" : sectionSuivante});
             //Reach the top of the page
-            $anchorScroll();// Guérison
-            if(pageSuivante != 1){
-                guerisonCheck();
-            }
-        });
+            $anchorScroll();
+            // Guérison
+            guerisonCheck();
 
-        
+            //Initialise les variables
+            initialiserVariables();
+
+        });        
     };
 
-    $scope.changerSection = function(pageSuivante, sectionSuivante) {
+    $scope.changerSection = function(pageCourante, sectionSuivante) {
         var avancement = AvancementService.get();
-        $http.get('http://localhost:3000/jeu/' + pageSuivante + "/" + sectionSuivante)
+        $http.get('http://localhost:3000/jeu/' + pageCourante + "/" + sectionSuivante)
             .success(function(response) {
+            $scope.afficherSectionSuivante = true;
             $scope.section = response;
-            avancement["page"] = pageSuivante;
+            avancement["page"] = pageCourante;
             avancement["section"] = sectionSuivante;
             AvancementService.set(avancement);
-            AvancementService.save(avancement._id, {"page" : pageSuivante, "section" : sectionSuivante});            
+            AvancementService.save(avancement._id, {"page" : pageCourante, "section" : sectionSuivante});            
         });
     };
 
@@ -164,6 +182,26 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
         
     }
 
+    $scope.ajouterObjet = function(objet){
+       $scope.joueur["objets_spéciaux"].push(objet);
+       JoueurService.save($scope.joueur._id, {"objets_spéciaux" : $scope.joueur["objets_spéciaux"]});
+       $scope.objetAjoute = true;
+       $scope.changerSection($scope.page.numero, $scope.page.section+1);  
+    }
+
+    $scope.tableDeHasard = function(page){
+         $http.get('http://localhost:3000/jeu/choixAleatoire/'+page)
+            .then(function(response) {
+                var res = response.data
+                $scope.chiffreAleatoire = res.chiffre;
+                $scope.pagePossible = res.page;
+                $scope.choixFait = true;
+                var avancement = AvancementService.get();
+                AvancementService.save(avancement._id, {"tableDeHasard": {"pagePossible": res.page, "chiffreAleatoire" : res.chiffre}});
+                $scope.changerSection(page, 2);
+            });
+    }
+
     function guerisonCheck(){
         if($scope.checkDiscipline("La guérison") && $scope.joueur.endurance < $scope.joueur.enduranceInitiale){
             $scope.joueur.endurance = $scope.joueur.endurance + 1;
@@ -171,6 +209,30 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
             $window.alert("Guérison : vous avez gagné 1 point d'endurance.");
         }
     }
+
+    function initialiserVariables(){
+        $scope.choixFait = false;
+        $scope.objetAjoute = false;
+        $scope.pagePossible = 0;
+    }
+
+    $scope.getDatetime = function() {
+        d = new Date();
+        m = d.getMinutes();
+        h = d.getHours();
+        time = h+"h"+m;
+        return time;
+    };
+
+    function gameOver(){
+        $window.alert('Vous êtes mort. Game Over');
+        $http.delete('http://localhost:3000/api/joueurs/' + $scope.joueur._id);
+    };
+
+    $scope.tryAgain = function(){
+        $http.delete('http://localhost:3000/api/joueurs/' + $scope.joueur._id);
+        $window.location.href= '/jeu/creer';
+    };
 
 }]);
 
@@ -181,7 +243,7 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
 
 
     // Verifie si le joueur possède ou non la Puissance psychique
-    $scope.pp = $scope.checkDiscipline("Puissance psychique");
+    //$scope.pp = $scope.checkDiscipline("Puissance psychique");
 
 
     if ($scope.avancement['combat_en_cours'] === true) {
@@ -211,11 +273,51 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
     };
 
     $scope.fuirCombat = function() {
-        $http.get('http://localhost:3000/jeu/combat/123/123')
+
+        $scope.habileteFinale = $scope.joueur['habileté'] + $scope.joueur['bonusHabilete'];
+        //Calcul de la fuite                                    
+        $http.get('http://localhost:3000/jeu/combat/' + $scope.habileteFinale + "/" + $scope.combat['habileté'])
             .success(function(response) {
-                $scope.points = response["points perdus par l'ennemi"];
-        });
+                //Données du combat 
+                var res = response;
+                $scope.nombreAleatoire = res["chiffre"];
+                $scope.quotient = res["quotient"];
+
+                //Modifications du joueur
+                $scope.EndurancePerdueJ = res['points_joueur'];
+                $scope.NouvelleEnduranceJ = $scope.joueur['endurance'] - $scope.EndurancePerdueJ;
+
+                //Message d'informations
+                $scope.combatLog.push("<span class='round'>"+$scope.joueur.nom+" tente de fuir ! Poule mouillée !</span>");
+                $scope.combatLog.push("<span class='round'>Quotient d'attaque :"+$scope.quotient+"</span>");
+                $scope.combatLog.push("<span class='round'>Chiffre aléatoire : "+$scope.nombreAleatoire+"</span>");
+                $scope.combatLog.push("<span class='round'>Endurance perdue par "+$scope.joueur.nom+" : "+res['points_joueur']+"</span>");
+
+                //Mise à jour des informations
+                $scope.joueur['endurance'] = $scope.NouvelleEnduranceJ,
+                //$scope.joueur['enduranceBonus'] = $scope.NouvelleEnduranceJB,
+                $scope.combat['endurance'] = $scope.NouvelleEnduranceE;
+                
+                //Joueur mort
+                if($scope.joueur['endurance'] + $scope.joueur['bonusEndurance'] <= 0){
+                    joueurBattu(); 
+                }  
+                //Mise à jour de l'avancement
+                else {
+                    fuiteReussie();
+                }
+            });    
     };
+
+    function fuiteReussie() {
+        $scope.combatLog.push("<span class='round'>"+$scope.joueur.nom+" a réussi à fuir !</span>");
+        $scope.victoire = true;
+        $scope.fin = true;
+        AvancementService.save($scope.avancement._id, {"combat_en_cours" : false, "combat": {}});
+        JoueurService.save($scope.joueur._id, {"endurance" : $scope.joueur['endurance']});
+        $window.alert("Fuite réussie ! Vous pouvez poursuivre votre aventure.");
+        $scope.changerSection($scope.page.numero, $scope.page.section+1);                
+    }
 
     $scope.roundCombat = function(utiliser_pp) {
 
@@ -249,10 +351,10 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
 
                 //Message d'informations
                 $scope.combatLog.push("<span class='round'>Round #"+$scope.numeroRound+"</span>");
-                $scope.combatLog.push("<span class='round'>quotient d'attaque :"+$scope.quotient+"</span>");
+                $scope.combatLog.push("<span class='round'>Quotient d'attaque :"+$scope.quotient+"</span>");
                 $scope.combatLog.push("<span class='round'>Chiffre aléatoire : "+$scope.nombreAleatoire+"</span>");
-                $scope.combatLog.push("<span class='round'>Points perdus par le joueur : "+res['points_joueur']+"</span>");
-                $scope.combatLog.push("<span class='round'>Points perdus par l'ennemi : "+res['points_ennemi']+"</span>");
+                $scope.combatLog.push("<span class='round'>Endurance perdue par "+$scope.joueur.nom+" : "+res['points_joueur']+"</span>");
+                $scope.combatLog.push("<span class='round'>Endurance perdue par l'ennemi : "+res['points_ennemi']+"</span>");
 
 
                 //Mise à jour des informations
@@ -263,7 +365,7 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
                 
                 //Joueur mort
                 if($scope.joueur['endurance'] + $scope.joueur['bonusEndurance'] <= 0){
-                    gameOver(); 
+                    joueurBattu(); 
                 } 
                 // Ennemi mort
                 else if($scope.combat['endurance'] <= 0){
@@ -283,7 +385,7 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
             });    
     };
 
-    function gameOver(){
+    function joueurBattu(){
         $scope.joueur['endurance'] = 0;
         $scope.combatLog.push("<span class='round'>Oh non ! "+$scope.joueur.nom+" est mort ! RIP</span>");
         $scope.defaite = true;
@@ -321,6 +423,35 @@ app.directive('dynamic', function ($compile) {
       });
     }
   };
+});
+
+// Désactiver un lien si la personne ne possède pas la bonne condition
+// Source : http://stackoverflow.com/questions/23425254/enable-disable-anchor-tag-using-angularjs
+app.directive('aDisabled', function() {
+    return {
+        compile: function(tElement, tAttrs, transclude) {
+            //Disable ngClick
+            tAttrs["ngClick"] = "!("+tAttrs["aDisabled"]+") && ("+tAttrs["ngClick"]+")";
+
+            //return a link function
+            return function (scope, iElement, iAttrs) {
+
+                //Toggle "disabled" to class when aDisabled becomes true
+                scope.$watch(iAttrs["aDisabled"], function(newValue) {
+                    if (newValue !== undefined) {
+                        iElement.toggleClass("disabled", newValue);
+                    }
+                });
+
+                //Disable href on click
+                iElement.on("click", function(e) {
+                    if (scope.$eval(iAttrs["aDisabled"])) {
+                        e.preventDefault();
+                    }
+                });
+            };
+        }
+    };
 });
 
 
