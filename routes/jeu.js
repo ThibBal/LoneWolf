@@ -36,6 +36,7 @@ router.post('/commencer', function(req, res) {
     joueur["disciplines"] = [];
     joueur["armes"] = [];
     joueur["sac_à_dos"] = [];
+    joueur["taille_sac_à_dos"] = 0;
     joueur["objets_spéciaux"] = [];
     joueur["nom"] = req.body.nomDuJoueur;
     // Initialise une vérification pour contrôler la validité du formulaire
@@ -77,9 +78,16 @@ router.post('/commencer', function(req, res) {
             if (cste_équipements.hasOwnProperty(équipements[i])) {
                 if(cste_équipements[équipements[i]] == cste_équipements.GILET_DE_CUIR_MATELASSE){
                     bonusEndurance = 2;
-                    joueur["objets_spéciaux"].push(cste_équipements[équipements[i]]);
-                } else if(cste_équipements[équipements[i]] == cste_équipements.POTION_DE_LAMPSUR || cste_équipements[équipements[i]] ==  cste_équipements.RATIONS_SPECIALES) {
-                    joueur["sac_à_dos"].push(cste_équipements[équipements[i]]);
+                    var gilet = {"nom" : cste_équipements[équipements[i]], "nombre" : 1}
+                    joueur["objets_spéciaux"].push(gilet);
+                } else if(cste_équipements[équipements[i]] == cste_équipements.POTION_DE_LAMPSUR) {
+                    var potion = {"nom" : cste_équipements[équipements[i]], "nombre" : 1}
+                    joueur["sac_à_dos"].push(potion);
+                    joueur["taille_sac_à_dos"] = joueur["taille_sac_à_dos"] + 1;
+                } else if(cste_équipements[équipements[i]] ==  cste_équipements.RATIONS_SPECIALES) {
+                    var rations = {"nom" : "Rations spéciales", "nombre"  :1};
+                    joueur["sac_à_dos"].push(rations);
+                    joueur["taille_sac_à_dos"] = joueur["taille_sac_à_dos"] + 1;
                 } else {
                     joueur["armes"].push(cste_équipements[équipements[i]]);
                 }

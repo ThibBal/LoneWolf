@@ -10,6 +10,8 @@ aside
             div#boutonsChooseObjects
                 ul
                     li(ng-repeat="objet in page.objetsAjoutables")
-                        input(type='submit', value="{{objet}}", ng-click="ajouterObjet(objet)", class='button')
-                     
+                        input(type='submit', value="{{objet.nom}} ({{objet.quantite}})", ng-click="ajouterObjet(objet)", class='button')
+
                 input(type='submit', value="OK", class='button', ng-click="choisirObjet(false)")
+                
+            {{coucou}}

@@ -4,3 +4,4 @@ Gestion des sections suppplémentaires
 Requêtes ajax à factoriser
 CSS en modal => bouton ? pop up ?
 Services ? Utiles ? Revoir
+Taille du nom verif

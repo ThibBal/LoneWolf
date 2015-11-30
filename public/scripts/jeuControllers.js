@@ -9,35 +9,49 @@ app.controller('validationFormulaire', function($scope) {
     $scope.joueur = {};
     $scope.invalid = true;
     $scope.title = "Création de joueur";
+    $scope.joueur.nom = "";
 
     $scope.checkForm = function(){
-        $scope.invalid = false;
-        var nom = $scope.joueur.nom;
+        //$scope.invalid = false;
+        //var nom = $scope.joueur.nom;
+        var valid1 = false;
+        var valid2 = false;
+        var valid3 = false;
 
-        if(nom.length < 4){
-            $scope.invalid = true;
+        if($scope.joueur.nom.length >= 4){
+            valid1 = true;
+        } else {
+            valid1 = false;
         }
         var disciplines = $scope.joueur.disciplines;
-        var taille = 0;
+        var tailleDisciplines = 0;
         for(var key in $scope.joueur.disciplines)
         {
             if ($scope.joueur.disciplines[key])
-                ++taille;
-        }
-
-        if (taille != 5) {
-            $scope.invalid = true;
+                ++tailleDisciplines;
+            if (tailleDisciplines == 5) {
+                valid2 = true;
+            } else {
+                valid2 = false;
+            }
         }
 
         var equipements = $scope.joueur.equipements;
-        var taille = 0;
+        var tailleEquipements = 0;
         for(var key in $scope.joueur.equipements)
         {
             if ($scope.joueur.equipements[key])
-                ++taille;
+                ++tailleEquipements;
+            if (tailleEquipements == 2) {
+                valid3 = true;
+            } else {
+                valid3 = false;
+            }
         }
 
-        if (taille != 2) {
+        if (valid1 == true && valid2 == true && valid3 == true){
+            $scope.invalid = false;
+        } else {
             $scope.invalid = true;
         }
     }
@@ -174,6 +188,7 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
             if(disciplines[k] === discipline){
                 return true;
             }
+
         }
         return false;
     }
@@ -183,7 +198,13 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
     }
 
     $scope.checkObjet = function(objet){
-        
+        var objets = $scope.joueur["sac_à_dos"];
+        for(var k=0; k<objets.length;k++){
+            if(objets[k]["nom"] === objet){
+                return objets[k];
+            }
+        }
+        return {"nom": objet, "nombre" : 0};
     }
 
 /*    function objetsAAjouter = function(page){
@@ -206,10 +227,48 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
        $scope.changerSection($scope.page.numero, $scope.page.section+1);  
     }
 
+    $scope.perdreObjet = function(objet){
+        var currentObjet = $scope.checkObjet(objet.nom);
+        var total = currentObjet.nombre - objet.quantite;
+        if(total != 0){
+            var objetASupprimer = {"nom" : objet.nom, "nombre" : total};
+            var position = $scope.joueur["sac_à_dos"].indexOf(currentObjet);
+            $scope.joueur["sac_à_dos"][position] = objetASupprimer;
+        } else {
+            var index = $scope.joueur["sac_à_dos"].indexOf(currentObjet);
+            $scope.joueur["sac_à_dos"].splice(index, 1);
+        }
+        
+        
+        if(objet.nom == "Couvertures en Fourrure"){
+            $scope.joueur["taille_sac_à_dos"] = $scope.joueur["taille_sac_à_dos"] - 2;
+        }else {
+            $scope.joueur["taille_sac_à_dos"] = $scope.joueur["taille_sac_à_dos"] - 1;
+        }    
+        JoueurService.save($scope.joueur._id, {"sac_à_dos" : $scope.joueur["sac_à_dos"], "taille_sac_à_dos" : $scope.joueur["taille_sac_à_dos"]});
+
+        $scope.fait = true;
+        $scope.changerSection($scope.page.numero, $scope.page.section+1);  
+    }
+
     $scope.ajouterObjet = function(objet){
-       $scope.joueur["sac_à_dos"].push(objet);
-       JoueurService.save($scope.joueur._id, {"sac_à_dos" : $scope.joueur["sac_à_dos"]});
-       var index = $scope.page.objetsAjoutables.indexOf(objet);
+        var currentObjet = $scope.checkObjet(objet.nom);
+        var objetAAjouter = {"nom" : objet.nom, "nombre" : currentObjet.nombre + objet.quantite};
+        var position = $scope.joueur["sac_à_dos"].indexOf(currentObjet);
+        if (position != -1) {
+            $scope.joueur["sac_à_dos"][position] = objetAAjouter;
+        } else {
+            $scope.joueur["sac_à_dos"].push(objetAAjouter);
+        }
+        
+        if(objet.nom == "Couvertures en Fourrure"){
+            $scope.joueur["taille_sac_à_dos"] = $scope.joueur["taille_sac_à_dos"] + 2;
+        }else {
+            $scope.joueur["taille_sac_à_dos"] = $scope.joueur["taille_sac_à_dos"] + 1;
+        }    
+        JoueurService.save($scope.joueur._id, {"sac_à_dos" : $scope.joueur["sac_à_dos"], "taille_sac_à_dos" : $scope.joueur["taille_sac_à_dos"]});
+        var index = $scope.page.objetsAjoutables.indexOf(objet);
+       
         $scope.page.objetsAjoutables.splice(index, 1);
     }
 

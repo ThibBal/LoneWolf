@@ -9,13 +9,13 @@ aside
             h2 Contenu de votre sac à dos
             h3 Objets
             ul
-                li(ng-repeat="item in joueur['sac_à_dos']") {{item}}
+                li(ng-repeat="item in joueur['sac_à_dos']") {{item.nom}} (x{{item.nombre}})
             div#boutonsBackpack
                 button.buttonBackpack Utiliser un objet
                 button.buttonBackpack Se séparer d'un objet
             h3 Objets spéciaux
             ul
-                li(ng-repeat="item in joueur['objets_spéciaux']") {{item}}
+                li(ng-repeat="item in joueur['objets_spéciaux']") {{item.nom}} (x{{item.nombre}})
             div#boutonsSpecialObjects
                 button.buttonSpecialObjects Utiliser un objet
                 button.buttonSpecialObjects Se séparer d'un objet
