@@ -18,7 +18,7 @@ exports.pages = {
                         {page : 259, requis : "aucun"}
                         ]
     },
-    57  : {numero : 57, 
+    57  : {numero : 57, objetsAjoutables : ["Épée d'Os", "Disque de Pierre Bleue"],
         pagesSuivantes : [{page : 17, requis : "GUERISON"},
                         {page : 251, requis : "aucun"}
                         ]

@@ -12,7 +12,7 @@
     transition: opacity 400ms ease-in;
     pointer-events: none;
 }
-.modalDialogFight:target {
+.modalDialogFight {
     opacity:1;
     pointer-events: auto;
 }

@@ -12,7 +12,7 @@
     transition: opacity 400ms ease-in;
     pointer-events: none;
 }
-.modalDialogBackpack:target {
+.modalDialogBackpack {
     opacity:1;
     pointer-events: auto;
 }

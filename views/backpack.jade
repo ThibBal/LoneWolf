@@ -1,12 +1,21 @@
 aside
-    a(href="#backpackModal")
+    a(href="", ng-click="voirSacADos(true)")
         img(src='/icons/backpack.png', class='icon_voyage')
-    div#backpackModal.modalDialogBackpack
+    //- a(href="", ng-click="voirSacADos()")
+        img(src='/icons/backpack.png', class='icon_voyage')
+    div(id='backpackModal', class='modalDialogBackpack', ng-if="backpack == true")
         div
-            a(href="#close", title="Close", class="close")
+            a(href="", title="Close", class="close", ng-click="voirSacADos(false)")
             h2 Contenu de votre sac à dos
+            h3 Objets
             ul
                 li(ng-repeat="item in joueur['sac_à_dos']") {{item}}
             div#boutonsBackpack
                 button.buttonBackpack Utiliser un objet
                 button.buttonBackpack Se séparer d'un objet
+            h3 Objets spéciaux
+            ul
+                li(ng-repeat="item in joueur['objets_spéciaux']") {{item}}
+            div#boutonsSpecialObjects
+                button.buttonSpecialObjects Utiliser un objet
+                button.buttonSpecialObjects Se séparer d'un objet

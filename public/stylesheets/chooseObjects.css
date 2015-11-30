@@ -12,7 +12,7 @@
     transition: opacity 400ms ease-in;
     pointer-events: none;
 }
-.modalDialogChooseObjects:target {
+.modalDialogChooseObjects {
     opacity:1;
     pointer-events: auto;
 }

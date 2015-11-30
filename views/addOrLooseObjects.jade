@@ -2,10 +2,10 @@ block head
     link(rel='stylesheet', href='/stylesheets/addOrLooseObjects.css')
 
 aside
-    a(href="#addOrLooseObjectsModal") Vous avez perdu des objets
-    div#addOrLooseObjectsModal.addOrLooseObjectsmodalDialog
+    a(href="", ng-click="ajouterObjet('machin')") Vous avez perdu des objets
+    div(id='addOrLooseObjectsModal', class="addOrLooseObjectsmodalDialog", ng-if="ajouter == true")
         div
-            a(href="#close", title="Close", class="close")
+            a(href="", title="Close", class="close", ng-click="fermer(false)")
             h2 Perte d'objets
             h3 Vous avez perdu : les Chiens Kanu, les Traineaux
             div#buttonsAddOrLooseObjects

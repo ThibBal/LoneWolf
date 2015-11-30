@@ -2,11 +2,14 @@ block head
     link(rel='stylesheet', href='/stylesheets/chooseObjects.css')
 
 aside
-    a(href="#ChooseObjectsModal") Choix d'un objet
-    div#ChooseObjectsModal.modalDialogChooseObjects
+    input(type='submit', ng-if="page.objetsAjoutables != []", value='Choisir les objets à ajouter', ng-click="choisirObjet(true)", class='button')
+    div(id='ChooseObjectsModal', class="modalDialogChooseObjects", ng-if="choix == true")
         div
-            a(href="#close", title="Close", class="close")
-            h2 Veuillez choisir un objet de votre sac à dos
+            a(href="", title="Close", class="close", ng-click="choisirObjet(false)")
+            h2 Choisir les objets à ajouter à votre inventaire
             div#boutonsChooseObjects
-                a(href="#close", id="button-confirmation") Défense de mammouth
-                a(href="#close", id="button-confirmation") Corne de licorne
+                ul
+                    li(ng-repeat="objet in page.objetsAjoutables")
+                        input(type='submit', value="{{objet}}", ng-click="ajouterObjet(objet)", class='button')
+                     
+                input(type='submit', value="OK", class='button', ng-click="choisirObjet(false)")

@@ -1,0 +1,6 @@
+Revoir les pages statiques
+Revoir le code : continuer et reprendre, changer de page
+Gestion des sections suppplémentaires
+Requêtes ajax à factoriser
+CSS en modal => bouton ? pop up ?
+Services ? Utiles ? Revoir

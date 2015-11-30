@@ -1,30 +1,25 @@
 block head
     link(rel='stylesheet', href='/stylesheets/fightModal.css')
 
-aside
-    a(href="#fightModal")
+aside(class="fight", ng-controller="combatManager")
+    a(href="", ng-click="commencerCombat(true)")
         img(src='/icons/combat1.png')
-    div(id='fightModal', class="modalDialogFight", ng-controller="combatManager")
+    div(id='fightModal', class="modalDialogFight", ng-if="comCombat == true")
         div
-            a(href="#close", title="Close", class="close")
-            h2 Fight for your life
-            div#textcombat
-                p #[strong Round 1]
-                p Vous affrontez un Bakanal: 30 Endurance, 19 Habileté
-                p.
-                    Son premier assault, que vous n'avez pu éviter vous inflige 7 points de dégats.
-                    Il va falloir penser à se bouger les fesses, vous n'allez jamais arrivé au bout sinon.
-                p Votre endurance se réduit à 22.
-                p #[strong Round 2]
-                p Que voulez-vous faire ?
-                p Votre Ratio de combat est 3.
-                p Votre Nombre Aléatoire est 6.
-                p Vous attaquez avec [arme] et infligez 8 points de dégats.
-                p L'endurance du Bakanal est 22.
-                p Le Bakanal vous inflige un coup de Griffe, infligeant 3 points de dégats.
-                p Votre endurance chute à 19.
-                p #[strong Round 3]
-                p ETC
+            a(href="", title="Close", class="close", ng-click="commencerCombat(false)")
+            h2 {{combat.nom}}
+            h3 Habileté : {{combat['habileté']}}
+            h3 Endurance : {{combat['endurance']}}
+            h3 {{points}}
+            div(ng-if="fin == false")
+                input(type='submit', value='Combattre !', ng-click="roundCombat(false)", class='button')
+                input(type='submit', value='Fuir !', ng-click="fuirCombat()", class='button')
+                div(ng-if="checkDiscipline('Puissance psychique') == true")
+                    input(type='submit', value='Attaquer avec la Puissance Psychique !', ng-click="roundCombat(true)", class='button')
+            div(id="textcombat", class="messagesCombat")
+                ul
+                    li Un duel avec {{combat.nom}} va commencer !
+                    li(ng-repeat="line in combatLog track by $index", ng-bind-html="line")
             di(id='boutonscombat')
                 button.buttoncombat.button Attaquer
                 button.buttoncombat.button Fuir
