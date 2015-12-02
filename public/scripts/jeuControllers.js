@@ -69,7 +69,7 @@ app.controller('validationFormulaire', function($scope) {
 
 app.controller('recuperationJoueur', ['$scope', '$http', '$sce', '$window', "JoueurService", "AvancementService",
     function($scope, $http, $sce, $window, JoueurService, AvancementService) {
-    $scope.joueursPrecedents = [];
+    /*$scope.joueursPrecedents = [];
     $scope.joueurPrecedent = '';
     $http.get(server+'/api/joueurs')
         .then(function(response) {
@@ -79,8 +79,22 @@ app.controller('recuperationJoueur', ['$scope', '$http', '$sce', '$window', "Jou
                     nom: joueur.nom
                 });
             });
-        });
+        });*/
+    getJoueurs();
 
+    function getJoueurs() {
+        $scope.joueursPrecedents = [];
+        $scope.joueurPrecedent = '';
+        $http.get(server+'/api/joueurs')
+            .then(function(response) {
+                response.data.map(function(joueur) {
+                    $scope.joueursPrecedents.push({
+                        id: joueur._id,
+                        nom: joueur.nom
+                    });
+                });
+            });
+    }
 
     $scope.continuer = function() {
         var id = $scope.joueurPrecedent;
@@ -106,6 +120,7 @@ app.controller('recuperationJoueur', ['$scope', '$http', '$sce', '$window', "Jou
     $scope.supprimer = function(id) {
         $http.delete(server+'/api/joueurs/' + id);
         $scope.message = "Joueur supprimé";
+        getJoueurs();
     };
 
 }]);
@@ -140,6 +155,7 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
                                         //$scope.pageHTML = $sce.trustAsHtml(response.html);
                                     if(avancement['tableDeHasard'] != {}){
                                         $scope.choixFait = true;
+                                        $scope.deuxiemeChoixFait = false;
                                         $scope.pagePossible = avancement.tableDeHasard.pagePossible;
                                         $scope.chiffreAleatoire = avancement.tableDeHasard.chiffreAleatoire;
                                     } else {
@@ -298,6 +314,22 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
                 $scope.changerSection(page, $scope.page.section +1);
             });
     }
+
+    $scope.tableDeHasardSpeciale = function(page){
+        var enduranceTotale = $scope.joueur["endurance"] + $scope.joueur["bonusEndurance"];
+         $http.get(server+'/jeu/choixAleatoire/'+page+'/'+enduranceTotale)
+            .then(function(response) {
+                var res = response.data
+                $scope.chiffreAleatoire = res.chiffre;
+                $scope.pagePossible = res.page;
+                $scope.choixFait = true;
+                $scope.special = res.special;
+                var avancement = AvancementService.get();
+                AvancementService.save(avancement._id, {"tableDeHasard": {"pagePossible": res.page, "chiffreAleatoire" : res.chiffre, "special" : res.special}});
+                $scope.changerSection(page, $scope.page.section +1);
+            });
+    }
+
 
     function guerisonCheck(){
         if($scope.checkDiscipline("La guérison") && $scope.joueur.endurance < $scope.joueur.enduranceInitiale){

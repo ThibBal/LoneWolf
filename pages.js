@@ -66,10 +66,11 @@ exports.pages = {
     155  : {numero : 155, 
         info : [{evenement : "table de hasard"}],
         choixAleatoire : {
-            intervalle : [-2,10],
+            intervalle : [0,9],
+            special : {enduranceMin : 10, impactMin : -2, enduranceMax : 20, impactMax : 1},
             choix : [
-                {page : 248, intervalle : [-2,2]},
-                {page : 191, intervalle : [3,10]}    
+                {page : 248, intervalle : [-2,4]},
+                {page : 191, intervalle : [5,11]}    
             ]
         }
     },
@@ -147,5 +148,8 @@ exports.pages = {
     },
     339  : {numero : 339, 
         gameOver : true,
+    },
+    350  : {numero : 350, 
+        fin : true,
     }
 };

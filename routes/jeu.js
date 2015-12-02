@@ -203,7 +203,7 @@ router.get('/page/:numeroPage/:section?', function(req, res, next) {
 // GET /jeu/choixAleatoire/:page
 // Retourne la page accessible à partir d'un numéro aléatoire
 // et de l'invertvalle défini dans une page
-router.get('/choixAleatoire/:page', function(req, res, next) {
+router.get('/choixAleatoire/:page/:endurance?', function(req, res, next) {
     // Nous récupérons l'ensemble des pages de pages.js
     var page = req.app.locals.pages[req.params.page];
     if(typeof page === 'undefined' || typeof page.choixAleatoire === 'undefined'){
@@ -215,7 +215,22 @@ router.get('/choixAleatoire/:page', function(req, res, next) {
         var valeur = randomIntFromInterval(nombres[0],nombres[1]);
         var choix = page.choixAleatoire.choix;
         var resultatJSON = {};
+        
+        // Gestion de la table de hasard "Special endurance" (comme à la page 155)
+        if(req.params.endurance){
+            var enduranceTotale = req.params.endurance;
+            var special = page.choixAleatoire.special;
+            if(enduranceTotale <= special.enduranceMin){
+                valeur = valeur + special.impactMin;
+                resultatJSON["special"] = special.impactMin;
+            } else if (enduranceTotale >= special.enduranceMax) {
+                valeur = valeur + special.impactMax;
+                resultatJSON["special"] = special.impactMax;
+            }
+        }
+
         resultatJSON["chiffre"] = valeur;
+        
         for (p in choix){
             if (valeur >= choix[p].intervalle[0] && valeur <= choix[p].intervalle[1]){
                     resultatJSON["page"] = choix[p].page;
