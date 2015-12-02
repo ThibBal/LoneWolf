@@ -20,7 +20,3 @@ aside(class="fight", ng-controller="combatManager")
                 ul
                     li Un duel avec {{combat.nom}} va commencer !
                     li(ng-repeat="line in combatLog track by $index", ng-bind-html="line")
-            di(id='boutonscombat')
-                button.buttoncombat.button Attaquer
-                button.buttoncombat.button Fuir
-                button.buttoncombat.button Utiliser un objet

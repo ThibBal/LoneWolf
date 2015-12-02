@@ -1,5 +1,3 @@
-p Lancez le combat :
-include ../fight.jade
 div#decision
-    p Si vous tuez la créature sans perdre aucun point d'ENDURANCE, rendez-vous à #[a(href='', ng-click='changerPage("70", "1")')  la page 70].
-    p  Si vous perdez des points d'ENDURANCE au cours du combat, rendez-vous immédiatement à #[a(href='', ng-click='changerPage("129", "1")')  la page 129].
+    p Si vous tuez la créature sans perdre aucun point d'ENDURANCE, rendez-vous à #[a(href='', a-disabled="victoireParfaite == false", ng-click='changerPage("70", "1")')  la page 70].
+    p  Si vous perdez des points d'ENDURANCE au cours du combat, rendez-vous immédiatement à #[a(href='', a-disabled="victoireParfaite == true", ng-click='changerPage("129", "1")')  la page 129].

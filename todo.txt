@@ -5,3 +5,7 @@ Requêtes ajax à factoriser
 CSS en modal => bouton ? pop up ?
 Services ? Utiles ? Revoir
 Taille du nom verif
+Select vide => desactiver les continuer et supprimer ?
+Revoir les variables des pages => initialiser sur les pages ?
+objets speciaux : ajouter
+verifier perte d'endurance : mort 331

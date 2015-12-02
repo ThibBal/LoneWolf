@@ -11,6 +11,15 @@ app.controller('validationFormulaire', function($scope) {
     $scope.title = "Création de joueur";
     $scope.joueur.nom = "";
 
+/*     $scope.typeOptions = [
+    { name: 'Feature', value: 'feature' }, 
+    { name: 'Bug', value: 'bug' }, 
+    { name: 'Enhancement', value: 'enhancement' }
+    ];
+    
+    $scope.form = {joueurPrecedent : $scope.typeOptions[0].value};
+*/
+
     $scope.checkForm = function(){
         //$scope.invalid = false;
         //var nom = $scope.joueur.nom;
@@ -61,6 +70,7 @@ app.controller('validationFormulaire', function($scope) {
 app.controller('recuperationJoueur', ['$scope', '$http', '$sce', '$window', "JoueurService", "AvancementService",
     function($scope, $http, $sce, $window, JoueurService, AvancementService) {
     $scope.joueursPrecedents = [];
+    $scope.joueurPrecedent = '';
     $http.get(server+'/api/joueurs')
         .then(function(response) {
             response.data.map(function(joueur) {
@@ -125,14 +135,15 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
                                 $http.get(server+'/jeu/' + numeroPage +'/' + sectionPage)
                                     .success(function(response) {
                                         $scope.page = response;
+                                        $scope.victoireParfaite = false;
                                        //$scope.html = response.html;
                                         //$scope.pageHTML = $sce.trustAsHtml(response.html);
-                                    if(avancement['tableDeHasard'] != false){
+                                    if(avancement['tableDeHasard'] != {}){
                                         $scope.choixFait = true;
                                         $scope.pagePossible = avancement.tableDeHasard.pagePossible;
                                         $scope.chiffreAleatoire = avancement.tableDeHasard.chiffreAleatoire;
                                     } else {
-                                        initialiserVariables();
+                                        $scope.initialiserVariables();
                                     }
                                     });                       
                             });
@@ -163,7 +174,7 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
             guerisonCheck();
 
             //Initialise les variables
-            initialiserVariables();
+            $scope.initialiserVariables();
 
         });        
     };
@@ -207,11 +218,15 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
         return {"nom": objet, "nombre" : 0};
     }
 
-/*    function objetsAAjouter = function(page){
-        if(page.numero == 57){
-            $scope.page.
+    $scope.checkObjetSpecial = function(objet){
+        var objets = $scope.joueur["objets_spéciaux"];
+        for(var k=0; k<objets.length;k++){
+            if(objets[k]["nom"] === objet){
+                return objets[k];
+            }
         }
-    }*/
+        return {"nom": objet, "nombre" : 0};
+    }
 
     $scope.ajouterObjetSpecial = function(objet){
        $scope.joueur["objets_spéciaux"].push(objet);
@@ -268,7 +283,6 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
         }    
         JoueurService.save($scope.joueur._id, {"sac_à_dos" : $scope.joueur["sac_à_dos"], "taille_sac_à_dos" : $scope.joueur["taille_sac_à_dos"]});
         var index = $scope.page.objetsAjoutables.indexOf(objet);
-       
         $scope.page.objetsAjoutables.splice(index, 1);
     }
 
@@ -293,10 +307,12 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
         }
     }
 
-    function initialiserVariables(){
+    $scope.initialiserVariables = function(){
         $scope.choixFait = false;
         $scope.objetAjoute = false;
+        $scope.fait = false;
         $scope.pagePossible = 0;
+        $scope.victoireParfaite = "false";
     }
 
     $scope.choisirObjet = function(choix) {
@@ -304,9 +320,14 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
             $scope.choix = true;
         } else {
             $scope.choix = false;
+           // $scope.2fait = false;
             $scope.changerSection($scope.page.numero, $scope.page.section+1);  
         }
     } 
+
+    $scope.victoireParfaiteFunction = function(choix){
+        $scope.victoireParfaite = choix;
+    }
 
     $scope.getDatetime = function() {
         d = new Date();
@@ -344,7 +365,7 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
 
     // Verifie si le joueur possède ou non la Puissance psychique
     //$scope.pp = $scope.checkDiscipline("Puissance psychique");
-
+    var enduranceInitiale = $scope.joueur["endurance"];
 
     if ($scope.avancement['combat_en_cours'] === true) {
         $scope.combatLog =  $scope.avancement.combat.combatLog;
@@ -380,7 +401,6 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
     };
 
     $scope.fuirCombat = function() {
-
         $scope.habileteFinale = $scope.joueur['habileté'] + $scope.joueur['bonusHabilete'];
         //Calcul de la fuite                                    
         $http.get(server+'/jeu/combat/' + $scope.habileteFinale + "/" + $scope.combat['habileté'])
@@ -507,7 +527,12 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
         $scope.combatLog.push("<span class='round'>"+$scope.combat.nom+" est mort !</span>");
         $scope.victoire = true;
         $scope.fin = true;
-        AvancementService.save($scope.avancement._id, {"combat_en_cours" : false, "combat": {}});
+        if(enduranceInitiale == $scope.joueur['endurance']){
+            $scope.victoireParfaiteFunction(true);
+        } else {
+            $scope.victoireParfaiteFunction(false);
+        }
+        AvancementService.save($scope.avancement._id, {"combat_en_cours" : false, "victoireParfaite" : true, "combat": {}});
         JoueurService.save($scope.joueur._id, {"endurance" : $scope.joueur['endurance']});
         $window.alert("Vous avez gagné ! Vous pouvez poursuivre votre aventure.");
         $scope.changerSection($scope.page.numero, $scope.page.section+1);

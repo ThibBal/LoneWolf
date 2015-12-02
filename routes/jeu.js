@@ -248,7 +248,7 @@ router.get('/:numeroPage/:section', function(req, res, next) {
 
 // GET /jeu/combat/:habilet1/:habileté2
 // Retourne les informations sur un round d'un combat
-router.get('/combat/:habilete1/:habilete2', function(req, res, next) {
+router.get('/combat/:habilete1/:habilete2/:page?', function(req, res, next) {
     var habileteJoueur = parseInt(req.params.habilete1);
     var habileteEnnemi = parseInt(req.params.habilete2);
     // L'habileté bonus n'est, selon la correction de l'énoncé, par encore utilisée
@@ -284,6 +284,14 @@ router.get('/combat/:habilete1/:habilete2', function(req, res, next) {
     infoCombat["chiffre"] = nbAleatoire;
     infoCombat["points_ennemi"] = resultats[0];
     infoCombat["points_joueur"] = resultats[1];
+
+    if(req.params.page){
+        var page = req.app.locals.pages[req.params.page];
+        if(page.combat.perte){
+            infoCombat["perteSupplementaire"] = page.combat.perte;
+            infoCombat["points_ennemi"] = infoCombat["points_ennemi"] + page.combat.perte;
+        }
+    }
     
     res.json(infoCombat);
 });
