@@ -29,14 +29,13 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
     $scope.nombreAleatoire = 0;
     $scope.quotient = 0;
     
-    $scope.commencerCombat = function(commencer) {
+    /*$scope.commencerCombat = function(commencer) {
         if(commencer == true){
             $scope.comCombat = true;
         } else {
             $scope.comCombat = false;
         }
-        //AvancementService.save($scope.avancement._id, {"commencerCombat" : true});
-    };
+    };*/
 
     $scope.fuirCombat = function() {
         $scope.habileteFinale = $scope.joueur['habileté'] + $scope.joueur['bonusHabilete'];
@@ -138,7 +137,12 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
                 } 
                 //Mise à jour de l'avancement
                 else {
-                    AvancementService.save($scope.avancement._id, {"combat_en_cours" : true, "combat": {"ennemi" : $scope.combat, "combatLog" : $scope.combatLog, "numeroRound" : $scope.numeroRound, "fin" : false}});
+                    AvancementService.save($scope.avancement._id,
+                        {"combat_en_cours" : true, 
+                         "combat": {"ennemi" : $scope.combat, 
+                                    "combatLog" : $scope.combatLog,
+                                    "numeroRound" : $scope.numeroRound,
+                                    "fin" : false}});
                     JoueurService.save($scope.joueur._id, {"endurance" : $scope.joueur['endurance']});
                 }
             });    
@@ -160,14 +164,18 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
         $scope.victoire = true;
         $scope.fin = true;
         if(enduranceInitiale == $scope.joueur['endurance']){
-            $scope.victoireParfaiteFunction(true);
+            $scope.victoireParfaite = true;
         } else {
-            $scope.victoireParfaiteFunction(false);
+            $scope.victoireParfaite = false;
         }
-        AvancementService.save($scope.avancement._id, {"combat_en_cours" : false, "victoireParfaite" : true, "combat": {}});
+        AvancementService.save($scope.avancement._id, 
+            {"combat_en_cours" : false,
+            "victoireParfaite" : $scope.avancement.victoireParfaite,
+            "combat": {},
+        });
         JoueurService.save($scope.joueur._id, {"endurance" : $scope.joueur['endurance']});
         $window.alert("Vous avez gagné ! Vous pouvez poursuivre votre aventure.");
-        $scope.changerSection($scope.page.numero, $scope.page.section+1);
+        $scope.changerSection($scope.page.numero, $scope.avancement.section+1);
     }
 
 }]);
@@ -196,17 +204,14 @@ app.directive('aDisabled', function() {
         compile: function(tElement, tAttrs, transclude) {
             //Disable ngClick
             tAttrs["ngClick"] = "!("+tAttrs["aDisabled"]+") && ("+tAttrs["ngClick"]+")";
-
             //return a link function
             return function (scope, iElement, iAttrs) {
-
                 //Toggle "disabled" to class when aDisabled becomes true
                 scope.$watch(iAttrs["aDisabled"], function(newValue) {
                     if (newValue !== undefined) {
                         iElement.toggleClass("disabled", newValue);
                     }
                 });
-
                 //Disable href on click
                 iElement.on("click", function(e) {
                     if (scope.$eval(iAttrs["aDisabled"])) {
@@ -222,41 +227,21 @@ app.directive('aDisabled', function() {
 // SERVICES
 
 app.factory('JoueurService', ['$window', '$http', function($window, $http) {
-    function get() {
-        return JSON.parse($window.sessionStorage.getItem('joueur'));
-    }
-
-    function set(object) {
-        $window.sessionStorage.setItem('joueur', JSON.stringify(object));
-    }
-
     function save(id, object) {
         $http.put(server+'/api/joueurs/' + id, object);   
     }
 
     return {
-        get: get,
-        set: set,
         save: save
     }
 }]);
 
 app.factory('AvancementService', ['$window', '$http', function($window, $http) {
-    function get() {
-        return JSON.parse($window.sessionStorage.getItem('avancement'));
-    }
-
-    function set(object) {
-        $window.sessionStorage.setItem('avancement', JSON.stringify(object));
-    }
-
     function save(id, object) {
         $http.put(server+'/api/avancements/' + id, object);   
     }       
 
     return {
-        get: get,
-        set: set,
         save: save
     }
 }]);

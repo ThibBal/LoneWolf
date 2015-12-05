@@ -69,14 +69,14 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
         if($scope.avancement.objetsAjoutes != true){   
             $scope.avancement.objetsAjoutables = $scope.page.objetsAjoutables;
         }
-        if($scope.avancement.choixTable == true){
+        /*if($scope.avancement.choixTable == true){
             //$scope.coucou = "coucou";
             //$scope.deuxiemeavancement.choixTable = false;
             //$scope.pagePossible =$scope.avancement.tableDeHasard.pagePossible;
             //$scope.chiffreAleatoire = $scope.avancement.tableDeHasard.chiffreAleatoire;
         } else {
             $scope.initialiserVariables();
-        }
+        }*/
     }
 
     $scope.changerPage = function(pageSuivante) {
@@ -90,6 +90,7 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
         $scope.avancement.choixTable = false;
         $scope.avancement.enduranceChangee = false;
         $scope.avancement.objetPerdu = false;
+        $scope.avancement.victoireParfaite = false;
 
         if($scope.page.objetsAjoutables){
              $scope.avancement.objetsAjoutables = $scope.page.objetsAjoutables;
@@ -105,14 +106,15 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
             "choixTable": false,
             "enduranceChangee" : false,
             "objetPerdu" : false,
-            "objetAjoute" : false
+            "objetAjoute" : false,
+            "victoireParfaite" : false
         });
         //Reach the top of the page
         $anchorScroll();
         // Guérison
         guerisonCheck();
         //Initialise les variables
-        $scope.initialiserVariables();  
+        //$scope.initialiserVariables();  
     };
 
     $scope.changerSection = function(pageCourante, sectionSuivante) {
@@ -121,7 +123,7 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
         AvancementService.save($scope.avancement._id, {"section" : sectionSuivante});
     };
 
-    $scope.initialiserVariables = function(){
+   /* $scope.initialiserVariables = function(){
         $scope.objetsAjoutes = false; 
         $scope.objetAjoute = false;
         $scope.fait = false;
@@ -129,7 +131,7 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
         $scope.pagePossible = 0;
         $scope.victoireParfaite = "false";
     }
-
+*/
     $scope.checkDiscipline = function(discipline){
         var disciplines = $scope.joueur.disciplines;
         for(var k=0; k<disciplines.length;k++){
@@ -162,8 +164,11 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
 
     $scope.ajouterObjetSpecial = function(objet){
        $scope.joueur["objets_spéciaux"].push(objet);
-       JoueurService.save($scope.joueur._id, {"objets_spéciaux" : $scope.joueur["objets_spéciaux"]});
-       $scope.objetAjoute = true;
+       JoueurService.save($scope.joueur._id, 
+        {"objets_spéciaux" : $scope.joueur["objets_spéciaux"]});
+       //$scope.objetAjoute = true;
+       $scope.avancement.objetAjoute =  true;
+       AvancementService.save($scope.avancement._id, {"objetAjoute" : true});
        $scope.changerSection($scope.page.numero, $scope.avancement.section+1);  
     }
 
@@ -171,10 +176,27 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
         objet.quantite = 1;
         if(objet.nom = "Potion de Lampsur"){
             // Reutilisation de la fonction pour changer l'endurance
-            $scope.changerEndurance(4);
+            $scope.joueur["endurance"] = $scope.joueur["endurance"] + 4;
+            if($scope.joueur["endurance"] > $scope.joueur["enduranceInitiale"]){
+                $scope.joueur["endurance"] = $scope.joueur["enduranceInitiale"];
+            }
         }
-       JoueurService.save($scope.joueur._id, {"endurance" : $scope.joueur["endurance"]});
-       $scope.perdreObjet(objet);
+        var currentObjet = $scope.checkObjet(objet.nom);
+        var total = currentObjet.nombre - objet.quantite;
+        if(total != 0){
+            var objetASupprimer = {"nom" : objet.nom, "nombre" : total};
+            var position = $scope.joueur["sac_à_dos"].indexOf(currentObjet);
+            $scope.joueur["sac_à_dos"][position] = objetASupprimer;
+        } else {
+            var index = $scope.joueur["sac_à_dos"].indexOf(currentObjet);
+            $scope.joueur["sac_à_dos"].splice(index, 1);
+        }
+        $scope.joueur["taille_sac_à_dos"] = $scope.joueur["taille_sac_à_dos"] - objet.taille;
+        JoueurService.save($scope.joueur._id, 
+            {"endurance" : $scope.joueur["endurance"],
+            "sac_à_dos" : $scope.joueur["sac_à_dos"],
+            "taille_sac_à_dos" : $scope.joueur["taille_sac_à_dos"]
+        }); 
     }
 
     $scope.ajouterObjet = function(objet){
@@ -212,6 +234,9 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
 
     $scope.changerEndurance = function(points){
        $scope.joueur["endurance"] = $scope.joueur["endurance"] + points;
+       if($scope.joueur["endurance"] > $scope.joueur["enduranceInitiale"]){
+            $scope.joueur["endurance"] = $scope.joueur["enduranceInitiale"];
+       }
        $scope.avancement.enduranceChangee = true;
        JoueurService.save($scope.joueur._id, {"endurance" : $scope.joueur["endurance"]});
        AvancementService.save($scope.avancement._id, {"enduranceChangee" : true})
@@ -277,10 +302,6 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
         } else {
             $scope.backpack = false;
         }
-    }
-
-    $scope.victoireParfaiteFunction = function(choix){
-        $scope.victoireParfaite = choix;
     }
 
     function addZero(i) {
