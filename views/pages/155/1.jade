@@ -1,5 +1,5 @@
 p Le vent glacé de la montagne à tôt fait de dissiper les brumes de l'aube. Epuisé, transi jusqu'à la moelle et encore sous le choc des récents événements, vous escaladez l'impitoyable paroi de roc jusqu'à ce que vous parveniez enfin sur une large corniche où vous vous sentez plus en sécurité. 
 p Vous êtes affamé, et il vous faut prendre un Repas avant de continuer, sinon, vous perdrez 3 points d'ENDURANCE. N'oubliez pas de rayer ce Repas de votre Feuille d'Aventure.
 div(ng-if="fait != true")
-	input(type='submit', value="Vous perdez 3 points d'endurance", ng-click="perdreEndurance(3)", class='button')
+	input(type='submit', value="Vous perdez 3 points d'endurance", ng-click="changerEndurance(-3)", class='button')
 	input(type='submit', value="Vous perdez 1 Ration Spéciale", ng-click="perdreObjet({'nom' : 'Rations spéciales', 'quantite' : '1'})", class='button')

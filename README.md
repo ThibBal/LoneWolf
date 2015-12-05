@@ -5,6 +5,8 @@ Réalisé par Thibault B. et Arnaud B. pour les laboratoires du module LOG4420 d
 
 L'application Web utilise : NodeJS, Express et MongoDB.
 
+Une version en ligne est disponible <a href="http://lonewolf2015.herokuapp.com/">ici</a>
+
 ------------------------------------------------------------------------------------
 ## Installer et lancer
 

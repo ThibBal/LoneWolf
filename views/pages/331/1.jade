@@ -3,7 +3,7 @@ p Lorsque vous atteignez enfin le glacier, la nuit est presque tombée, et vous 
 p La situation frise le désastre. Vos orteils, vos doigts et votre nez ont subi la morsure du gel et, à moins que vous ne maîtrisiez la Discipline Kaï de la Guérison, vous perdez 4 points d'ENDURANCE.
 div(ng-if="fait != true")
     div(ng-if="checkDiscipline('La guérison') == false")
-        input(type='submit', value="Vous perdez 4 points d'endurance", ng-click="perdreEndurance(4)", class='button')
+        input(type='submit', value="Vous perdez 4 points d'endurance", ng-click="changerEndurance(-4)", class='button')
     div(ng-if="checkDiscipline('La guérison') == true")
-        input(type='submit', value="Vous ne perdez pas de points d'endurance", ng-click="perdreEndurance(0)", class='button')
+        input(type='submit', value="Vous ne perdez pas de points d'endurance", ng-click="changerEndurance(0)", class='button')
 //- include ../../losePoints.jade

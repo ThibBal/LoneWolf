@@ -9,3 +9,12 @@ Select vide => desactiver les continuer et supprimer ?
 Revoir les variables des pages => initialiser sur les pages ?
 objets speciaux : ajouter
 verifier perte d'endurance : mort 331
+331 perte d'endurance
+
+objetAjoute
+choixTable
+combatFini
+endurancePerdue
+objetPerdu
+objetSpecialPerdu
+objetSpecialAjoute

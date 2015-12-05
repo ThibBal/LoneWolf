@@ -5,6 +5,6 @@ p Bien que vous soyez toujours dans un état second, vous parvenez malgré tout 
 p Un vent glacial souffle sur ces montagnes hostiles et si vous ne vous êtes pas enduit le corps d'huile de Bakanal, vous perdez 3 points d'ENDURANCE.
 div(ng-if="fait != true")
     div(ng-if="checkObjetSpecial('Huile de Bakanal').nombre == 0")
-        input(type='submit', value="Vous perdez 3 points d'endurance", ng-click="perdreEndurance(3)", class='button')
+        input(type='submit', value="Vous perdez 3 points d'endurance", ng-click="changerEndurance(-3)", class='button')
     div(ng-if="checkObjetSpecial('Huile de Bakanal').nombre != 0")
-        input(type='submit', value="Vous ne perdez pas de points d'endurance", ng-click="perdreEndurance(0)", class='button')
+        input(type='submit', value="Vous ne perdez pas de points d'endurance", ng-click="changerEndurance(0)", class='button')

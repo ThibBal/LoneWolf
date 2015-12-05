@@ -12,12 +12,12 @@ exports.pages = {
         pagesSuivantes : [{page : 332, requis : "aucun"}
                         ]
     },
-    12  : {numero : 12, objetsAjoutables : [{"nom" : "Rations spéciales", "quantite" : 3}, {"nom" : "Couvertures en Fourrure", "quantite" : 1}, {"nom" : "Corde", "quantite" : 1}],
+    12  : {numero : 12, objetsAjoutables : [{"nom" : "Rations spéciales", "quantite" : 3, "taille" : 3}, {"nom" : "Couvertures en Fourrure", "quantite" : 1, "taille" : 2}, {"nom" : "Corde", "quantite" : 1, "taille" : 1}],
         pagesSuivantes : [{page : 180, requis : "aucun"},
                         {page : 259, requis : "aucun"}
                         ]
     },
-    57  : {numero : 57, objetsAjoutables : [{"nom" : "Épée d'Os", "quantite" : 1}, {"nom" : "Disque de Pierre Bleue", "quantite" : 1}],
+    57  : {numero : 57, objetsAjoutables : [{"nom" : "Épée d'Os", "quantite" : 1, "taille" : 1}, {"nom" : "Disque de Pierre Bleue", "quantite" : 1, "taille" : 1}],
         pagesSuivantes : [{page : 17, requis : "GUERISON"},
                         {page : 251, requis : "aucun"}
                         ]

@@ -120,7 +120,7 @@ router.post('/commencer', function(req, res) {
                 "_id" : o_id,
                 "page": "1",
                 "section": "1",
-                "historique": {},
+                "historique": [],
                 "combat" : {},
                 "combat_en_cours" : false,
                 "tableDeHasard" : {}

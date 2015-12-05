@@ -6,16 +6,13 @@
     left: 0;
     background: rgba(0, 0, 0, 0.8);
     z-index: 99999;
-    opacity:0;
+    opacity:1;
+    pointer-events: auto;
     -webkit-transition: opacity 400ms ease-in;
     -moz-transition: opacity 400ms ease-in;
     transition: opacity 400ms ease-in;
-    pointer-events: none;
 }
-.modalDialogFight {
-    opacity:1;
-    pointer-events: auto;
-}
+
 .modalDialogFight > div {
     background: #c0c0c0 url("../images/fightbackground.jpg") no-repeat center fixed;
     width: 500px;
@@ -24,6 +21,18 @@
     margin: 5% auto;
     padding: 5px 20px 13px 20px;
     border-radius: 10px;
+}
+
+table {
+    width: 100%;
+}
+
+th td {
+    width: 50%;
+}
+
+.roundnumero{
+    font-weight: bold;
 }
 
 .close {

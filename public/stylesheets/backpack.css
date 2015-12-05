@@ -1,3 +1,36 @@
+
+.icon_check{
+    width : 30px;
+}
+
+th, td {
+    padding: 5px;
+    text-align: center;
+}
+
+th .nom_sac{
+    width : 70%;
+    font-weight: bold; 
+}
+
+.nom_sac{
+    width : 70%; 
+}
+
+/*.icon_sac{
+    width : 10%;
+}*/
+
+
+.icon_voyage{
+    /*position: fixed;
+    bottom: 10px;
+    left:;*/
+    float: right;
+}
+
+
+
 .modalDialogBackpack {
     position: fixed;
     top: 0;
@@ -6,25 +39,24 @@
     left: 0;
     background: rgba(0, 0, 0, 0.8);
     z-index: 99999;
-    opacity:0;
+    opacity:1;
+    pointer-events: auto;
     -webkit-transition: opacity 400ms ease-in;
     -moz-transition: opacity 400ms ease-in;
     transition: opacity 400ms ease-in;
-    pointer-events: none;
 }
-.modalDialogBackpack {
-    opacity:1;
-    pointer-events: auto;
-}
+
+
 .modalDialogBackpack > div {
-    background: #c0c0c0 url("../images/fightbackground.jpg") no-repeat center fixed;
+    background: #c0c0c0 url("../images/fightbackground.jpg") repeat;
     width: 500px;
     height: auto;
-    max-height: 50%;
+    max-height: 80%;
     position: relative;
     margin: 5% auto;
     padding: 5px 20px 13px 20px;
     border-radius: 10px;
+    overflow-y: auto;
 }
 
 .close {

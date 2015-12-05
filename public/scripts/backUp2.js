@@ -8,90 +8,95 @@ var server = "http://localhost:3000";
 app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location', '$anchorScroll', 'JoueurService', 'AvancementService', 
         function($scope, $http, $sce, $window, $location, $anchorScroll, JoueurService, AvancementService) {
 
-    // Récupérer le joueur courant
-    $http.get(server+'/jeu/joueur/')
-        .then(function(response) {
-            $scope.id = response.data._id;  
-            $scope.setAvancementCourant($scope.id);
+        // Récupérer le joueur courant
+        $http.get(server+'/jeu/joueur/')
+            .then(function(response) {
+                $scope.id = response.data._id;  
+                $scope.setAvancementCourant($scope.id);
         });
-    
-    // Récupérer l'avancement du joueur
+
     $scope.setAvancementCourant = function(id){
+        // Récupérer l'avancement du joueur
         $http.get(server+'/api/avancements/' + id)
             .then(function(response) {
-                $scope.avancement = response.data; 
-                $scope.setInfoJoueurCourant($scope.id);           
+                var avancement = response.data;
+                AvancementService.set(avancement); 
+                $scope.setInfoJoueurCourant($scope.id, avancement);           
         })
     }
-    
-    // Récupérer les informations du joueur courant
-    $scope.setInfoJoueurCourant = function(id){        
+
+    $scope.setInfoJoueurCourant = function(id, avancement){
+        // Récupérer les informations du joueur courant
         $http.get(server+'/api/joueurs/' + id)
             .then(function(response) {
-                $scope.joueur = response.data;
-                $scope.setPageCourante($scope.avancement);
+                JoueurService.set(response.data);         
+                $scope.joueur = JoueurService.get();
+                var avancement = AvancementService.get();
+                $historique = avancement.historique;
+                var numeroPage = avancement.page;
+                var sectionPage = avancement.section;
+                $scope.setPageCourante(avancement, numeroPage, sectionPage);
         });
     }
-    // Récupérer les informations de la section de la page courante
-    $scope.setPageCourante = function(avancement){
-        $http.get(server+'/jeu/' + $scope.avancement.page +'/' + $scope.avancement.section)
+
+    $scope.setPageCourante = function(avancement, numeroPage, sectionPage){
+        // Récupérer les informations de la section de la page courante
+        $http.get(server+'/jeu/' + numeroPage +'/' + sectionPage)
             .success(function(response) {
                 $scope.page = response;
-                $scope.setParametres();
+                $scope.victoireParfaite = false;
+            if(avancement['tableDeHasard'] != {}){
+                $scope.choixFait = true;
+                $scope.deuxiemeChoixFait = false;
+                $scope.pagePossible = avancement.tableDeHasard.pagePossible;
+                $scope.chiffreAleatoire = avancement.tableDeHasard.chiffreAleatoire;
+            } else {
+                $scope.initialiserVariables();
+            }
         });  
     }
 
     // Charger les paramètres (combat, page possible, chiffre etc.)
-    $scope.setParametres = function(){
-        $scope.victoireParfaite = false;
-        if($scope.avancement['tableDeHasard'] != {}){
-            $scope.choixFait = true;
-            $scope.deuxiemeChoixFait = false;
-            $scope.pagePossible =$scope.avancement.tableDeHasard.pagePossible;
-            $scope.chiffreAleatoire = $scope.avancement.tableDeHasard.chiffreAleatoire;
-        } else {
-            $scope.initialiserVariables();
-        }
-    }
 
     $scope.changerPage = function(pageSuivante, sectionSuivante) {
+        var avancement = AvancementService.get();
+        /*avancement.historique = [];*/
         $scope.afficherSectionSuivante = false;
         $http.get(server+'/jeu/' + pageSuivante + "/" + sectionSuivante)
             .success(function(response) {
             $scope.page = response;
+            //$scope.section = null;
             // Mise à jour de l'historique
-            $scope.avancement.historique.push($scope.getDatetime()+" : Page "+pageSuivante);
-            $scope.avancement["page"] = pageSuivante;
-            $scope.avancement["section"] = sectionSuivante;
-            AvancementService.save($scope.avancement._id, {"page" : pageSuivante, "section" : sectionSuivante, "historique" : $scope.avancement.historique});
+            avancement.historique.push($scope.getDatetime()+" : Page "+pageSuivante);
+            $scope.historique = avancement.historique;
+            avancement["page"] = pageSuivante;
+            avancement["section"] = sectionSuivante;
+            AvancementService.set(avancement);
+            AvancementService.save(avancement._id, {"page" : pageSuivante, "section" : sectionSuivante, "historique" : $scope.historique});
             //Reach the top of the page
             $anchorScroll();
             // Guérison
             guerisonCheck();
+
             //Initialise les variables
             $scope.initialiserVariables();
+
         });        
     };
 
-    $scope.changerSection = function(pageCourante, sectionSuivante) {        
+    $scope.changerSection = function(pageCourante, sectionSuivante) {
+        var avancement = AvancementService.get();
         $http.get(server+'/jeu/' + pageCourante + "/" + sectionSuivante)
             .success(function(response) {
             $scope.afficherSectionSuivante = true;
             $scope.section = response;
             $scope.page.section = sectionSuivante;
-            $scope.avancement["page"] = pageCourante;
-            $scope.avancement["section"] = sectionSuivante;
-            AvancementService.save($scope.avancement._id, {"page" : pageCourante, "section" : sectionSuivante});            
+            avancement["page"] = pageCourante;
+            avancement["section"] = sectionSuivante;
+            AvancementService.set(avancement);
+            AvancementService.save(avancement._id, {"page" : pageCourante, "section" : sectionSuivante});            
         });
     };
-
-    $scope.initialiserVariables = function(){
-        $scope.choixFait = false;
-        $scope.objetAjoute = false;
-        $scope.fait = false;
-        $scope.pagePossible = 0;
-        $scope.victoireParfaite = "false";
-    }
 
     $scope.checkDiscipline = function(discipline){
         var disciplines = $scope.joueur.disciplines;
@@ -195,7 +200,8 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
                 $scope.chiffreAleatoire = res.chiffre;
                 $scope.pagePossible = res.page;
                 $scope.choixFait = true;
-                AvancementService.save($scope.avancement._id, {"tableDeHasard": {"pagePossible": res.page, "chiffreAleatoire" : res.chiffre}});
+                var avancement = AvancementService.get();
+                AvancementService.save(avancement._id, {"tableDeHasard": {"pagePossible": res.page, "chiffreAleatoire" : res.chiffre}});
                 $scope.changerSection(page, $scope.page.section +1);
             });
     }
@@ -209,9 +215,18 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
                 $scope.pagePossible = res.page;
                 $scope.choixFait = true;
                 $scope.special = res.special;
-                AvancementService.save($scope.avancement._id, {"tableDeHasard": {"pagePossible": res.page, "chiffreAleatoire" : res.chiffre, "special" : res.special}});
+                var avancement = AvancementService.get();
+                AvancementService.save(avancement._id, {"tableDeHasard": {"pagePossible": res.page, "chiffreAleatoire" : res.chiffre, "special" : res.special}});
                 $scope.changerSection(page, $scope.page.section +1);
             });
+    }
+
+    $scope.initialiserVariables = function(){
+        $scope.choixFait = false;
+        $scope.objetAjoute = false;
+        $scope.fait = false;
+        $scope.pagePossible = 0;
+        $scope.victoireParfaite = "false";
     }
 
     $scope.choisirObjet = function(choix) {
@@ -236,17 +251,10 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
         $scope.victoireParfaite = choix;
     }
 
-    function addZero(i) {
-        if (i < 10) {
-            i = "0" + i;
-        }
-        return i;
-    }
-
     $scope.getDatetime = function() {
         d = new Date();
-        m = addZero(d.getMinutes());
-        h = addZero(d.getHours());
+        m = d.getMinutes();
+        h = d.getHours();
         time = h+"h"+m;
         return time;
     };
@@ -288,14 +296,17 @@ app.directive('aDisabled', function() {
         compile: function(tElement, tAttrs, transclude) {
             //Disable ngClick
             tAttrs["ngClick"] = "!("+tAttrs["aDisabled"]+") && ("+tAttrs["ngClick"]+")";
+
             //return a link function
             return function (scope, iElement, iAttrs) {
+
                 //Toggle "disabled" to class when aDisabled becomes true
                 scope.$watch(iAttrs["aDisabled"], function(newValue) {
                     if (newValue !== undefined) {
                         iElement.toggleClass("disabled", newValue);
                     }
                 });
+
                 //Disable href on click
                 iElement.on("click", function(e) {
                     if (scope.$eval(iAttrs["aDisabled"])) {
@@ -309,20 +320,60 @@ app.directive('aDisabled', function() {
 
 
 // SERVICES
+
 app.factory('JoueurService', ['$window', '$http', function($window, $http) {
+    function get() {
+        return JSON.parse($window.sessionStorage.getItem('joueur'));
+    }
+
+    function set(object) {
+        $window.sessionStorage.setItem('joueur', JSON.stringify(object));
+    }
+
     function save(id, object) {
         $http.put(server+'/api/joueurs/' + id, object);   
     }
+
     return {
+        get: get,
+        set: set,
         save: save
     }
 }]);
 
 app.factory('AvancementService', ['$window', '$http', function($window, $http) {
+    function get() {
+        return JSON.parse($window.sessionStorage.getItem('avancement'));
+    }
+
+    function set(object) {
+        $window.sessionStorage.setItem('avancement', JSON.stringify(object));
+    }
+
     function save(id, object) {
         $http.put(server+'/api/avancements/' + id, object);   
-    }
+    }       
+
     return {
+        get: get,
+        set: set,
         save: save
     }
 }]);
+
+app.factory('CombatService', ['$window', '$http', function($window, $http) {
+    function get() {
+        return JSON.parse($window.sessionStorage.getItem('combat'));
+    }
+
+    function set(object) {
+        $window.sessionStorage.setItem('combat', JSON.stringify(object));
+    }
+
+    return {
+        get: get,
+        set: set
+    }
+}]);
+
+

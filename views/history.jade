@@ -1,0 +1,4 @@
+p #[strong -- Historique --]
+div(class="messagesHistorique")
+    ul
+        li(ng-repeat="line in avancement.historique track by $index", ng-bind-html="line")

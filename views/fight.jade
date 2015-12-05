@@ -7,10 +7,16 @@ aside(class="fight", ng-controller="combatManager")
     div(id='fightModal', class="modalDialogFight", ng-if="comCombat == true")
         div
             a(href="", title="Close", class="close", ng-click="commencerCombat(false)")
-            h2 {{combat.nom}}
-            h3 Habileté : {{combat['habileté']}}
-            h3 Endurance : {{combat['endurance']}}
-            h3 {{points}}
+            table
+                tr
+                    th {{combat.nom}}
+                    th {{joueur.nom}}
+                tr
+                    td Habileté : {{combat['habileté']}}
+                    td Habileté : {{joueur['habileté'] + joueur['bonusHabilete']}}
+                 tr
+                    td Endurance : {{combat['endurance']}}
+                    td Endurance :{{joueur['endurance'] + joueur['bonusEndurance']}}
             div(ng-if="fin == false")
                 input(type='submit', value='Combattre !', ng-click="roundCombat(false)", class='button')
                 input(type='submit', value='Fuir !', ng-click="fuirCombat()", class='button')
@@ -18,5 +24,5 @@ aside(class="fight", ng-controller="combatManager")
                     input(type='submit', value='Attaquer avec la Puissance Psychique !', ng-click="roundCombat(true)", class='button')
             div(id="textcombat", class="messagesCombat")
                 ul
-                    li Un duel avec {{combat.nom}} va commencer !
+                    li(class="roundnumero") Un duel avec {{combat.nom}} va commencer !
                     li(ng-repeat="line in combatLog track by $index", ng-bind-html="line")

@@ -31,11 +31,17 @@ ul{
 
 #block-lateral-gauche{
     position: fixed;
-    top: 100px;
+    top: 10%;
+    height: 80%;
     width: 20%;
     margin-left: 2.5%;
     /*border: solid red 1px;*/
     background-size: cover;
+}
+
+.messagesHistorique{
+    max-height: 80%;
+    overflow-y: auto;
 }
 
 #block-lateral-rightstat{
@@ -44,6 +50,7 @@ ul{
     margin-left: 77.5%;
     /*border: solid red 1px;*/
     background-size: cover;
+    /*overflow: auto;*/
 }
 
 #block-lateral-rightbackpack{
@@ -53,6 +60,7 @@ ul{
     margin-left: 77.5%;
     /*border: solid red 1px;*/
     background-size: cover;
+    overflow: auto;
 }
 
 footer{
@@ -95,9 +103,15 @@ footer{
     cursor: no-drop;
 }
 
+.statistiques {
+    font-weight: bold;
+}
 
-.icon_voyage{
-    float: left;
+
+.icon_coins img{
+    vertical-align: middle;
+    width : 70px;
+    padding: 3px;
 }
 
 #decision>p::after{
