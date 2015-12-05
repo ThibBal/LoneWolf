@@ -2,14 +2,14 @@ block head
     link(rel='stylesheet', href='/stylesheets/chooseObjects.css')
 
 aside
-    input(type='submit', ng-if="page.objetsAjoutables != []", value='Choisir les objets à ajouter', ng-click="choisirObjet(true)", class='button')
+    input(type='submit', ng-if="avancement.objetsAjoutables != []", value='Choisir les objets à ajouter', ng-click="choisirObjet(true)", class='button')
     div(id='ChooseObjectsModal', class="modalDialogChooseObjects", ng-if="choix == true")
         div
             a(href="", title="Close", class="close", ng-click="choisirObjet(false)")
             h2 Choisir les objets à ajouter à votre inventaire
             div#boutonsChooseObjects
                 ul
-                    li(ng-repeat="objet in page.objetsAjoutables")
+                    li(ng-repeat="objet in avancement.objetsAjoutables")
                         input(type='submit', value="{{objet.nom}} ({{objet.quantite}})", ng-click="ajouterObjet(objet)", class='button')
 
                 input(type='submit', value="OK", class='button', ng-click="choisirObjet(false)")

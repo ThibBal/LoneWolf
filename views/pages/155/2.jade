@@ -1,4 +1,4 @@
 p La corniche en rejoint une autre que vous avez beaucoup de mal à parcourir. Lorsque, enfin, vous arrivezau bout, vous vous trouvez au sommet d'une paroi impressionnante. Pour descendre dans l'étroit défilé que vous apercevez à 300 mètres au-dessous, il vous faudra emprunter un escalier particulièrement raide et dangereux dont les marches sont taillées dans la glace.
 p Utilisez la Table de Hasard pour obtenir un chiffre. Si votre total d'ENDURANCE actuel est inférieur à 10, vous ôterez 2 au chiffre obtenu. Si ce total est supérieur à 20, vous ajouterez 1 au chiffre donné par la Table.
-div(ng-if="deuxiemeChoixFait == false")
+div(ng-if="avancement.choixTable == false")
     input(type='submit', value='Utilisez la Table de Hasard pour obtenir un chiffre', ng-click="tableDeHasardSpeciale(155)", class='button')

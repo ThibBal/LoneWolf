@@ -1,5 +1,7 @@
 div#decision
-    h3 Le chiffre est {{chiffreAleatoire}}
-    p Si le total obtenu se situe entre -2 et 4, rendez-vous à #[a(href='', a-disabled="pagePossible != 248", ng-click='changerPage("248", "1")') la page 248].
-    p S'il est de 5 à 11, rendez-vous à #[a(href='', a-disabled="pagePossible != 191", ng-click='changerPage("350", "1")') la page 350].
-    //- p S'il est de 5 à 11, rendez-vous à #[a(href='', a-disabled="pagePossible != 191", ng-click='changerPage("191", "1")') la page 191].
+    h3 Le chiffre est {{avancement.tableDeHasard.chiffreAleatoire}}
+    p Si le total obtenu se situe entre -2 et 4, rendez-vous à #[a(href='', a-disabled="avancement.tableDeHasard.pagePossible != 248", ng-click='changerPage("248")') la page 248].
+    //- Nous avons changé la page 191 en 350 qui n'est pas implémentée dans le jeu pour offrir une "fin" à notre livre jeu
+    p S'il est de 5 à 11, rendez-vous à #[a(href='', a-disabled="avancement.tableDeHasard.pagePossible != 350", ng-click='changerPage("350")') la page 350].
+
+    //- p S'il est de 5 à 11, rendez-vous à #[a(href='', a-disabled="pagePossible != 191", ng-click='changerPage("191")') la page 191].

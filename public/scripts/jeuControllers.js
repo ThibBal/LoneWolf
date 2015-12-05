@@ -34,61 +34,98 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
     }
     // Récupérer les informations de la section de la page courante
     $scope.setPageCourante = function(avancement){
-        $http.get(server+'/jeu/' + $scope.avancement.page +'/' + $scope.avancement.section)
+        $http.get(server+'/jeu/' + $scope.avancement.page +'/' + 1)
             .success(function(response) {
                 $scope.page = response;
-                $scope.setParametres();
-        });  
+                $scope.setParametres($scope.page);                
+        });
+        $scope.sectionsSuivantes = [];
+        if($scope.avancement.section != 1){
+            for(var k=2; k<=$scope.avancement.section; k++){
+                $scope.getSectionInfo($scope.avancement.page, k);
+            }
+        }
     }
 
+    // Récupérer les informations de la section de la page courante
+    $scope.getSectionInfo = function(page, section){
+        $http.get(server+'/jeu/' + page +'/' + section)
+            .success(function(response) {
+                $scope.sectionsSuivantes[section-2] = response.html;
+        });
+    } 
+
+    // Récupérer les informations de la section de la page courante
+    $scope.getPageInfo = function(page){
+        $http.get(server+'/jeu/' + page +'/' + 1)
+            .success(function(response) {
+                $scope.page = response;
+        });
+    }    
+    
     // Charger les paramètres (combat, page possible, chiffre etc.)
     $scope.setParametres = function(){
         $scope.victoireParfaite = false;
-        if($scope.avancement['tableDeHasard'] != {}){
-            $scope.choixFait = true;
-            $scope.deuxiemeChoixFait = false;
-            $scope.pagePossible =$scope.avancement.tableDeHasard.pagePossible;
-            $scope.chiffreAleatoire = $scope.avancement.tableDeHasard.chiffreAleatoire;
+        if($scope.avancement.objetsAjoutes != true){   
+            $scope.avancement.objetsAjoutables = $scope.page.objetsAjoutables;
+        }
+        if($scope.avancement.choixTable == true){
+            //$scope.coucou = "coucou";
+            //$scope.deuxiemeavancement.choixTable = false;
+            //$scope.pagePossible =$scope.avancement.tableDeHasard.pagePossible;
+            //$scope.chiffreAleatoire = $scope.avancement.tableDeHasard.chiffreAleatoire;
         } else {
             $scope.initialiserVariables();
         }
     }
 
-    $scope.changerPage = function(pageSuivante, sectionSuivante) {
-        $scope.afficherSectionSuivante = false;
-        $http.get(server+'/jeu/' + pageSuivante + "/" + sectionSuivante)
-            .success(function(response) {
-            $scope.page = response;
-            // Mise à jour de l'historique
-            $scope.avancement.historique.push($scope.getDatetime()+" : Page "+pageSuivante);
-            $scope.avancement["page"] = pageSuivante;
-            $scope.avancement["section"] = sectionSuivante;
-            AvancementService.save($scope.avancement._id, {"page" : pageSuivante, "section" : sectionSuivante, "historique" : $scope.avancement.historique});
-            //Reach the top of the page
-            $anchorScroll();
-            // Guérison
-            guerisonCheck();
-            //Initialise les variables
-            $scope.initialiserVariables();
-        });        
+    $scope.changerPage = function(pageSuivante) {
+        $scope.getPageInfo(pageSuivante);
+        $scope.sectionsSuivantes = [];
+        // Mise à jour de l'historique
+        $scope.avancement.historique.push($scope.getDatetime()+" : Page "+pageSuivante);
+        $scope.avancement["page"] = pageSuivante;
+        $scope.avancement["section"] = 1;
+        $scope.avancement.tableDeHasard = {};
+        $scope.avancement.choixTable = false;
+        $scope.avancement.enduranceChangee = false;
+        $scope.avancement.objetPerdu = false;
+
+        if($scope.page.objetsAjoutables){
+             $scope.avancement.objetsAjoutables = $scope.page.objetsAjoutables;
+        } else {
+            $scope.avancement.objetsAjoutables = [];
+        }
+        AvancementService.save($scope.avancement._id, 
+            {"page" : pageSuivante, 
+            "section" : 1, 
+            "historique" : $scope.avancement.historique, 
+            "objetsAjoutables" :  $scope.avancement.objetsAjoutables, 
+            "tableDeHasard" : {}, 
+            "choixTable": false,
+            "enduranceChangee" : false,
+            "objetPerdu" : false,
+            "objetAjoute" : false
+        });
+        //Reach the top of the page
+        $anchorScroll();
+        // Guérison
+        guerisonCheck();
+        //Initialise les variables
+        $scope.initialiserVariables();  
     };
 
-    $scope.changerSection = function(pageCourante, sectionSuivante) {        
-        $http.get(server+'/jeu/' + pageCourante + "/" + sectionSuivante)
-            .success(function(response) {
-            $scope.afficherSectionSuivante = true;
-            $scope.section = response;
-            $scope.page.section = sectionSuivante;
-            $scope.avancement["page"] = pageCourante;
-            $scope.avancement["section"] = sectionSuivante;
-            AvancementService.save($scope.avancement._id, {"page" : pageCourante, "section" : sectionSuivante});            
-        });
+    $scope.changerSection = function(pageCourante, sectionSuivante) {
+        $scope.getSectionInfo(pageCourante, sectionSuivante);        
+        $scope.avancement["section"] = sectionSuivante;
+        AvancementService.save($scope.avancement._id, {"section" : sectionSuivante});
     };
 
     $scope.initialiserVariables = function(){
-        $scope.choixFait = false;
+        $scope.objetsAjoutes = false; 
         $scope.objetAjoute = false;
         $scope.fait = false;
+        $scope.enduranceChangee = false;
         $scope.pagePossible = 0;
         $scope.victoireParfaite = "false";
     }
@@ -127,7 +164,7 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
        $scope.joueur["objets_spéciaux"].push(objet);
        JoueurService.save($scope.joueur._id, {"objets_spéciaux" : $scope.joueur["objets_spéciaux"]});
        $scope.objetAjoute = true;
-       $scope.changerSection($scope.page.numero, $scope.page.section+1);  
+       $scope.changerSection($scope.page.numero, $scope.avancement.section+1);  
     }
 
     $scope.utiliserObjet = function(objet){
@@ -151,8 +188,8 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
         }
         $scope.joueur["taille_sac_à_dos"] = $scope.joueur["taille_sac_à_dos"] + objet.taille;   
         JoueurService.save($scope.joueur._id, {"sac_à_dos" : $scope.joueur["sac_à_dos"], "taille_sac_à_dos" : $scope.joueur["taille_sac_à_dos"]});
-        var index = $scope.page.objetsAjoutables.indexOf(objet);
-        $scope.page.objetsAjoutables.splice(index, 1);
+        var index = $scope.avancement.objetsAjoutables.indexOf(objet);
+        $scope.avancement.objetsAjoutables.splice(index, 1);
     }
 
     $scope.perdreObjet = function(objet){
@@ -168,16 +205,17 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
         }
         $scope.joueur["taille_sac_à_dos"] = $scope.joueur["taille_sac_à_dos"] - objet.taille;
         JoueurService.save($scope.joueur._id, {"sac_à_dos" : $scope.joueur["sac_à_dos"], "taille_sac_à_dos" : $scope.joueur["taille_sac_à_dos"]});
-
-        $scope.fait = true;
-        $scope.changerSection($scope.page.numero, $scope.page.section+1);  
+        $scope.avancement.objetPerdu = true;
+        AvancementService.save($scope.avancement._id, {"objetPerdu" : true});
+        $scope.changerSection($scope.page.numero, $scope.avancement.section+1);  
     }
 
     $scope.changerEndurance = function(points){
        $scope.joueur["endurance"] = $scope.joueur["endurance"] + points;
-       $scope.fait = true;
+       $scope.avancement.enduranceChangee = true;
        JoueurService.save($scope.joueur._id, {"endurance" : $scope.joueur["endurance"]});
-       $scope.changerSection($scope.page.numero, $scope.page.section+1);  
+       AvancementService.save($scope.avancement._id, {"enduranceChangee" : true})
+       $scope.changerSection($scope.page.numero, $scope.avancement.section+1);  
     }
 
     function guerisonCheck(){
@@ -192,11 +230,15 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
          $http.get(server+'/jeu/choixAleatoire/'+page)
             .then(function(response) {
                 var res = response.data
-                $scope.chiffreAleatoire = res.chiffre;
-                $scope.pagePossible = res.page;
-                $scope.choixFait = true;
-                AvancementService.save($scope.avancement._id, {"tableDeHasard": {"pagePossible": res.page, "chiffreAleatoire" : res.chiffre}});
-                $scope.changerSection(page, $scope.page.section +1);
+                $scope.avancement.tableDeHasard.chiffreAleatoire = res.chiffre;
+                $scope.avancement.tableDeHasard.pagePossible = res.page;
+                $scope.avancement.choixTable = true;
+                AvancementService.save($scope.avancement._id, 
+                {"tableDeHasard": 
+                    {"pagePossible": res.page,
+                    "chiffreAleatoire" : res.chiffre},
+                "choixTable" : true});
+                $scope.changerSection(page, $scope.avancement.section +1);
             });
     }
 
@@ -205,12 +247,17 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
          $http.get(server+'/jeu/choixAleatoire/'+page+'/'+enduranceTotale)
             .then(function(response) {
                 var res = response.data
-                $scope.chiffreAleatoire = res.chiffre;
-                $scope.pagePossible = res.page;
-                $scope.choixFait = true;
-                $scope.special = res.special;
-                AvancementService.save($scope.avancement._id, {"tableDeHasard": {"pagePossible": res.page, "chiffreAleatoire" : res.chiffre, "special" : res.special}});
-                $scope.changerSection(page, $scope.page.section +1);
+                $scope.avancement.chiffreAleatoire = res.chiffre;
+                $scope.avancement.pagePossible = res.page;
+                $scope.avancement.choixTable = true;
+                $scope.avancement.special = res.special;
+                AvancementService.save($scope.avancement._id, 
+                {"tableDeHasard": 
+                    {"pagePossible": res.page, 
+                    "chiffreAleatoire" : res.chiffre, 
+                    "special" : res.special},  
+                "choixTable" : true});
+                $scope.changerSection(page, $scope.avancement.section +1);
             });
     }
 
@@ -219,8 +266,8 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
             $scope.choix = true;
         } else {
             $scope.choix = false;
-           // $scope.2fait = false;
-            $scope.changerSection($scope.page.numero, $scope.page.section+1);  
+            AvancementService.save($scope.avancement._id, {"objetsAjoutables": $scope.page.objetsAjoutables, "objetsAjoutes" : true});
+            $scope.changerSection($scope.page.numero, $scope.avancement.section+1);  
         }
     } 
 

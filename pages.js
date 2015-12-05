@@ -70,7 +70,7 @@ exports.pages = {
             special : {enduranceMin : 10, impactMin : -2, enduranceMax : 20, impactMax : 1},
             choix : [
                 {page : 248, intervalle : [-2,4]},
-                {page : 191, intervalle : [5,11]}    
+                {page : 350, intervalle : [5,11]}    
             ]
         }
     },

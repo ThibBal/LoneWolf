@@ -1,5 +1,5 @@
 div#decision
-   h3 Le chiffre est {{chiffreAleatoire}}
-   p Si vous avez tiré un chiffre entre 0 et 3, #[a(href='', a-disabled="pagePossible != 57", ng-click='changerPage("57", "1")') rendez-vous au 57].
-   p Entre 4 et 6, rendez-vous à #[a(href='', a-disabled="pagePossible != 188", ng-click='changerPage("188", "1")') la page 188].
-   p Entre 7 et 9, rendez-vous à #[a(href='', a-disabled="pagePossible != 331", ng-click='changerPage("331", "1")') la page 331].
+   h3 Le chiffre est {{avancement.tableDeHasard.chiffreAleatoire}}
+   p Si vous avez tiré un chiffre entre 0 et 3, #[a(href='', a-disabled="avancement.tableDeHasard.pagePossible != 57", ng-click='changerPage("57")') rendez-vous au 57].
+   p Entre 4 et 6, rendez-vous à #[a(href='', a-disabled="avancement.tableDeHasard.pagePossible != 188", ng-click='changerPage("188")') la page 188].
+   p Entre 7 et 9, rendez-vous à #[a(href='', a-disabled="avancement.tableDeHasard.pagePossible != 331", ng-click='changerPage("331")') la page 331].
