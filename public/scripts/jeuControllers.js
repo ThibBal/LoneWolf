@@ -56,12 +56,12 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
     } 
 
     // Récupérer les informations de la section de la page courante
-    $scope.getPageInfo = function(page){
-        $http.get(server+'/jeu/' + page +'/' + 1)
-            .success(function(response) {
-                $scope.page = response;
-        });
-    }    
+    // $scope.getPageInfo = function(page){
+    //     $http.get(server+'/jeu/' + page +'/' + 1)
+    //         .success(function(response) {
+    //             $scope.page = response;
+    //     });
+    // }    
     
     // Charger les paramètres (combat, page possible, chiffre etc.)
     $scope.setParametres = function(){
@@ -80,7 +80,21 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
     }
 
     $scope.changerPage = function(pageSuivante) {
-        $scope.getPageInfo(pageSuivante);
+        $http.get(server+'/jeu/' + pageSuivante +'/' + 1)
+            .success(function(response) {
+                $scope.page = response;
+                if($scope.page.objetsAjoutables.length != 0){
+                    $scope.avancement.objetsAjoutables = $scope.page.objetsAjoutables;
+                } else {
+                    $scope.avancement.objetsAjoutables = [];
+                }
+
+          /*      if($scope.page.tableDeHasard.length != 0){
+                    $scope.avancement.tableDeHasard = $scope.page.tableDeHasard;
+                } else {
+                    $scope.avancement.tableDeHasard = [];
+                }*/
+        });
         $scope.sectionsSuivantes = [];
         // Mise à jour de l'historique
         $scope.avancement.historique.push($scope.getDatetime()+" : Page "+pageSuivante);
@@ -91,18 +105,12 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
         $scope.avancement.enduranceChangee = false;
         $scope.avancement.objetPerdu = false;
         $scope.avancement.victoireParfaite = false;
-
-        if($scope.page.objetsAjoutables){
-             $scope.avancement.objetsAjoutables = $scope.page.objetsAjoutables;
-        } else {
-            $scope.avancement.objetsAjoutables = [];
-        }
         AvancementService.save($scope.avancement._id, 
             {"page" : pageSuivante, 
             "section" : 1, 
             "historique" : $scope.avancement.historique, 
             "objetsAjoutables" :  $scope.avancement.objetsAjoutables, 
-            "tableDeHasard" : {}, 
+            "tableDeHasard" : $scope.avancement.tableDeHasard, 
             "choixTable": false,
             "enduranceChangee" : false,
             "objetPerdu" : false,
@@ -272,8 +280,8 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
          $http.get(server+'/jeu/choixAleatoire/'+page+'/'+enduranceTotale)
             .then(function(response) {
                 var res = response.data
-                $scope.avancement.chiffreAleatoire = res.chiffre;
-                $scope.avancement.pagePossible = res.page;
+                $scope.avancement.tableDeHasard.chiffreAleatoire = res.chiffre;
+                $scope.avancement.tableDeHasard.pagePossible = res.page;
                 $scope.avancement.choixTable = true;
                 $scope.avancement.special = res.special;
                 AvancementService.save($scope.avancement._id, 

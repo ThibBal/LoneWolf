@@ -29,13 +29,13 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
     $scope.nombreAleatoire = 0;
     $scope.quotient = 0;
     
-    /*$scope.commencerCombat = function(commencer) {
+    $scope.commencerCombat = function(commencer) {
         if(commencer == true){
             $scope.comCombat = true;
         } else {
             $scope.comCombat = false;
         }
-    };*/
+    };
 
     $scope.fuirCombat = function() {
         $scope.habileteFinale = $scope.joueur['habileté'] + $scope.joueur['bonusHabilete'];

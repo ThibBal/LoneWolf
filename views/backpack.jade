@@ -10,7 +10,7 @@ aside
         div
             a(href="", title="Close", class="close", ng-click="voirSacADos(false)")
             h2 Contenu de votre sac à dos
-            table
+            table(ng-if="joueur['sac_à_dos'].length > 0")
                 tr
                     th(class='nom_sac') Objets
                     th(class='icon_sac') Quantité
@@ -26,7 +26,7 @@ aside
                         //- Même comportement
                         a(href="", title="Supprimer" ng-click="utiliserObjet(item)")
                             img(src='/icons/uncheck.png', class='icon_check')
-            table
+            table(ng-if="joueur['objets_spéciaux'].length > 0")
                 tr
                     th(class='nom_sac') Objets Spéciaux
                     th(class='icon_sac') Quantité
