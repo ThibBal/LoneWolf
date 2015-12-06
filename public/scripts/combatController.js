@@ -11,15 +11,10 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
         $scope.combatLog =  $scope.avancement.combat.combatLog;
         $scope.numeroRound =  $scope.avancement.combat.numeroRound;
         $scope.combat = $scope.avancement.combat.ennemi;
-        $scope.continuerCombat = true;
-        /*$scope.fin = $scope.avancement.combat.fin;*/
-        $scope.commencerCombat = true;
     } else {
+        $scope.avancement.enduranceInitialeCombat = $scope.joueur["endurance"];
         $scope.combatLog = [];
         $scope.numeroRound =  1;
-        /*$scope.victoire = false;*/
-        $scope.defaite = false;
-        /*$scope.fin = false;*/
         $http.get(server+'/jeu/' + $scope.avancement.page +'/' + $scope.avancement.section)
                                         .success(function(response) {
                                             $scope.combat = response.combat;
@@ -75,8 +70,6 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
 
     function fuiteReussie() {
         $scope.combatLog.push("<span class='roundnumero'>"+$scope.joueur.nom+" a réussi à fuir !</span>");
-       /* $scope.victoire = true;*/
-        /*$scope.fin = true;*/
         $scope.avancement.combat_fini = true;
         $scope.avancement.combat_en_cours = false;
         $window.alert("Fuite réussie ! Vous pouvez poursuivre votre aventure.");
@@ -88,8 +81,6 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
     $scope.roundCombat = function(utiliser_pp) {
 
         // Récupération des informations du joueur
-        //joueur = JoueurService.get();
-        //combat = CombatService.get();
         $scope.combat_en_cours = true;
         // Gestion des objets spéciaux
         if(utiliser_pp == true){
@@ -110,7 +101,6 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
                 //Modifications du joueur
                 $scope.EndurancePerdueJ = res['points_joueur'];
                 $scope.NouvelleEnduranceJ = $scope.joueur['endurance'] - $scope.EndurancePerdueJ;
-                //$scope.NouvelleEnduranceJB = $scope.NouvelleEnduranceJB + $scope.joueur["bonusEndurance"];
                 //Modifications de l'ennemi
                 $scope.EndurancePerdueE = res['points_ennemi'];
                 $scope.NouvelleEnduranceE = $scope.combat['endurance'] - $scope.EndurancePerdueE;
@@ -153,8 +143,6 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
     function joueurBattu(){
         $scope.joueur['endurance'] = 0;
         $scope.combatLog.push("<span class='roundnumero'>Oh non ! "+$scope.joueur.nom+" est mort ! RIP</span>");
-        /*$scope.defaite = true;*/
-       /* $scope.fin = true;*/
         $http.delete(server+'/api/joueurs/' + $scope.joueur._id);
         $window.alert('Vous êtes mort. Game Over');
         $window.location.href= '/jeu/creer';
@@ -163,14 +151,12 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
     function ennemiBattu(){
         $scope.combat['endurance'] = 0;
         $scope.combatLog.push("<span class='roundnumero'>"+$scope.combat.nom+" est mort !</span>");
-        /*$scope.victoire = true;*/
-/*        $scope.fin = true;*/
         $scope.avancement.combat_fini = true;
         $scope.avancement.combat_en_cours = false;
-        if(enduranceInitiale == $scope.joueur['endurance']){
-            $scope.victoireParfaite = true;
+        if($scope.avancement.enduranceInitialeCombat == $scope.joueur['endurance']){
+            $scope.avancement.victoireParfaite = true;
         } else {
-            $scope.victoireParfaite = false;
+            $scope.avancement.victoireParfaite = false;
         }
         AvancementService.save($scope.avancement._id, 
             {"combat_en_cours" : false,
