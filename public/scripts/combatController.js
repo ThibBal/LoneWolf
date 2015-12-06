@@ -12,14 +12,14 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
         $scope.numeroRound =  $scope.avancement.combat.numeroRound;
         $scope.combat = $scope.avancement.combat.ennemi;
         $scope.continuerCombat = true;
-        $scope.fin = $scope.avancement.combat.fin;
+        /*$scope.fin = $scope.avancement.combat.fin;*/
         $scope.commencerCombat = true;
     } else {
         $scope.combatLog = [];
         $scope.numeroRound =  1;
-        $scope.victoire = false;
+        /*$scope.victoire = false;*/
         $scope.defaite = false;
-        $scope.fin = false;
+        /*$scope.fin = false;*/
         $http.get(server+'/jeu/' + $scope.avancement.page +'/' + $scope.avancement.section)
                                         .success(function(response) {
                                             $scope.combat = response.combat;
@@ -75,11 +75,13 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
 
     function fuiteReussie() {
         $scope.combatLog.push("<span class='roundnumero'>"+$scope.joueur.nom+" a réussi à fuir !</span>");
-        $scope.victoire = true;
-        $scope.fin = true;
-        AvancementService.save($scope.avancement._id, {"combat_en_cours" : false, "combat": {}});
-        JoueurService.save($scope.joueur._id, {"endurance" : $scope.joueur['endurance']});
+       /* $scope.victoire = true;*/
+        /*$scope.fin = true;*/
+        $scope.avancement.combat_fini = true;
+        $scope.avancement.combat_en_cours = false;
         $window.alert("Fuite réussie ! Vous pouvez poursuivre votre aventure.");
+        AvancementService.save($scope.avancement._id, {"combat_en_cours" : false, "combat_fini" : true, "combat": {}});
+        JoueurService.save($scope.joueur._id, {"endurance" : $scope.joueur['endurance']});
         $scope.changerSection($scope.page.numero, $scope.page.section+1);                
     }
 
@@ -88,7 +90,7 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
         // Récupération des informations du joueur
         //joueur = JoueurService.get();
         //combat = CombatService.get();
-
+        $scope.combat_en_cours = true;
         // Gestion des objets spéciaux
         if(utiliser_pp == true){
             $scope.pp = 2;
@@ -151,18 +153,20 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
     function joueurBattu(){
         $scope.joueur['endurance'] = 0;
         $scope.combatLog.push("<span class='roundnumero'>Oh non ! "+$scope.joueur.nom+" est mort ! RIP</span>");
-        $scope.defaite = true;
-        $scope.fin = true;
-        $window.alert('Vous êtes mort. Game Over');
+        /*$scope.defaite = true;*/
+       /* $scope.fin = true;*/
         $http.delete(server+'/api/joueurs/' + $scope.joueur._id);
+        $window.alert('Vous êtes mort. Game Over');
         $window.location.href= '/jeu/creer';
     };
 
     function ennemiBattu(){
         $scope.combat['endurance'] = 0;
         $scope.combatLog.push("<span class='roundnumero'>"+$scope.combat.nom+" est mort !</span>");
-        $scope.victoire = true;
-        $scope.fin = true;
+        /*$scope.victoire = true;*/
+/*        $scope.fin = true;*/
+        $scope.avancement.combat_fini = true;
+        $scope.avancement.combat_en_cours = false;
         if(enduranceInitiale == $scope.joueur['endurance']){
             $scope.victoireParfaite = true;
         } else {
@@ -170,12 +174,13 @@ app.controller('combatManager', ['$scope', '$http', '$sce', '$window', '$locatio
         }
         AvancementService.save($scope.avancement._id, 
             {"combat_en_cours" : false,
+            "combat_fini" : true,
             "victoireParfaite" : $scope.avancement.victoireParfaite,
-            "combat": {},
+            "combat": {}
         });
         JoueurService.save($scope.joueur._id, {"endurance" : $scope.joueur['endurance']});
-        $window.alert("Vous avez gagné ! Vous pouvez poursuivre votre aventure.");
         $scope.changerSection($scope.page.numero, $scope.avancement.section+1);
+        $window.alert("Vous avez gagné ! Vous pouvez poursuivre votre aventure.");
     }
 
 }]);

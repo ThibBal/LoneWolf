@@ -83,7 +83,8 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
         $http.get(server+'/jeu/' + pageSuivante +'/' + 1)
             .success(function(response) {
                 $scope.page = response;
-                if($scope.page.objetsAjoutables.length != 0){
+                if($scope.page.objetsAjoutables){
+                    /*$scope.coucou = "coucou"*/
                     $scope.avancement.objetsAjoutables = $scope.page.objetsAjoutables;
                 } else {
                     $scope.avancement.objetsAjoutables = [];
@@ -105,6 +106,9 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
         $scope.avancement.enduranceChangee = false;
         $scope.avancement.objetPerdu = false;
         $scope.avancement.victoireParfaite = false;
+        $scope.avancement.combat_en_cours = false;
+        $scope.avancement.combat_fini = false;
+        $scope.avancement.objetsAjoutes = false;
         AvancementService.save($scope.avancement._id, 
             {"page" : pageSuivante, 
             "section" : 1, 
@@ -115,7 +119,10 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
             "enduranceChangee" : false,
             "objetPerdu" : false,
             "objetAjoute" : false,
-            "victoireParfaite" : false
+            "victoireParfaite" : false,
+            "combat_en_cours" : false,
+            "combat_fini" : false,
+            "objetsAjoutes" : false
         });
         //Reach the top of the page
         $anchorScroll();
@@ -299,8 +306,11 @@ app.controller('jeuManager', ['$scope', '$http', '$sce', '$window', '$location',
             $scope.choix = true;
         } else {
             $scope.choix = false;
+            if($scope.avancement.objetsAjoutes == false){
+                $scope.changerSection($scope.page.numero, $scope.avancement.section+1);
+            }
+            $scope.avancement.objetsAjoutes = true;
             AvancementService.save($scope.avancement._id, {"objetsAjoutables": $scope.page.objetsAjoutables, "objetsAjoutes" : true});
-            $scope.changerSection($scope.page.numero, $scope.avancement.section+1);  
         }
     } 
 

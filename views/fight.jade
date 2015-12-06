@@ -2,7 +2,7 @@ block head
     link(rel='stylesheet', href='/stylesheets/fightModal.css')
 
 aside(class="fight", ng-controller="combatManager")
-    a(href="", ng-click="commencerCombat(true)")
+    a(href="", ng-click="commencerCombat(true)", a-disabled="avancement.combat_fini == true")
         img(src='/icons/combat1.png')
     div(id='fightModal', class="modalDialogFight", ng-if="comCombat == true")
         div
@@ -17,7 +17,7 @@ aside(class="fight", ng-controller="combatManager")
                  tr
                     td Endurance : {{combat['endurance']}}
                     td Endurance :{{joueur['endurance'] + joueur['bonusEndurance']}}
-            div(ng-if="fin == false")
+            div(ng-if="avancement.combat_fini != true")
                 input(type='submit', value='Combattre !', ng-click="roundCombat(false)", class='button')
                 input(type='submit', value='Fuir !', ng-click="fuirCombat()", class='button')
                 div(ng-if="checkDiscipline('Puissance psychique') == true")

@@ -4,8 +4,6 @@ aside
         {{joueur.bourse}} pièces
         a(href="", ng-click="voirSacADos(true)")
             img(src='/icons/backpack.png', class='icon_voyage')
-    //- a(href="", ng-click="voirSacADos()")
-        img(src='/icons/backpack.png', class='icon_voyage')
     div(id='backpackModal', class='modalDialogBackpack', ng-if="backpack == true")
         div
             a(href="", title="Close", class="close", ng-click="voirSacADos(false)")
